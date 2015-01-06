@@ -1,0 +1,44 @@
+<h1>Listing of All Station Types</h1>
+
+<table border="1">
+  <body>
+    <tr>
+      <th>Station Type Name</th>
+      <th>Has a Small dock?</th>
+      <th>Has a Medium dock?</th>
+      <th>Has a Large dock?</th>
+      <th>Show</th>
+      <th>Edit</th>
+      <th>Destroy</th>
+    </tr>
+
+    <% @station_types.each do |station_type| %>
+      <tr>
+        <td><%= station_type.name %></td>
+        <% if station_type.has_small_dock then %>
+          <td>true</td>
+        <% else %>
+          <td>false</td>
+        <% end %>
+        <% if station_type.has_medium_dock then %>
+          <td>true</td>
+        <% else %>
+          <td>false</td>
+        <% end %>
+        <% if station_type.has_large_dock then %>
+          <td>true</td>
+        <% else %>
+          <td>false</td>
+        <% end %>
+        <td><%= link_to 'Show', station_type_path(station_type) %></td>
+        <td><%= link_to 'Edit', edit_station_type_path(station_type) %></td>
+        <td><%= link_to 'Destroy', station_type_path(station_type),
+                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </body>
+</table>
+<br>
+<%= link_to 'Add a new Station Type', new_station_type_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

@@ -1,0 +1,24 @@
+<%= form_for @system do |f| %>
+  <% if @system.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@system.errors.count, "error") %> prevented this system from being saved:</h2>
+    <ul>
+    <% @system.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <p>
+    <%= f.label :alliances %><%= f.collection_select :alliance_id, Alliance.all.order(:name), :id, :name, :prompt => "Select an alliance" %>
+  </p>
+
+  <p>
+    <%= f.label :name %>&nbsp;<%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

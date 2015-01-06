@@ -1,0 +1,38 @@
+<%= form_for @station_type do |f| %>
+  <% if @station_type.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@station_type.errors.count, "error") %> prevented this station type from being saved:</h2>
+    <ul>
+    <% @station_type.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <p>
+    <%= f.label :name %>&nbsp;<%= f.text_field :name %>
+  </p>
+
+  <p>
+    Has a Small dock?&nbsp;
+    <%= f.radio_button :has_small_dock, true %><label for="station_type_has_small_dock_true">yes</label>
+    <%= f.radio_button :has_small_dock, false %><label for="station_type_has_small_dock_false">no</label>
+  </p>
+
+  <p>
+    Has a Medium dock?&nbsp;
+    <%= f.radio_button :has_medium_dock, true %><label for="station_type_has_medium_dock_true">yes</label>
+    <%= f.radio_button :has_medium_dock, false %><label for="station_type_has_medium_dock_false">no</label>
+  </p>
+
+  <p>
+    Has a Large dock?&nbsp;
+    <%= f.radio_button :has_large_dock, true %><label for="station_type_has_large_dock_true">yes</label>
+    <%= f.radio_button :has_large_dock, false %><label for="station_type_has_large_dock_false">no</label>
+  </p>
+
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

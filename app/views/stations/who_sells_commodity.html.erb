@@ -1,0 +1,30 @@
+<h1>Who sells Commodity?</h1>
+
+<h3><i>Commodity:</i>&nbsp;&nbsp;<%= @commodity.name %></h3>
+
+<% if @possible_sellers.size > 0 then %>
+	<table border="1" width="800">
+		<body>
+			<tr>
+				<th>Seller System</th>
+				<th>Seller Station</th>
+				<th>Seller Supply Lvl</th>
+				<th>Seller Price</th>
+			</tr>
+			<% @possible_sellers.each do |row| %>
+			<% puts row %>
+				<tr>
+					<td><%= row["seller_system_name"] %></td>
+					<td><%= row["seller_station_name"] %></td>
+					<td><%= row["seller_sell_level"] %></td>
+					<td><%= row["seller_price"] %></td>
+				</tr>
+			<% end %>
+		</body>
+	</table>
+<% else %>
+	<p>No sellers found</p>
+<% end %>
+
+<br />
+<%= link_to 'View all Stations', controller: 'stations' %><br />

@@ -1,0 +1,61 @@
+<h1>Listing of All Station Commodities</h1>
+
+<% System.all.each do |system| %>
+  <% system.stations.order(:name).each do |station| %>
+    <table border="1">
+      <caption><h3><%= system.name %>&nbsp;:&nbsp;<%= station.name %></h3></caption>
+      <thead>
+        <tr>
+          <th>Commodity Name</th>
+          <th>Demand Level</th>
+          <th>Buy Price (cr)</th>
+          <th>Supply Level</th>
+          <th>Sell Price (cr)</th>
+          <th>Avg Price (cr)</th>
+          <th>Show</th>
+          <th>Edit</th>
+          <th>Destroy</th>
+        </tr>
+      </thead>
+      <body>
+        <!-- group display by commodity type -->
+        <% CommodityType.all.order(:order_num).each do |commodity_type| %>
+          <% counter = 1 %>
+          <!-- display each commodity within the commodity type for this station -->
+          <% station.station_commodities.joins(:commodity).where(commodities: { commodity_type_id: commodity_type.id }).order("commodities.name asc").each do |station_commodity| %>
+            <% if counter == 1 then %>
+              <tr>
+                <td colspan="9" bgcolor="cyan"><b><%= commodity_type.name %></b></td>
+              </tr>
+              <% counter = 0 %>
+            <% end %>
+            <tr>
+              <td><%= station_commodity.commodity.name %></td>
+              <% if station_commodity.demanded_or_supplied == 'D' then %>
+                <td bgcolor="yellow"><%= station_commodity.demand_or_supply_level %></td>
+                <td bgcolor="yellow"><%= station_commodity.buy_or_sell_price %></td>
+                <td>-</td>
+                <td>-</td>
+              <% else %>
+                <td>-</td>
+                <td>-</td>
+                <td bgcolor="orange"><%= station_commodity.demand_or_supply_level %></td>
+                <td bgcolor="orange"><%= station_commodity.buy_or_sell_price %></td>
+              <% end %>
+              <td><%= station_commodity.commodity.galactic_average_price %> cr</td>
+              <td><%= link_to 'Show', station_commodity_path(station_commodity) %></td>
+              <td><%= link_to 'Edit', edit_station_commodity_path(station_commodity) %></td>
+              <td><%= link_to 'Destroy', station_commodity_path(station_commodity),
+                        method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %><!-- end station commodity -->
+        <% end %><!-- end commodity type -->
+      </body>
+    </table>
+    <br /><br />
+  <% end %> <!-- end station -->
+<% end %> <!-- end system -->
+<br>
+<%= link_to 'Add a new Station Commodity', new_station_commodity_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

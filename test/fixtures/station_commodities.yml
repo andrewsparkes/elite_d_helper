@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  station_id: 1
+  commodity_id: 1
+  demanded_or_supplied: 
+  demand_or_supply_level: 
+  buy_or_sell_price: 1
+
+two:
+  station_id: 1
+  commodity_id: 1
+  demanded_or_supplied: 
+  demand_or_supply_level: 
+  buy_or_sell_price: 1

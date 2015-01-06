@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  has_small_dock: false
+  has_medium_dock: false
+  has_large_dock: false
+
+two:
+  name: MyString
+  has_small_dock: false
+  has_medium_dock: false
+  has_large_dock: false

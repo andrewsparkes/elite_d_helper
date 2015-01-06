@@ -1,0 +1,88 @@
+<h1>Listing of All Stations</h1>
+
+<%= form_tag(:controller => :stations, :action => :trade_routes, method: "get") do %>
+  <%= label_tag(:cargo_space, "Calculate list of best TRADE ROUTES with cargo space (tonnes):") %>
+
+  <%= number_field_tag(:cargo_space, in: 1..1000, step: 1) %>
+  <%= submit_tag("Calculate trade routes") %>
+<% end %>
+<br />
+<%= form_tag(:controller => :stations, :action => :who_sells_commodity, method: "get") do %>
+  <%= label_tag(:commodity, "Who sells this commodity?") %>&nbsp;:&nbsp;<%= collection_select(:commodity, :commodity_id, Commodity.all.order(:name), :id, :name, :prompt => "Select a commodity") %>
+  <%= submit_tag("Locate sellers for this commodity") %>
+<% end %>
+<br />
+<table border="1">
+  <body>
+    <tr>
+      <th>Station Name</th>
+      <th>Commodities?</th>
+      <th>Refueling?</th>
+      <th>Repairing?</th>
+      <th>Re-Arming?</th>
+      <th>Outfitting?</th>
+      <th>Shipyard?</th>
+      <th>Show</th>
+      <th>Edit</th>
+      <th>Destroy</th>
+    </tr>
+
+    <% System.all.order(:name).each do |system| %>
+      <% counter = 1 %>
+      <% system.stations.order(:name).each do |station| %>
+        <% if counter == 1 then %>
+          <tr>
+            <td colspan="10" bgcolor="cyan"><b><%= system.name %></b>&nbsp;&nbsp;(<%= system.alliance.name %>)</td>
+          </tr>
+          <% counter = 0 %>
+        <% end %>
+        <tr>
+          <td><b><%= station.name %></b></td>
+          <% if station.has_commodities then %>
+            <td bgcolor="GreenYellow"><b>YES</b></td>
+          <% else %>
+            <td bgcolor="OrangeRed">NO</td>
+          <% end %>
+          <% if station.has_refuel then %>
+            <td bgcolor="GreenYellow"><b>YES</b></td>
+          <% else %>
+            <td bgcolor="OrangeRed">NO</td>
+          <% end %>
+          </body>
+          <% if station.has_repair then %>
+            <td bgcolor="GreenYellow"><b>YES</b></td>
+          <% else %>
+            <td bgcolor="OrangeRed">NO</td>
+          <% end %>
+          </body>
+          <% if station.has_re_arm then %>
+            <td bgcolor="GreenYellow"><b>YES</b></td>
+          <% else %>
+            <td bgcolor="OrangeRed">NO</td>
+          <% end %>
+          </body>
+          <% if station.has_outfitting then %>
+            <td bgcolor="GreenYellow"><b>YES</b></td>
+          <% else %>
+            <td bgcolor="OrangeRed">NO</td>
+          <% end %>
+          </body>
+          <% if station.has_shipyard then %>
+            <td bgcolor="GreenYellow"><b>YES</b></td>
+          <% else %>
+            <td bgcolor="OrangeRed">NO</td>
+          <% end %>
+
+          <td><%= link_to 'Show', station_path(station) %></td>
+          <td><%= link_to 'Edit', edit_station_path(station) %></td>
+          <td><%= link_to 'Destroy', station_path(station),
+                      method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </body>
+</table>
+<br>
+<%= link_to 'Add a new Station', new_station_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

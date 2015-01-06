@@ -1,0 +1,102 @@
+<h1><i>Station:</i>&nbsp;&nbsp;<%= @station.name %></h1>
+<h3><i>System:</i>&nbsp;&nbsp;<%= @station.system.name %></h3>
+
+<% cargo_space_avail = params[:cargo_space].to_i %>
+<p>
+	Cargo space available : <b><%= cargo_space_avail %></b> t
+</p>
+
+<% if @possible_trades[:commodity_types].size > 0 then %>
+	<table border="1" width="800">
+		<body>
+			<% @possible_trades[:commodity_types].each do |commod_type_key, commod_type_hash| %>
+				<tr>
+					<td colspan="4" bgcolor="Cyan"><font face="arial" size="5"><%= commod_type_key %></font></td>
+				<tr>
+				<% if commod_type_hash[:seller_commodities].size > 0 then %>
+					<% commod_type_hash[:seller_commodities].each do |commod_key, commod_hash| %>
+
+						<tr bgcolor="DeepSkyBlue">
+							<td><b><%= commod_key %></b></td>
+							<td>Buy per unit: <b><%= commod_hash[:sell_price] %></b> cr</td>
+							<td>Supply: <b><%= commod_hash[:supply_level] %></b></td>
+							<td>Gal avg: <%= commod_hash[:galactic_average_price] %> cr</td>
+							<% sell_price = commod_hash[:sell_price].to_i %>
+							<% cost_full_cargo = (cargo_space_avail * sell_price).to_i %>
+							<td>Cost full cargo (<%= cargo_space_avail %>t): <b><%= cost_full_cargo %></b> cr</td>
+						</tr>
+
+						<% buyer_systems_hash = commod_hash[:buyer_systems] %>
+						<% if buyer_systems_hash.size > 0 then %>
+						<tr>
+							<td colspan="5">
+								<table border="1" width="100%">
+									<thead>
+										<th>System</th>
+										<th>Station</th>
+										<th>Demand</th>
+										<th>Sell per Tonne</th>
+										<th>Profit per Tonne</th>
+										<th>Total Profit (<%= cargo_space_avail %>t)</th>
+									</thead>
+									<body>
+										<% buyer_systems_hash.each do |buyer_system_key, buyer_system_hash| %>
+											<% buyer_system_hash[:buyer_stations].each do |buyer_station_key,buyer_station_hash| %>
+												<tr>
+													<td><%= buyer_system_key %></td>
+													<td><%= buyer_station_key %></td>
+
+													<% if buyer_station_hash[:demand_or_supply_level] == 'L' then %>
+														<td bgcolor="OrangeRed">L</td>
+													<% elsif buyer_station_hash[:demand_or_supply_level] == 'M' then %>
+														<td bgcolor="Yellow">M</td>
+													<% elsif buyer_station_hash[:demand_or_supply_level] == 'H' then %>
+														<td bgcolor="GreenYellow">H</td>
+													<% end %>
+													<td><%= buyer_station_hash[:buy_or_sell_price] %></td>
+													<% profit_amnt = buyer_station_hash[:buy_or_sell_price] - commod_hash[:sell_price] %>
+													<% if profit_amnt > 0 then %>
+														<td bgcolor="GreenYellow"><%= profit_amnt %></td>
+													<% else %>
+														<td bgcolor="OrangeRed"><%= profit_amnt %></td>
+													<% end %>
+
+													<% total_profit_amnt = profit_amnt * cargo_space_avail %>
+													<% if total_profit_amnt > 0 then %>
+														<td bgcolor="GreenYellow"><%= total_profit_amnt %></td>
+													<% else %>
+														<td bgcolor="OrangeRed"><%= total_profit_amnt %></td>
+													<% end %>
+												</tr>
+											<% end %>
+										<% end %>
+									</body>
+								</table>
+							</td>
+						</tr>
+						<% else %>
+							<tr>
+								<td colspan="4" bgcolor="OrangeRed">
+									No buyers known
+								</td>
+							</td>
+						<% end %>  <!-- end systems size check -->
+					<% end %>
+				<% else %>
+					<tr>
+						<td colspan="4" bgcolor="OrangeRed">
+							No commodities found
+						</td>
+					</td>
+				<% end %>  <!-- end commodities size check -->
+			<% end %>
+		</body>
+	</table>
+<% else %>
+	<p>No commodity types found</p>
+<% end %> <!-- end commodity types size check -->
+
+<br>
+<%= link_to 'View all Stations', stations_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

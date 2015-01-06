@@ -1,0 +1,12 @@
+<h1><%= @station_type.name %></h1>
+<p>
+	<strong>Has a Small Dock:</strong>&nbsp;&nbsp;<%= @station_type.has_small_dock %><br \>
+  	<strong>Has a Medium Dock:</strong>&nbsp;&nbsp;<%= @station_type.has_medium_dock %><br \>
+	<strong>Has a Large Dock:</strong>&nbsp;&nbsp;<%= @station_type.has_large_dock %><br \>
+</p>
+<br>
+<%= link_to 'Edit this Station Type', edit_station_type_path(@station_type) %>
+<br>
+<%= link_to 'View all Station Types', station_types_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

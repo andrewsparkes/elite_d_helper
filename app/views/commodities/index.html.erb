@@ -1,0 +1,35 @@
+<h1>Listing of All Commodities</h1>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Commodity Name</th>
+      <th>Galactic Average Price (cr)</th>
+      <th>Show</th>
+      <th>Edit</th>
+      <th>Destroy</th>
+    </tr>
+  </thead>
+  <body>
+    <% CommodityType.all.order(:order_num).each do |ct| %>
+      <tr>
+        <td colspan="4"><b><%= ct.name %></b></td>
+      </tr>
+
+      <% ct.commodities.order(:name).each do |commodity| %>
+        <tr>
+          <td><%= commodity.name %></td>
+          <td><%= commodity.galactic_average_price %> cr</td>
+          <td><%= link_to 'Show', commodity_path(commodity) %></td>
+          <td><%= link_to 'Edit', edit_commodity_path(commodity) %></td>
+          <td><%= link_to 'Destroy', commodity_path(commodity),
+                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </body>
+</table>
+<br>
+<%= link_to 'Add a new Commodity', new_commodity_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

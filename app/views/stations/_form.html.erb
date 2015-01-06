@@ -1,0 +1,64 @@
+<%= form_for @station do |f| %>
+  <% if @station.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@station.errors.count, "error") %> prevented this station from being saved:</h2>
+      <ul>
+      <% @station.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label :systems %><%= f.collection_select :system_id, System.all.order(:name), :id, :name, :prompt => "Select a system" %>
+  </p>
+
+  <p>
+    <%= f.label :station_types %><%= f.collection_select :station_type_id, StationType.all.order(:name), :id, :name, :prompt => "Select a station type" %>
+  </p>
+
+  <p>
+    <%= f.label :name %>&nbsp;<%= f.text_field :name %>
+  </p>
+
+  <p>
+    Has Commodities?&nbsp;
+    <%= f.radio_button :has_commodities, true %><label for="station_has_commodities_true">yes</label>
+    <%= f.radio_button :has_commodities, false %><label for="station_has_commodities_false">no</label>
+  </p>
+
+  <p>
+    Has Refueling?&nbsp;
+    <%= f.radio_button :has_refuel, true %><label for="station_has_refuel_true">yes</label>
+    <%= f.radio_button :has_refuel, false %><label for="station_has_refuel_false">no</label>
+  </p>
+
+  <p>
+    Has Repairing?&nbsp;
+    <%= f.radio_button :has_repair, true %><label for="station_has_repair_true">yes</label>
+    <%= f.radio_button :has_repair, false %><label for="station_has_repair_false">no</label>
+  </p>
+
+  <p>
+    Has Re-Arming?&nbsp;
+    <%= f.radio_button :has_re_arm, true %><label for="station_has_re_arm_true">yes</label>
+    <%= f.radio_button :has_re_arm, false %><label for="station_has_re_arm_false">no</label>
+  </p>
+
+  <p>
+    Has Outfitting?&nbsp;
+    <%= f.radio_button :has_outfitting, true %><label for="station_has_outfitting_true">yes</label>
+    <%= f.radio_button :has_outfitting, false %><label for="station_has_outfitting_false">no</label>
+  </p>
+
+  <p>
+    Has a Shipyard?&nbsp;
+    <%= f.radio_button :has_shipyard, true %><label for="station_has_shipyard_true">yes</label>
+    <%= f.radio_button :has_shipyard, false %><label for="station_has_shipyard_false">no</label>
+  </p>
+
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

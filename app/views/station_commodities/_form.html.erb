@@ -1,0 +1,54 @@
+<%= form_for @station_commodity do |f| %>
+  <% if @station_commodity.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@station_commodity.errors.count, "error") %> prevented this station commodity from being saved:</h2>
+    <ul>
+    <% @station_commodity.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <% if params[:station_id] && params[:commodity_id] then %>
+    <% stn  = Station.find_by_id(params[:station_id]) %>
+    <% comm = Commodity.find_by_id(params[:commodity_id]) %>
+
+    <p>
+      Station : <b><%= stn.name %></b>
+      <%= f.hidden_field :station_id, :value => params[:station_id] %>
+    </p>
+
+    <p>
+      Commodity : <b><%= comm.name %></b>
+      <%= f.hidden_field :commodity_id, :value => params[:commodity_id] %>
+    </p>
+
+  <% else %>
+
+    <p>
+      <%= f.label :stations %>&nbsp;:&nbsp;<%= f.collection_select :station_id, Station.all.order(:name), :id, :name, :prompt => "Select a station" %>
+    </p>
+
+    <p>
+      <%= f.label :commodities %>&nbsp;:&nbsp;<%= f.collection_select :commodity_id, Commodity.all.order(:name), :id, :name, :prompt => "Select a commodity" %>
+    </p>
+
+  <% end %>
+
+  <p>
+    <%= f.label :demanded_or_supplied %>&nbsp;:&nbsp;<%= f.select(:demanded_or_supplied, [['D', 'D'], ['S', 'S']]) %>
+  </p>
+
+  <p>
+    <%= f.label :demand_or_supply_level %>&nbsp;:&nbsp;<%= f.select(:demand_or_supply_level, [['L', 'L'], ['M', 'M'], ['H', 'H']]) %>
+  </p>
+
+  <p>
+    <%= f.label :buy_or_sell_price %>&nbsp;:&nbsp;<%= f.text_field :buy_or_sell_price, :autofocus => true %> cr
+  </p>
+
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

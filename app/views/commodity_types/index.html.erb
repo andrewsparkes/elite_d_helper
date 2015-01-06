@@ -1,0 +1,28 @@
+<h1>Listing of All Commodity Types</h1>
+
+<table border="1">
+  <body>
+    <tr>
+      <th>Order in Trade List</th>
+      <th>Commodity Type Name</th>
+      <th>Show</th>
+      <th>Edit</th>
+      <th>Destroy</th>
+    </tr>
+
+    <% @commodity_types.order(:order_num).each do |commodity_type| %>
+      <tr>
+        <td><%= commodity_type.order_num %></td>
+        <td><%= commodity_type.name %></td>
+        <td><%= link_to 'Show', commodity_type_path(commodity_type) %></td>
+        <td><%= link_to 'Edit', edit_commodity_type_path(commodity_type) %></td>
+        <td><%= link_to 'Destroy', commodity_type_path(commodity_type),
+                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </body>
+</table>
+<br>
+<%= link_to 'Add a new Commodity Type', new_commodity_type_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

@@ -1,0 +1,10 @@
+<h1><%= @commodity.commodity_type.name %>&nbsp;:&nbsp;<%= @commodity.name %></h1>
+<p>
+  <strong>Galactic Average Price :</strong>&nbsp;&nbsp;<%= @commodity.galactic_average_price %>
+</p>
+<br>
+<%= link_to 'Edit this Commodity', edit_commodity_path(@commodity) %>
+<br>
+<%= link_to 'View all Commodities', commodities_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

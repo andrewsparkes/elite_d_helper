@@ -1,0 +1,42 @@
+<h1>Trade Routes</h1>
+
+<% cargo_space_avail = params[:cargo_space].to_i %>
+<p>
+	Cargo space available : <%= cargo_space_avail %>
+</p>
+
+<% if @possible_trade_routes.size > 0 then %>
+	<table border="1" width="800">
+		<body>
+			<tr>
+				<th>Sell System</th>
+				<th>Sell Station</th>
+				<th>Commodity</th>
+				<th>Sell Lvl</th>
+				<th>Sell Price</th>
+				<th>Buy System</th>
+				<th>Buy Station</th>
+				<th>Buy Lvl</th>
+				<th>Buy Price</th>
+				<th>Profit</th>
+			</tr>
+			<% @possible_trade_routes.each do |row| %>
+			<% puts row %>
+				<tr>
+					<td><%= row["t_sellers.seller_system_name"] %></td>
+					<td><%= row["t_sellers.seller_station_name"] %></td>
+					<td><%= row["t_sellers.seller_commodity_name"] %></td>
+					<td><%= row["t_sellers.seller_sell_level"] %></td>
+					<td><%= row["t_sellers.seller_price"] %></td>
+					<td><%= row["t_buyers.buyer_system_name"] %></td>
+					<td><%= row["t_buyers.buyer_station_name"] %></td>
+					<td><%= row["t_buyers.buyer_demand_level"] %></td>
+					<td><%= row["t_buyers.buyer_price"] %></td>
+					<td><%= row["profit"] %></td>
+				</tr>
+			<% end %>
+		</body>
+	</table>
+<% else %>
+	<p>Error: No trades found</p>
+<% end %>

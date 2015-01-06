@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  system_id: 1
+  station_type_id: 1
+  has_commodities: false
+  has_refuel: false
+  has_repair: false
+  has_re_arm: false
+  has_outfitting: false
+  has_shipyard: false
+
+two:
+  name: MyString
+  system_id: 1
+  station_type_id: 1
+  has_commodities: false
+  has_refuel: false
+  has_repair: false
+  has_re_arm: false
+  has_outfitting: false
+  has_shipyard: false
