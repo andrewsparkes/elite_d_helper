@@ -224,19 +224,153 @@ class Station < ActiveRecord::Base
 	end
 
 	def self.calculate_possible_trade_routes
-		# for each system, station, sell commodity:  calculate destination buyers
+		# Inputs:
+		# Min value commodity (default 100) MIN_COMM_VAL
+		# Profit threshold per leg MIN_PROFIT_PER_LEG
+		# Profit threshold per loop MIN_PROFIT_PER_LOOP
+		# (station LS from jump-in)
 
-		# create list of source_system, source_station, commodity_type_name, commodity_name, sell_price, dest_system, dest_station, buy_price, profit
-		# order by source_system, source_station, profit
+		# --
 
-		# create reduced list with best <=3 profits per source system, station
-		# order by source_system, source_station, profit
+		# stations sell commodities at price x
 
-		# create list of unique dest_system, dest_station from this profit list
-		# order by dest_system, dest_station
+		# SQL : select stations, commodities, commodity_type and sell price where demand_or_sell 'S' and sell_price > MIN_COMM_VAL
 
-		# for each dest_system, dest_station check if has source_system, source_station in profit list
-		# if yes add to trade routes hash
+		# data structure:
+
+		# stations { station_name { sells_commodities { commodity_name { price }}}}
+
+		# --
+
+		# stations buy commodities at price y
+
+		# SQL : select stations, commodities, commodity_type and buy price where demand_or_sell 'D' and buy_price > MIN_COMM_VAL
+
+		# data structure:
+
+		# stations { station_name { 'buys_commodities' { commodity_name { 'price' => price }}}}
+
+		# --
+
+		# so now have:
+		# stations { station_name { 'sells_commodities' { commodity_name { 'price' => price }}, 'buys_commodities' { commodity_name { 'price' => price }}}}
+
+		# --
+
+		# trade_legs = {}
+
+		# get array sorted keys in stations
+
+		# stations_array.each do |curr_seller_station|
+		#     next unless stations[curr_seller_station][sells_commodities]
+		#     get array_sell_commodities by sorted keys in stations[curr_seller_station][sells_commodities]
+		#     array_sell_commodities.each do |curr_seller_commodity|
+		#         # find any buyers
+		#         stations_array.each do |curr_buyer_station|
+		#             ignore if no stations[curr_buyer_station][buys_commodities]
+		#             if exists stations[curr_buyer_station][buys_commodities][curr_seller_commodity]
+		#                 # calculate potential profit
+		#                 profit = stations[curr_buyer_station][buys_commodities][curr_seller_commodity][price] - stations[curr_seller_station][sells_commodities][curr_seller_commodity][price]
+		#                 if profit > MIN_PROFIT_PER_LEG
+		#                     # store potential trade leg
+		#                     # station_from, buy_price, station_to, sell_price, commodity, profit
+		#                     trade_legs[station_from][commodity][station_to] = { 'profit' => profit }
+		#                 end
+		#             end
+		#         end
+		#     end
+		# end
+
+		# --
+
+		# # so now have hash of trade legs, and need to match them up
+
+		# trade_legs {
+		#     Leesti {
+		#         Progenitor Cells {
+		#             HIP 65636 {
+		#                 profit = 973
+		#             }
+		#         }
+		#     },
+		#     HIP 65636 {
+		#         Palladium {
+		#             Leesti {
+		#                 profit = 1512
+		#             }
+		#         }
+		#     }
+		# }
+
+		# --
+
+		# trade_routes = {}
+
+		# array_starting_stations = sorted keys trade_legs
+		# array_starting_stations.each do |curr_starting_station|
+
+		#     array_starting_station_commodities = sorted keys trade_legs[curr_starting_station]
+		#     array_starting_station_commodities.each do |curr_commodity|
+
+		#         array_ending_stations = sorted_keys trade_legs[curr_starting_station]|curr_commodity|
+		#         array_ending_stations.each do |curr_ending_station|
+
+		#             # no search for trade leg from this ending station with any commodity to station matching the curr_starting_station
+		#             # if we find one we have a trade loop
+		#             # calculate loop profit
+		#             # if loop profit > MIN_PROFIT_PER_LOOP
+		#                   # add the trade loop to a hash (unless reverse loop is already present!)
+
+		#         end
+		#     end
+		# end
+
+
+
+		# trade_loops {
+		#     from_station {
+		#         to_station {
+		#             from_commodity {
+		#                 to_commodity {
+		#                     profit
+		#                 }
+		#             }
+		#         }
+		#     }
+		# }
+
+		# e.g
+		# trade_loops {
+		#     Leesti {
+		#         HIP 65636 {
+		#             Progenitor Cells {
+		#                 Palladium {
+		#                     profit = 2512
+		#                 },
+		#                 Gold {
+		#                     profit = 2314
+		#                 }
+		#             },
+		#             Consumer Tech {
+		#                 Palladium {
+		#                     profit = 2437
+		#                 },
+		#                 Gold {
+		#                     profit = 2261
+		#                 }
+		#             }
+		#         }
+		#     }
+		# }
+
+		# # need to order output by profit then out commodity then back commodity
+		# # could store in table with composite key of from_station, to_station, from_commodity, to_commodity with profit as 5th column
+
+		# Leesti (264 LS) -> HIP 65636 (47 LS)
+		# Out: Progenitor Cells   Back: Palladium     Profit: 2512
+		# Out: Consumer Tech      Back: Palladium     Profit: 2437
+		# Out: Progenitor Cells   Back: Gold          Profit: 2314
+		# Out: Consumer Tech      Back: Gold          Profit: 2261
 
 		display_array = self.calculate_all_trade_routes
 
