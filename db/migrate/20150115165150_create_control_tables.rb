@@ -1,5 +1,5 @@
 class CreateControlTables < ActiveRecord::Migration
-  def change
+  def up
     create_table :allegiances do |t|
       t.string :name
 
@@ -13,8 +13,8 @@ class CreateControlTables < ActiveRecord::Migration
     end
 
     create_table :station_economies do |t|
-      t.int :station_id
-      t.int :economy_id
+      t.integer :station_id
+      t.integer :economy_id
 
       t.timestamps
     end
@@ -42,19 +42,19 @@ class CreateControlTables < ActiveRecord::Migration
     add_column :systems, :z, :float, :null => true, after: :eds_id
 
     # add field systems.allegiance_id (int, NULL)
-    add_column :systems, :allegiance_id, :int, :null => true, after: :id
+    add_column :systems, :allegiance_id, :integer, :null => true, after: :id
 
     # add field systems.government_id (int, NULL)
-    add_column :systems, :government_id, :int, :null => true, after: :allegiance_id
+    add_column :systems, :government_id, :integer, :null => true, after: :allegiance_id
 
     # add field stations.allegiance_id (int, NULL)
-    add_column :stations, :allegiance_id, :int, :null => true, after: :id
+    add_column :stations, :allegiance_id, :integer, :null => true, after: :id
 
     # add field stations.population_level_id (int, NULL)
-    add_column :stations, :population_level_id, :int, :null => true, after: :allegiance_id
+    add_column :stations, :population_level_id, :integer, :null => true, after: :allegiance_id
 
     # add field stations.government_id (int, NULL)
-    add_column :stations, :government_id, :int, :null => true, after: :population_level_id
+    add_column :stations, :government_id, :integer, :null => true, after: :population_level_id
 
     # add field stations.has_blackmarket (boolean, NULL)
     add_column :stations, :has_blackmarket, :boolean, :null => true, after: :has_shipyard
@@ -64,17 +64,33 @@ class CreateControlTables < ActiveRecord::Migration
 
     # drop alliances table
     drop_table :alliances
+  end
 
-    # foreign keys
-    add_foreign_key :station_economies, :stations, :column => :station_id, :name => 'station_economies_stations_fk'
-    add_foreign_key :station_economies, :economies, :column => :economy_id, :name => 'station_economies_economies_fk'
+  def down
+    create_table :alliances do |t|
+      t.string :name
 
-    add_foreign_key :systems, :allegiances, :column => :allegiance_id, :name => 'systems_allegiances_fk'
-    add_foreign_key :systems, :governments, :column => :government_id, :name => 'systems_governments_fk'
+      t.timestamps
+    end
 
-    add_foreign_key :stations, :allegiances, :column => :allegiance_id, :name => 'stations_allegiances_fk'
-    add_foreign_key :stations, :population_levels, :column => :population_level_id, :name => 'stations_population_levels_fk'
-    add_foreign_key :stations, :governments, :column => :government_id, :name => 'stations_governments_fk'
+    add_column :systems, :alliance_id, :int, :null => true
 
+    remove_column :stations, :has_blackmarket
+    remove_column :stations, :government_id
+    remove_column :stations, :population_level_id
+    remove_column :stations, :allegiance_id
+
+    remove_column :systems, :government_id
+    remove_column :systems, :allegiance_id
+    remove_column :systems, :x
+    remove_column :systems, :y
+    remove_column :systems, :z
+    remove_column :systems, :eds_id
+
+    drop_table :governments
+    drop_table :population_levels
+    drop_table :station_economies
+    drop_table :economies
+    drop_table :allegiances
   end
 end

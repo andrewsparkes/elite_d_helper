@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141219131838) do
+ActiveRecord::Schema.define(version: 20150115165150) do
 
-  create_table "alliances", force: true do |t|
+  create_table "allegiances", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -34,12 +34,37 @@ ActiveRecord::Schema.define(version: 20141219131838) do
     t.datetime "updated_at"
   end
 
+  create_table "economies", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "governments", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "population_levels", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "station_commodities", force: true do |t|
     t.integer  "station_id"
     t.integer  "commodity_id"
     t.string   "demanded_or_supplied"
     t.string   "demand_or_supply_level"
     t.integer  "buy_or_sell_price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "station_economies", force: true do |t|
+    t.integer  "station_id"
+    t.integer  "economy_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -65,13 +90,22 @@ ActiveRecord::Schema.define(version: 20141219131838) do
     t.boolean  "has_shipyard"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "allegiance_id"
+    t.integer  "population_level_id"
+    t.integer  "government_id"
+    t.boolean  "has_blackmarket"
   end
 
   create_table "systems", force: true do |t|
     t.string   "name"
-    t.integer  "alliance_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "eds_id"
+    t.float    "x"
+    t.float    "y"
+    t.float    "z"
+    t.integer  "allegiance_id"
+    t.integer  "government_id"
   end
 
 end

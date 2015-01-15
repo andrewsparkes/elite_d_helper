@@ -1,0 +1,2 @@
+class GovernmentsController < ApplicationController
+end

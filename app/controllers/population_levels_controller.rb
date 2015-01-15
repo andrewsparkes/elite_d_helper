@@ -1,0 +1,2 @@
+class PopulationLevelsController < ApplicationController
+end

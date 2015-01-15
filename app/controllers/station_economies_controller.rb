@@ -1,0 +1,2 @@
+class StationEconomiesController < ApplicationController
+end
