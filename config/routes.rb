@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 
   resources :reporting
 
-  resources :alliances do
+  resources :allegiances do
     resources :systems
   end
 

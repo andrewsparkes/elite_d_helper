@@ -2,8 +2,6 @@
 
 one:
   name: MyString
-  allegiance_id: 1
 
 two:
   name: MyString
-  allegiance_id: 1

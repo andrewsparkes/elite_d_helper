@@ -11,7 +11,7 @@
   <% end %>
 
   <p>
-    <%= f.label :alliances %><%= f.collection_select :alliance_id, Alliance.all.order(:name), :id, :name, :prompt => "Select an alliance" %>
+    <%= f.label :allegiances %><%= f.collection_select :allegiance_id, Allegiance.all.order(:name), :id, :name, :prompt => "Select an allegiance" %>
   </p>
 
   <p>

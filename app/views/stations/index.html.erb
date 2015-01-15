@@ -32,7 +32,7 @@
       <% system.stations.order(:name).each do |station| %>
         <% if counter == 1 then %>
           <tr>
-            <td colspan="10" bgcolor="cyan"><b><%= system.name %></b>&nbsp;&nbsp;(<%= system.alliance.name %>)</td>
+            <td colspan="10" bgcolor="cyan"><b><%= system.name %></b>&nbsp;&nbsp;(<%= system.allegiance.name %>)</td>
           </tr>
           <% counter = 0 %>
         <% end %>

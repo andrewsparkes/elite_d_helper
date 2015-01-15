@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AllianceTest < ActiveSupport::TestCase
+class PopulationLevelTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

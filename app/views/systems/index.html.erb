@@ -4,7 +4,7 @@
   <body>
     <tr>
       <th>System Name</th>
-      <th>Alliance Name</th>
+      <th>Allegiance</th>
       <th>Show</th>
       <th>Edit</th>
       <th>Destroy</th>
@@ -13,7 +13,7 @@
     <% @systems.order(:name).each do |system| %>
       <tr>
         <td><b><%= system.name %></b></td>
-        <td><%= system.alliance.name %></td>
+        <td><%= system.allegiance.name %></td>
         <td><%= link_to 'Show', system_path(system) %></td>
         <td><%= link_to 'Edit', edit_system_path(system) %></td>
         <td><%= link_to 'Destroy', system_path(system),

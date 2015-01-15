@@ -44,6 +44,6 @@ class SystemsController < ApplicationController
 
 	private
 		def system_params
-			params.require(:system).permit(:alliance_id,:name)
+			params.require(:system).permit(:allegiance_id,:name)
 		end
 end
