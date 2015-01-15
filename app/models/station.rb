@@ -554,8 +554,40 @@ class Station < ActiveRecord::Base
 
 		# =====
 		# Migration:
-		# add eds_id (int, NULL), and coord_x, coord_y, coord_z (floats, NULL) to systems table
-		# add 'unexplored' data value to allegiance table
+
+		# new tables:
+		# add new table allegiances (id, name)
+		# add new table economies (id, name)
+		# add new table station_economies (station_id, economy_id) (potentially multiple economies)
+		# add new table population_levels (id, name)
+		# add new table governments (id, name)
+
+		# add field systems.eds_id (int, NULL)
+		# add field systems.x (float, NULL)
+		# add field systems.y (float, NULL)
+		# add field systems.z (float, NULL)
+		# add field systems.allegiance_id (int, NULL)
+		# add field systems.government_id (int, NULL)
+		# add field stations.allegiance_id (int, NULL)
+		# add field stations.population_level_id (int, NULL)
+		# add field stations.government_id (int, NULL)
+		# add field stations.has_blackmarket (boolean, NULL)
+
+		# drop field systems.alliance_id
+		# drop alliances table
+
+
+
+
+		# add 'unknown' data value to allegiance table
+
+		# link systems to allegiances in model
+		# link stations to allegiances in model
+
+		# change all references to alliances model, view, controller to allegiances
+		# remove alliances model, controller, views, tests
+
+
 
 		# Add data controller to allow adding/updating systems in radius around system_name
 		# inputs: system name, radius, api ver
