@@ -1,0 +1,8 @@
+<h1><%= @population_level.name %></h1>
+
+<br>
+<%= link_to 'Edit this Population Level', edit_population_level_path(@population_level) %>
+<br>
+<%= link_to 'View all Population Levels', population_levels_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

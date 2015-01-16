@@ -1,0 +1,20 @@
+<%= form_for @population_level do |f| %>
+  <% if @population_level.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@population_level.errors.count, "error") %> prevented this population_level from being saved:</h2>
+    <ul>
+    <% @population_level.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <p>
+    <%= f.label :name %>&nbsp;<%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

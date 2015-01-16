@@ -1,0 +1,26 @@
+<h1>Listing of All Population Levels</h1>
+
+<table border="1">
+  <body>
+    <tr>
+      <th>Population Level Name</th>
+      <th>Show</th>
+      <th>Edit</th>
+      <th>Destroy</th>
+    </tr>
+
+    <% @allegiances.each do |population_level| %>
+      <tr>
+        <td><%= population_level.name %></td>
+        <td><%= link_to 'Show', population_level_path(population_level) %></td>
+        <td><%= link_to 'Edit', edit_population_level_path(population_level) %></td>
+        <td><%= link_to 'Destroy', population_level_path(population_level),
+                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </body>
+</table>
+<br>
+<%= link_to 'Add a new Population Level', new_population_level_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

@@ -1,0 +1,26 @@
+<h1>Listing of All Economies</h1>
+
+<table border="1">
+  <body>
+    <tr>
+      <th>Economy Name</th>
+      <th>Show</th>
+      <th>Edit</th>
+      <th>Destroy</th>
+    </tr>
+
+    <% @economies.each do |economy| %>
+      <tr>
+        <td><%= economy.name %></td>
+        <td><%= link_to 'Show', economy_path(economy) %></td>
+        <td><%= link_to 'Edit', edit_economy_path(economy) %></td>
+        <td><%= link_to 'Destroy', economy_path(economy),
+                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </body>
+</table>
+<br>
+<%= link_to 'Add a new Economy', new_economy_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

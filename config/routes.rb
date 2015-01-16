@@ -20,6 +20,19 @@ Rails.application.routes.draw do
 
   resources :allegiances do
     resources :systems
+    resources :stations
+  end
+
+  resources :economies do
+    resources :stations
+  end
+
+  resources :governments do
+    resources :stations
+  end
+
+  resources :population_levels do
+    resources :stations
   end
 
   resources :system_types do
@@ -49,6 +62,19 @@ Rails.application.routes.draw do
 
   resources :commodities do
     resource :station_commodities
+  end
+
+  resources :station_economies do
+    resources :stations
+    resources :economies
+  end
+
+  resources :stations do
+    resource :station_economies
+  end
+
+  resources :economies do
+    resource :station_economies
   end
 
   match 'stations/:id/buyers_for_supply' => 'stations#buyers_for_supply', via: [:get, :post]

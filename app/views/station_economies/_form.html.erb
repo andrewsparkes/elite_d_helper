@@ -1,0 +1,42 @@
+<%= form_for @station_economy do |f| %>
+  <% if @station_economy.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@station_economy.errors.count, "error") %> prevented this station economy from being saved:</h2>
+    <ul>
+    <% @station_economy.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <% if params[:station_id] && params[:economy_id] then %>
+    <% stn  = Station.find_by_id(params[:station_id]) %>
+    <% comm = Economy.find_by_id(params[:economy_id]) %>
+
+    <p>
+      Station : <b><%= stn.name %></b>
+      <%= f.hidden_field :station_id, :value => params[:station_id] %>
+    </p>
+
+    <p>
+      Economy : <b><%= comm.name %></b>
+      <%= f.hidden_field :economy_id, :value => params[:economy_id] %>
+    </p>
+
+  <% else %>
+
+    <p>
+      <%= f.label :stations %>&nbsp;:&nbsp;<%= f.collection_select :station_id, Station.all.order(:name), :id, :name, :prompt => "Select a station" %>
+    </p>
+
+    <p>
+      <%= f.label :commodities %>&nbsp;:&nbsp;<%= f.collection_select :economy_id, Economy.all.order(:name), :id, :name, :prompt => "Select an economy" %>
+    </p>
+
+  <% end %>
+
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

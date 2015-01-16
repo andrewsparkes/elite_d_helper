@@ -1,0 +1,34 @@
+<h1>Listing of All Station Economies</h1>
+
+<% System.all.each do |system| %>
+  <% system.stations.order(:name).each do |station| %>
+    <table border="1">
+      <caption><h3><%= system.name %>&nbsp;:&nbsp;<%= station.name %></h3></caption>
+      <thead>
+        <tr>
+          <th>Economy Name</th>
+          <th>Show</th>
+          <th>Edit</th>
+          <th>Destroy</th>
+        </tr>
+      </thead>
+      <body>
+        <!-- display each economy -->
+        <% station.station_economies.joins(:economy)).order("economies.name asc").each do %>
+          <tr>
+            <td><%= station_economy.economy.name %></td>
+            <td><%= link_to 'Show', station_economy_path(station_economy) %></td>
+            <td><%= link_to 'Edit', edit_station_economy_path(station_economy) %></td>
+            <td><%= link_to 'Destroy', station_economy_path(station_economy),
+                      method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %><!-- end station economy -->
+      </body>
+    </table>
+    <br /><br />
+  <% end %> <!-- end station -->
+<% end %> <!-- end system -->
+<br>
+<%= link_to 'Add a new Station Economy', new_station_economy_path %>
+<br>
+<%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>
