@@ -1,85 +1,50 @@
 <h1><%= @station.system.name %>&nbsp;:&nbsp;<%= @station.name %></h1>
-<i>Station Type :</i>&nbsp;&nbsp;<b><%= @station.station_type.name %></b>
+<p style="padding-left:20px">
+<strong>Distance from nav:</strong>&nbsp;&nbsp;<%= @station.nav_ls %>&nbsp;ls<br />
+<strong>Station Type :</strong>&nbsp;&nbsp;<%= @station.station_type.name %><br />
+<strong>Landing Pads:</strong>&nbsp;&nbsp;
 <% if @station.station_type.has_large_dock then %>
-	which has <b>LARGE</b> docks and smaller
+	Small, Medium and Large<br />
 <% elsif @station.station_type.has_medium_dock then %>
-	which has <b>MEDIUM</b> docks and smaller
+	Small and Medium<br />
 <% else %>
-	which has <b>SMALL</b> docks only
+	Small only<br />
 <% end %>
-<br \>
-<br \>
-<table>
-  <thead>
-  	<th>Commodities?</th>
-  	<th>Refueling?</th>
-  	<th>Repairing?</th>
-  	<th>Re-arming?</th>
-  	<th>Outfitting?</th>
-  	<th>Shipyard?</th>
-  </thead>
-  <body>
-	<% if @station.has_commodities then %>
-		<td bgcolor="GreenYellow"><b>YES</b></td>
-	<% else %>
-		<td bgcolor="OrangeRed">NO</td>
-	<% end %>
-	<% if @station.has_refuel then %>
-		<td bgcolor="GreenYellow"><b>YES</b></td>
-	<% else %>
-		<td bgcolor="OrangeRed">NO</td>
-	<% end %>
-	</body>
-	<% if @station.has_repair then %>
-		<td bgcolor="GreenYellow"><b>YES</b></td>
-	<% else %>
-		<td bgcolor="OrangeRed">NO</td>
-	<% end %>
-	</body>
-	<% if @station.has_re_arm then %>
-		<td bgcolor="GreenYellow"><b>YES</b></td>
-	<% else %>
-		<td bgcolor="OrangeRed">NO</td>
-	<% end %>
-	</body>
-	<% if @station.has_outfitting then %>
-		<td bgcolor="GreenYellow"><b>YES</b></td>
-	<% else %>
-		<td bgcolor="OrangeRed">NO</td>
-	<% end %>
-	</body>
-	<% if @station.has_shipyard then %>
-		<td bgcolor="GreenYellow"><b>YES</b></td>
-	<% else %>
-		<td bgcolor="OrangeRed">NO</td>
-	<% end %>
-  </body>
-</table>
+<strong>Government:</strong>&nbsp;&nbsp;<%= @station.government.name %><br />
+<strong>Population Level:</strong>&nbsp;&nbsp;<%= @station.population_level.name %><br />
+<% econ_array = [] %>
+<% econ_array.push("Agricultural") if @station.is_economy_agricultural %>
+<% econ_array.push("Exraction") if @station.is_economy_extraction %>
+<% econ_array.push("Hi tech") if @station.is_economy_hi_tech %>
+<% econ_array.push("Industrial") if @station.is_economy_industrial %>
+<% econ_array.push("Military") if @station.is_economy_military %>
+<% econ_array.push("None") if @station.is_economy_none %>
+<% econ_array.push("Refinery") if @station.is_economy_refinery %>
+<% econ_array.push("Service") if @station.is_economy_service %>
+<% econ_array.push("Tourism") if @station.is_economy_tourism %>
+<strong>Economies:</strong>&nbsp;&nbsp;<%= econ_array.join(', ') %><br />
+<% serv_array = [] %>
+<% serv_array.push("Commodities") if @station.has_commodities %>
+<% serv_array.push("Refueling") if @station.has_refuel %>
+<% serv_array.push("Repairing") if @station.has_repair %>
+<% serv_array.push("Re-Arming") if @station.has_re_arm %>
+<% serv_array.push("Outfitting") if @station.has_outfitting %>
+<% serv_array.push("Shipyard") if @station.has_shipyard %>
+<% serv_array.push("Black Market") if @station.has_blackmarket %>
+<strong>Services:</strong>&nbsp;&nbsp;<%= serv_array.join(', ') %><br />
+</p>
 
 <% if @station.has_commodities == true then %>
-	<h2>This station has Commodities:</h2>
+	<h3>Commodities:</h3>
 	<%= form_tag(:controller => :stations, :action => :buyers_for_supply, method: "get") do %>
 	  <%= label_tag(:cargo_space, "View all BUYERS for products SOLD by this station with cargo space (tonnes):") %>
 
 	  <%= number_field_tag(:cargo_space, in: 1..1000, step: 1) %>
 	  <%= submit_tag("View possible trades") %>
+	  class="btn btn-default col-md-offset-2"
 	<% end %>
-	<br/>
-	<br/>
-	<table border="1">
-	  <thead>
-	    <tr>
-	      <th>Commodity Name</th>
-	      <th>Demand Level</th>
-	      <th>Buy Price (cr)</th>
-	      <th>Supply Level</th>
-	      <th>Sell Price (cr)</th>
-	      <th>Avg Price (cr)</th>
-	      <th>Price Diff (cr)</th>
-	      <th>Edit</th>
-	      <th>Destroy</th>
-	    </tr>
-	  </thead>
+	<br />
+	<table class="table table-striped">
 	  <body>
 	    <!-- group display by commodity type -->
 	    <% CommodityType.all.order(:order_num).each do |commodity_type| %>
@@ -88,7 +53,15 @@
 	      <% Commodity.where(commodity_type_id: commodity_type.id).order(:name).all.each do |commodity| %>
 	      	<% if counter == 1 then %>
 	          <tr>
-	            <td colspan="9" bgcolor="cyan"><b><%= commodity_type.name %></b></td>
+	            <td><h4><%= commodity_type.name %></h4></td>
+	            <td>Demand</th>
+			    <td>Buy (cr)</th>
+			    <td>Supply</th>
+			    <td>Sell (cr)</th>
+			    <td>Avg (cr)</th>
+			    <td>Diff (cr)</th>
+			    <td>Edit</th>
+			    <td>Destroy</th>
 	          </tr>
 	          <% counter = 0 %>
 	        <% end %>
@@ -100,36 +73,36 @@
 			  <tr>
 			  	<td><i><%= commodity.name %></i></td>
 	            <td colspan="6"><i>This station does not have this commodity set up</i></td>
-	            <td colspan="2" bgcolor="GreenYellow"><%= link_to 'add details', :controller => "station_commodities", :action => "new", :station_id => @station.id, :commodity_id => commodity.id %></td>
+	            <td colspan="2"><%= link_to 'add details', :controller => "station_commodities", :action => "new", :station_id => @station.id, :commodity_id => commodity.id %></td>
 	          </tr>
 	        <% else %>
 	          <!-- if it's a station commodity draw editable row -->
 			  <tr>
 		        <td><b><%= @station_commodity.commodity.name %></b></td>
 		        <% if @station_commodity.demanded_or_supplied == 'D' then %>
-		          <td bgcolor="yellow"><%= @station_commodity.demand_or_supply_level %></td>
-		          <td bgcolor="yellow"><b><%= @station_commodity.buy_or_sell_price %></b></td>
+		          <td><%= @station_commodity.demand_or_supply_level %></td>
+		          <td><b><%= @station_commodity.buy_or_sell_price %></b></td>
 		          <td>-</td>
 		          <td>-</td>
 		          <td><%= @station_commodity.commodity.galactic_average_price %> cr</td>
 		          <% price_diff = @station_commodity.buy_or_sell_price - @station_commodity.commodity.galactic_average_price %>
 		          <% if price_diff > 0 then %>
-		          	<td bgcolor="LawnGreen"><%= price_diff %></td>
+		          	<td><%= price_diff %></td>
 		          <% else %>
-		          	<td bgcolor="OrangeRed"><%= price_diff %></td>
+		          	<td><%= price_diff %></td>
 		          <% end %>
 
 		        <% else %>
 		          <td>-</td>
 		          <td>-</td>
-		          <td bgcolor="orange"><%= @station_commodity.demand_or_supply_level %></td>
-		          <td bgcolor="orange"><b><%= @station_commodity.buy_or_sell_price %></b></td>
+		          <td><%= @station_commodity.demand_or_supply_level %></td>
+		          <td><b><%= @station_commodity.buy_or_sell_price %></b></td>
 		          <td><%= @station_commodity.commodity.galactic_average_price %> cr</td>
 		          <% price_diff =  @station_commodity.commodity.galactic_average_price - @station_commodity.buy_or_sell_price %>
 		          <% if price_diff > 0 then %>
-		          	<td bgcolor="LawnGreen"><%= price_diff %></td>
+		          	<td><%= price_diff %></td>
 		          <% else %>
-		          	<td bgcolor="OrangeRed"><%= price_diff %></td>
+		          	<td><%= price_diff %></td>
 		          <% end %>
 		        <% end %>
 

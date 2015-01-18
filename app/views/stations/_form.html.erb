@@ -10,53 +10,123 @@
     </div>
   <% end %>
 
-  <p>
-    <%= f.label :systems %><%= f.collection_select :system_id, System.all.order(:name), :id, :name, :prompt => "Select a system" %>
-  </p>
-
-  <p>
-    <%= f.label :station_types %><%= f.collection_select :station_type_id, StationType.all.order(:name), :id, :name, :prompt => "Select a station type" %>
-  </p>
-
-  <p>
-    <%= f.label :name %>&nbsp;<%= f.text_field :name %>
-  </p>
-
-  <p>
-    Has Commodities?&nbsp;
-    <%= f.radio_button :has_commodities, true %><label for="station_has_commodities_true">yes</label>
-    <%= f.radio_button :has_commodities, false %><label for="station_has_commodities_false">no</label>
-  </p>
-
-  <p>
-    Has Refueling?&nbsp;
-    <%= f.radio_button :has_refuel, true %><label for="station_has_refuel_true">yes</label>
-    <%= f.radio_button :has_refuel, false %><label for="station_has_refuel_false">no</label>
-  </p>
-
-  <p>
-    Has Repairing?&nbsp;
-    <%= f.radio_button :has_repair, true %><label for="station_has_repair_true">yes</label>
-    <%= f.radio_button :has_repair, false %><label for="station_has_repair_false">no</label>
-  </p>
-
-  <p>
-    Has Re-Arming?&nbsp;
-    <%= f.radio_button :has_re_arm, true %><label for="station_has_re_arm_true">yes</label>
-    <%= f.radio_button :has_re_arm, false %><label for="station_has_re_arm_false">no</label>
-  </p>
-
-  <p>
-    Has Outfitting?&nbsp;
-    <%= f.radio_button :has_outfitting, true %><label for="station_has_outfitting_true">yes</label>
-    <%= f.radio_button :has_outfitting, false %><label for="station_has_outfitting_false">no</label>
-  </p>
-
-  <p>
-    Has a Shipyard?&nbsp;
-    <%= f.radio_button :has_shipyard, true %><label for="station_has_shipyard_true">yes</label>
-    <%= f.radio_button :has_shipyard, false %><label for="station_has_shipyard_false">no</label>
-  </p>
+  <table>
+    <body>
+      <tr>
+        <td><%= f.label :systems %></td>
+        <td><%= f.collection_select :system_id, System.all.order(:name), :id, :name, :prompt => "Select a system" %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :station_types %></td>
+        <td><%= f.collection_select :station_type_id, StationType.all.order(:name), :id, :name, :prompt => "Select a station type" %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :name %></td>
+        <td><%= f.text_field :name %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :nav_ls %></td>
+        <td><%= f.text_field :nav_ls %>ls</td>
+      </tr>
+      <tr>
+        <td><%= f.label :allegiances %></td>
+        <td><%= f.collection_select :allegiance_id, Allegiance.all.order(:name), :id, :name, :prompt => "Select a allegiance" %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :governments %></td>
+        <td><%= f.collection_select :government_id, Government.all.order(:name), :id, :name, :prompt => "Select a government" %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :population_levels %></td>
+        <td><%= f.collection_select :population_level_id, PopulationLevel.all.order(:name), :id, :name, :prompt => "Select a population level" %></td>
+      </tr>
+      <tr>
+        <td>Has Commodities?</td>
+        <td><%= f.radio_button :has_commodities, true %><label for="station_has_commodities_true">yes</label>
+    <%= f.radio_button :has_commodities, false %><label for="station_has_commodities_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Has Refueling?</td>
+        <td><%= f.radio_button :has_refuel, true %><label for="station_has_refuel_true">yes</label>
+    <%= f.radio_button :has_refuel, false %><label for="station_has_refuel_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Has Repairing?</td>
+        <td><%= f.radio_button :has_repair, true %><label for="station_has_repair_true">yes</label>
+    <%= f.radio_button :has_repair, false %><label for="station_has_repair_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Has Re-Arming?</td>
+        <td><%= f.radio_button :has_re_arm, true %><label for="station_has_re_arm_true">yes</label>
+    <%= f.radio_button :has_re_arm, false %><label for="station_has_re_arm_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Has Outfitting?</td>
+        <td><%= f.radio_button :has_outfitting, true %><label for="station_has_outfitting_true">yes</label>
+    <%= f.radio_button :has_outfitting, false %><label for="station_has_outfitting_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Has a Shipyard?</td>
+        <td><%= f.radio_button :has_shipyard, true %><label for="station_has_shipyard_true">yes</label>
+    <%= f.radio_button :has_shipyard, false %><label for="station_has_shipyard_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Has a Black Market?</td>
+        <td><%= f.radio_button :has_blackmarket, true %><label for="station_has_blackmarket_true">yes</label>
+    <%= f.radio_button :has_blackmarket, false %><label for="station_has_blackmarket_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Is Economy Agricultural?</td>
+        <td><%= f.radio_button :is_economy_agricultural, true %><label for="station_is_economy_agricultural_true">yes</label>
+    <%= f.radio_button :is_economy_agricultural, false %><label for="station_is_economy_agricultural_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Is Economy Extraction?</td>
+        <td><%= f.radio_button :is_economy_extraction, true %><label for="station_is_economy_extraction_true">yes</label>
+    <%= f.radio_button :is_economy_extraction, false %><label for="station_is_economy_extraction_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Is Economy Hi Tech?</td>
+        <td><%= f.radio_button :is_economy_hi_tech, true %><label for="station_is_economy_hi_tech_true">yes</label>
+    <%= f.radio_button :is_economy_hi_tech, false %><label for="station_is_economy_hi_tech_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Is Economy Industrial?</td>
+        <td><%= f.radio_button :is_economy_industrial, true %><label for="station_is_economy_industrial_true">yes</label>
+    <%= f.radio_button :is_economy_industrial, false %><label for="station_is_economy_industrial_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Is Economy Military?</td>
+        <td><%= f.radio_button :is_economy_military, true %><label for="station_is_economy_military_true">yes</label>
+    <%= f.radio_button :is_economy_military, false %><label for="station_is_economy_military_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Is Economy None?</td>
+        <td><%= f.radio_button :is_economy_none, true %><label for="station_is_economy_none_true">yes</label>
+    <%= f.radio_button :is_economy_none, false %><label for="station_is_economy_none_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Is Economy Refinery?</td>
+        <td><%= f.radio_button :is_economy_refinery, true %><label for="station_is_economy_refinery_true">yes</label>
+    <%= f.radio_button :is_economy_refinery, false %><label for="station_is_economy_refinery_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Is Economy Service?</td>
+        <td><%= f.radio_button :is_economy_service, true %><label for="station_is_economy_service_true">yes</label>
+    <%= f.radio_button :is_economy_service, false %><label for="station_is_economy_service_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Is Economy Terraforming?</td>
+        <td><%= f.radio_button :is_economy_terraforming, true %><label for="station_is_economy_terraforming_true">yes</label>
+    <%= f.radio_button :is_economy_terraforming, false %><label for="station_is_economy_terraforming_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Is Economy Tourism?</td>
+        <td><%= f.radio_button :is_economy_tourism, true %><label for="station_is_economy_tourism_true">yes</label>
+    <%= f.radio_button :is_economy_tourism, false %><label for="station_is_economy_tourism_false">no</label></td>
+      </tr>
+    </body>
+  </table>
 
   <p>
     <%= f.submit %>

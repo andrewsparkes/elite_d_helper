@@ -181,16 +181,6 @@ notes
 
 # =====
 
-# add 'unknown' data value to allegiance table
-
-# link systems to allegiances in model
-# link stations to allegiances in model
-
-# change all references to alliances model, view, controller to allegiances
-# remove alliances model, controller, views, tests
-
-
-
 # Add data controller to allow adding/updating systems in radius around system_name
 # inputs: system name, radius, api ver
 

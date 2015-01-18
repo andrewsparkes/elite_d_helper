@@ -1,9 +1,62 @@
 <h1>System:&nbsp;:&nbsp;<%= @system.name %></h1>
-<h3><%= @system.allegiance.name %></h3>
+<p style="padding-left:20px">
+<strong>Allegiance:</strong>&nbsp;&nbsp;<%= @system.allegiance.name %><br />
+<strong>Government:</strong>&nbsp;&nbsp;<%= @system.government.name %><br />
+<strong>EDS id:</strong>&nbsp;&nbsp;<%= @system.eds_id %><br />
+<strong>Coordinates:</strong>&nbsp;&nbsp;<%= @system.x %>&nbsp;:&nbsp;<%= @system.y %>&nbsp;:&nbsp;<%= @system.z %><br />
 
-<br>
+<!-- form to update coordinates from EDS -->
+<%= form_tag(:controller => :systems, :action => :fetch_eds_coordinates, method: "get") do %>
+  <%= label_tag(:fetch_eds_coordinates_text, "Fetch the EDS coordinates for this system") %>
+  <%= hidden_field_tag 'id', @system.id %>
+  <%= submit_tag("Fetch coordinates") %>
+<% end %>
+
+</p>
+<h2>Stations</h2>
+<% @system.stations.each do |station| %>
+<h3><%= link_to station.name, station_path(station) %></h3>
+<p style="padding-left:20px">
+<strong>Distance from nav:</strong>&nbsp;&nbsp;<%= station.nav_ls %>&nbsp;ls<br />
+<strong>Station Type :</strong>&nbsp;&nbsp;<%= station.station_type.name %><br />
+<strong>Landing Pads:</strong>&nbsp;&nbsp;
+<% if station.station_type.has_large_dock then %>
+	Small, Medium and Large<br />
+<% elsif station.station_type.has_medium_dock then %>
+	Small and Medium<br />
+<% else %>
+	Small only<br />
+<% end %>
+<strong>Government:</strong>&nbsp;&nbsp;<%= station.government.name %><br />
+<strong>Population Level:</strong>&nbsp;&nbsp;<%= station.population_level.name %><br />
+<% econ_array = [] %>
+<% econ_array.push("Agricultural") if station.is_economy_agricultural %>
+<% econ_array.push("Exraction") if station.is_economy_extraction %>
+<% econ_array.push("Hi tech") if station.is_economy_hi_tech %>
+<% econ_array.push("Industrial") if station.is_economy_industrial %>
+<% econ_array.push("Military") if station.is_economy_military %>
+<% econ_array.push("None") if station.is_economy_none %>
+<% econ_array.push("Refinery") if station.is_economy_refinery %>
+<% econ_array.push("Service") if station.is_economy_service %>
+<% econ_array.push("Tourism") if station.is_economy_tourism %>
+<strong>Economies:</strong>&nbsp;&nbsp;<%= econ_array.join(', ') %><br />
+<% serv_array = [] %>
+<% serv_array.push("Commodities") if station.has_commodities %>
+<% serv_array.push("Refueling") if station.has_refuel %>
+<% serv_array.push("Repairing") if station.has_repair %>
+<% serv_array.push("Re-Arming") if station.has_re_arm %>
+<% serv_array.push("Outfitting") if station.has_outfitting %>
+<% serv_array.push("Shipyard") if station.has_shipyard %>
+<% serv_array.push("Black Market") if station.has_blackmarket %>
+<strong>Services:</strong>&nbsp;&nbsp;<%= serv_array.join(', ') %><br />
+</p>
+<% end %>
+
+<br />
 <%= link_to 'Edit this System', edit_system_path(@system) %>
-<br>
+<br />
+<%= link_to 'Add a new Station', new_station_path %><br />
+<br />
 <%= link_to 'View all Systems', systems_path %>
-<br>
+<br />
 <%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

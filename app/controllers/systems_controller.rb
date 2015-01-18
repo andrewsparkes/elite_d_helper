@@ -42,6 +42,16 @@ class SystemsController < ApplicationController
 		@systems = System.all
 	end
 
+	def fetch_eds_coordinates
+		puts "In fetch EDS coords id = #{params[:id]}"
+		@system = System.find(params[:id])
+
+		# call method to link to EDS here
+		@system.update_eds_coordinates
+
+	    redirect_to @system
+	end
+
 	private
 		def system_params
 			params.require(:system).permit(:allegiance_id,:name)

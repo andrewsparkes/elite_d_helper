@@ -15,6 +15,10 @@
   </p>
 
   <p>
+    <%= f.label :governments %><%= f.collection_select :government_id, Government.all.order(:name), :id, :name, :prompt => "Select an government" %>
+  </p>
+
+  <p>
     <%= f.label :name %>&nbsp;<%= f.text_field :name %>
   </p>
 

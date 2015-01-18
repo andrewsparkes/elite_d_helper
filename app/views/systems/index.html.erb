@@ -5,6 +5,8 @@
     <tr>
       <th>System Name</th>
       <th>Allegiance</th>
+      <th>Government</th>
+      <th>x:y:z</th>
       <th>Show</th>
       <th>Edit</th>
       <th>Destroy</th>
@@ -14,6 +16,8 @@
       <tr>
         <td><b><%= system.name %></b></td>
         <td><%= system.allegiance.name %></td>
+        <td><%= system.government.name %></td>
+        <td><%= system.x %>&nbsp;:&nbsp;<%= system.y %>&nbsp;:&nbsp;<%= system.z %></td>
         <td><%= link_to 'Show', system_path(system) %></td>
         <td><%= link_to 'Edit', edit_system_path(system) %></td>
         <td><%= link_to 'Destroy', system_path(system),

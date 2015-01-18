@@ -3,6 +3,8 @@ class Station < ActiveRecord::Base
 	belongs_to :system, inverse_of: :stations
 	belongs_to :station_type, inverse_of: :stations
 	belongs_to :allegiance, inverse_of: :stations
+	belongs_to :government, inverse_of: :stations
+	belongs_to :population_level, inverse_of: :stations
 
 	# station commodities
 	has_many :station_commodities, inverse_of: :station
@@ -14,6 +16,9 @@ class Station < ActiveRecord::Base
 	validates :system, presence: true
 	validates :station_type, presence: true
 	validates :allegiance, presence: true
+	validates :government, presence: true
+	validates :population_level, presence: true
+	validates :nav_ls, presence: true, numericality: { only_integer: true }
 
 	validates_inclusion_of :has_commodities, :in => [true, false]
 	validates_inclusion_of :has_refuel, :in => [true, false]
@@ -21,6 +26,18 @@ class Station < ActiveRecord::Base
 	validates_inclusion_of :has_re_arm, :in => [true, false]
 	validates_inclusion_of :has_outfitting, :in => [true, false]
 	validates_inclusion_of :has_shipyard, :in => [true, false]
+	validates_inclusion_of :has_blackmarket, :in => [true, false]
+
+	validates_inclusion_of :is_economy_agricultural, :in => [true, false]
+  	validates_inclusion_of :is_economy_extraction, :in => [true, false]
+  	validates_inclusion_of :is_economy_hi_tech, :in => [true, false]
+  	validates_inclusion_of :is_economy_industrial, :in => [true, false]
+  	validates_inclusion_of :is_economy_military, :in => [true, false]
+  	validates_inclusion_of :is_economy_none, :in => [true, false]
+  	validates_inclusion_of :is_economy_refinery, :in => [true, false]
+  	validates_inclusion_of :is_economy_service, :in => [true, false]
+  	validates_inclusion_of :is_economy_terraforming, :in => [true, false]
+  	validates_inclusion_of :is_economy_tourism, :in => [true, false]
 
 	SQL_SOURCE_SELLS = <<-ENDSQL
 		SELECT commodities.name AS commodity_name,

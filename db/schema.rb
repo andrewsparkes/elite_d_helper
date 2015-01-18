@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150115165150) do
+ActiveRecord::Schema.define(version: 20150118084600) do
 
   create_table "allegiances", force: true do |t|
     t.string   "name"
@@ -34,12 +34,6 @@ ActiveRecord::Schema.define(version: 20150115165150) do
     t.datetime "updated_at"
   end
 
-  create_table "economies", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "governments", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -58,13 +52,6 @@ ActiveRecord::Schema.define(version: 20150115165150) do
     t.string   "demanded_or_supplied"
     t.string   "demand_or_supply_level"
     t.integer  "buy_or_sell_price"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "station_economies", force: true do |t|
-    t.integer  "station_id"
-    t.integer  "economy_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -94,6 +81,17 @@ ActiveRecord::Schema.define(version: 20150115165150) do
     t.integer  "population_level_id"
     t.integer  "government_id"
     t.boolean  "has_blackmarket"
+    t.integer  "nav_ls"
+    t.boolean  "is_economy_agricultural", default: false, null: false
+    t.boolean  "is_economy_extraction",   default: false, null: false
+    t.boolean  "is_economy_hi_tech",      default: false, null: false
+    t.boolean  "is_economy_industrial",   default: false, null: false
+    t.boolean  "is_economy_military",     default: false, null: false
+    t.boolean  "is_economy_none",         default: false, null: false
+    t.boolean  "is_economy_refinery",     default: false, null: false
+    t.boolean  "is_economy_service",      default: false, null: false
+    t.boolean  "is_economy_terraforming", default: false, null: false
+    t.boolean  "is_economy_tourism",      default: false, null: false
   end
 
   create_table "systems", force: true do |t|

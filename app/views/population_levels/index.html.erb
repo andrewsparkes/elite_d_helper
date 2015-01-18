@@ -9,7 +9,7 @@
       <th>Destroy</th>
     </tr>
 
-    <% @allegiances.each do |population_level| %>
+    <% @population_levels.each do |population_level| %>
       <tr>
         <td><%= population_level.name %></td>
         <td><%= link_to 'Show', population_level_path(population_level) %></td>

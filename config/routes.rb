@@ -23,10 +23,6 @@ Rails.application.routes.draw do
     resources :stations
   end
 
-  resources :economies do
-    resources :stations
-  end
-
   resources :governments do
     resources :stations
   end
@@ -56,30 +52,18 @@ Rails.application.routes.draw do
     resources :commodities
   end
 
-  resources :stations do
-    resource :station_commodities
-  end
-
   resources :commodities do
     resource :station_commodities
   end
 
-  resources :station_economies do
-    resources :stations
-    resources :economies
-  end
-
   resources :stations do
-    resource :station_economies
-  end
-
-  resources :economies do
-    resource :station_economies
+    resource :station_commodities
   end
 
   match 'stations/:id/buyers_for_supply' => 'stations#buyers_for_supply', via: [:get, :post]
   match 'stations/who_sells_commodity'   => 'stations#who_sells_commodity', via: [:get, :post]
   match 'stations/trade_routes'          => 'stations#trade_routes', via: [:get, :post]
+  match 'systems/fetch_eds_coordinates'  => 'systems#fetch_eds_coordinates', via: [:get, :post]
 
   # Example resource route with options:
   #   resources :products do

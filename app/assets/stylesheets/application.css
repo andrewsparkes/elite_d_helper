@@ -38,6 +38,7 @@ h1{
     font-family:tekobold;
     font-weight:normal;
     font-size:36pt;
+    color:#ef4023;
 }
 
 h2{
@@ -47,9 +48,17 @@ h2{
     font-family:tekobold;
     font-weight:normal;
     font-size:28pt;
+    color:#ef4023;
 }
 
 h3{
+    font-family:tekobold;
+    margin-bottom:0px;
+    color:#ef4023;
+}
+
+h4{
+    font-family:tekobold;
     margin-bottom:0px;
     color:#ef4023;
 }

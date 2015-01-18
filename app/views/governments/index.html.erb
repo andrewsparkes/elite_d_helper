@@ -1,26 +1,26 @@
-<h1>Listing of All Allegiances</h1>
+<h1>Listing of All Governments</h1>
 
 <table border="1">
   <body>
     <tr>
-      <th>Allegiance Name</th>
+      <th>Government Name</th>
       <th>Show</th>
       <th>Edit</th>
       <th>Destroy</th>
     </tr>
 
-    <% @allegiances.each do |allegiance| %>
+    <% @governments.each do |government| %>
       <tr>
-        <td><%= allegiance.name %></td>
-        <td><%= link_to 'Show', allegiance_path(allegiance) %></td>
-        <td><%= link_to 'Edit', edit_allegiance_path(allegiance) %></td>
-        <td><%= link_to 'Destroy', allegiance_path(allegiance),
+        <td><%= government.name %></td>
+        <td><%= link_to 'Show', government_path(government) %></td>
+        <td><%= link_to 'Edit', edit_government_path(government) %></td>
+        <td><%= link_to 'Destroy', government_path(government),
                     method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </body>
 </table>
 <br>
-<%= link_to 'Add a new Allegiance', new_allegiance_path %>
+<%= link_to 'Add a new Government', new_government_path %>
 <br>
 <%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>
