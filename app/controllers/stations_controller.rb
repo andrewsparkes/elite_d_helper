@@ -63,7 +63,7 @@ class StationsController < ApplicationController
 	end
 
 	def trade_routes
-		@possible_trade_routes = Station.calculate_possible_trade_routes
+		@possible_trade_routes = Station.calculate_all_possible_trade_routes
 
 		render 'trade_routes'
 	end

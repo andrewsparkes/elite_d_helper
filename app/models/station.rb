@@ -39,6 +39,11 @@ class Station < ActiveRecord::Base
   	validates_inclusion_of :is_economy_terraforming, :in => [true, false]
   	validates_inclusion_of :is_economy_tourism, :in => [true, false]
 
+  	# trade route constants
+  	MIN_COMM_VAL        = 200
+	MIN_PROFIT_PER_LEG  = 300
+	MIN_PROFIT_PER_LOOP = 1000
+
 	SQL_SOURCE_SELLS = <<-ENDSQL
 		SELECT commodities.name AS commodity_name,
 		station_commodities.commodity_id,
@@ -147,6 +152,47 @@ class Station < ActiveRecord::Base
 		;
 	ENDSQL
 
+
+	SQL_STATIONS_SUPPLY = <<-ENDSQL
+		SELECT stations.id AS station_id,
+		stations.name AS station_name,
+		commodities.name AS commodity_name,
+		station_commodities.commodity_id,
+		station_commodities.demand_or_supply_level,
+		station_commodities.buy_or_sell_price,
+		commodity_types.name AS commodity_type_name,
+		commodities.commodity_type_id,
+		commodities.galactic_average_price
+		FROM stations
+		JOIN station_commodities ON station_commodities.station_id = stations.id
+		JOIN commodities ON commodities.id = station_commodities.commodity_id
+		JOIN commodity_types ON commodity_types.id = commodities.commodity_type_id
+		WHERE station_commodities.demanded_or_supplied = 'S'
+		AND station_commodities.buy_or_sell_price > ?
+		ORDER BY station_name, commodity_name
+		;
+	ENDSQL
+
+	SQL_STATIONS_DEMAND = <<-ENDSQL
+		SELECT stations.id AS station_id,
+		stations.name AS station_name,
+		commodities.name AS commodity_name,
+		station_commodities.commodity_id,
+		station_commodities.demand_or_supply_level,
+		station_commodities.buy_or_sell_price,
+		commodity_types.name AS commodity_type_name,
+		commodities.commodity_type_id,
+		commodities.galactic_average_price
+		FROM stations
+		JOIN station_commodities ON station_commodities.station_id = stations.id
+		JOIN commodities ON commodities.id = station_commodities.commodity_id
+		JOIN commodity_types ON commodity_types.id = commodities.commodity_type_id
+		WHERE station_commodities.demanded_or_supplied = 'D'
+		AND station_commodities.buy_or_sell_price > ?
+		ORDER BY station_name, commodity_name
+		;
+	ENDSQL
+
 	def buyers_for_supply
 		station_id = id
 
@@ -242,12 +288,16 @@ class Station < ActiveRecord::Base
 		return display_array
 	end
 
-	def self.calculate_possible_trade_routes
+	def self.calculate_all_possible_trade_routes
 		# Inputs:
 		# Min value commodity (default 100) MIN_COMM_VAL
 		# Profit threshold per leg MIN_PROFIT_PER_LEG
 		# Profit threshold per loop MIN_PROFIT_PER_LOOP
 		# (station LS from jump-in)
+
+		min_comm_val = MIN_COMM_VAL
+		puts "min_comm_val = #{min_comm_val}"
+
 
 		# --
 
@@ -255,9 +305,34 @@ class Station < ActiveRecord::Base
 
 		# SQL : select stations, commodities, commodity_type and sell price where demand_or_sell 'S' and sell_price > MIN_COMM_VAL
 
+		stations = {}
+
+		sql_stations_supply = ActiveRecord::Base.send(:sanitize_sql_array, [SQL_STATIONS_SUPPLY, MIN_COMM_VAL])
+		stations_supply_results = ActiveRecord::Base.connection.execute(sql_stations_supply)
+
+		stations_supply_results.each do |supply_row|
+
+			curr_station_name   = supply_row['station_name']
+			curr_commodity_name = supply_row['commodity_name']
+			cur_price           = supply_row['buy_or_sell_price']
+
+			unless stations.has_key?(curr_station_name)
+				stations[curr_station_name] = {
+					'supplies_commodities' => {}
+				}
+			end
+
+			stations[curr_station_name]['supplies_commodities'][curr_commodity_name] = {
+				'price' => cur_price
+			}
+
+		end
+
+
+
 		# data structure:
 
-		# stations { station_name { sells_commodities { commodity_name { price }}}}
+		# stations { station_name { supplies_commodities { commodity_name { price }}}}
 
 		# --
 
@@ -265,40 +340,91 @@ class Station < ActiveRecord::Base
 
 		# SQL : select stations, commodities, commodity_type and buy price where demand_or_sell 'D' and buy_price > MIN_COMM_VAL
 
+		sql_stations_demand = ActiveRecord::Base.send(:sanitize_sql_array, [SQL_STATIONS_DEMAND, MIN_COMM_VAL])
+		stations_demand_results = ActiveRecord::Base.connection.execute(sql_stations_demand)
+
+		stations_demand_results.each do |demand_row|
+
+			curr_station_name   = demand_row['station_name']
+			curr_commodity_name = demand_row['commodity_name']
+			cur_price           = demand_row['buy_or_sell_price']
+
+			unless stations.has_key?(curr_station_name)
+				stations[curr_station_name] = {}
+			end
+
+			unless stations[curr_station_name].has_key?('demands_commodities')
+				stations[curr_station_name]['demands_commodities'] = {}
+			end
+
+			stations[curr_station_name]['demands_commodities'][curr_commodity_name] = {
+				'price' => cur_price
+			}
+
+		end
+
 		# data structure:
 
-		# stations { station_name { 'buys_commodities' { commodity_name { 'price' => price }}}}
+		# stations { station_name { 'demands_commodities' { commodity_name { 'price' => price }}}}
 
 		# --
+
+		require 'pp'
+		pp stations
 
 		# so now have:
-		# stations { station_name { 'sells_commodities' { commodity_name { 'price' => price }}, 'buys_commodities' { commodity_name { 'price' => price }}}}
+		# stations { station_name { 'supplies_commodities' { commodity_name { 'price' => price }}, 'demands_commodities' { commodity_name { 'price' => price }}}}
 
 		# --
 
-		# trade_legs = {}
+		trade_legs = {}
 
 		# get array sorted keys in stations
+		stations_keys = stations.keys.sort
 
-		# stations_array.each do |curr_seller_station|
-		#     next unless stations[curr_seller_station][sells_commodities]
-		#     get array_sell_commodities by sorted keys in stations[curr_seller_station][sells_commodities]
-		#     array_sell_commodities.each do |curr_seller_commodity|
-		#         # find any buyers
-		#         stations_array.each do |curr_buyer_station|
-		#             ignore if no stations[curr_buyer_station][buys_commodities]
-		#             if exists stations[curr_buyer_station][buys_commodities][curr_seller_commodity]
-		#                 # calculate potential profit
-		#                 profit = stations[curr_buyer_station][buys_commodities][curr_seller_commodity][price] - stations[curr_seller_station][sells_commodities][curr_seller_commodity][price]
-		#                 if profit > MIN_PROFIT_PER_LEG
-		#                     # store potential trade leg
-		#                     # station_from, buy_price, station_to, sell_price, commodity, profit
-		#                     trade_legs[station_from][commodity][station_to] = { 'profit' => profit }
-		#                 end
-		#             end
-		#         end
-		#     end
-		# end
+		puts "station keys:"
+		puts stations_keys
+
+		stations_keys.each do |curr_seller_station|
+
+		    unless stations[curr_seller_station].has_key?('supplies_commodities')
+		    	puts "skipping station #{curr_seller_station} as does not supply anything"
+		    	next
+		    end
+
+		    curr_sell_commodities_keys = stations[curr_seller_station]['supplies_commodities'].keys.sort
+
+		    puts "curr_sell_commodities_keys:"
+			puts curr_sell_commodities_keys
+
+		    # get array_sell_commodities by sorted keys in stations[curr_seller_station]['supplies_commodities']
+
+		    curr_sell_commodities_keys.each do |curr_seller_commodity|
+
+		    	puts "Station #{curr_seller_station} supplies commodity : #{curr_seller_commodity}"
+		    #     # find any buyers
+		    	stations_keys.each do |curr_buyer_station|
+
+		    		puts "Checking if station #{curr_buyer_station} demands #{curr_seller_commodity}"
+
+		    #         ignore if no stations[curr_buyer_station]['demands_commodities']
+		    		unless stations[curr_buyer_station].has_key?('demands_commodities')
+				    	puts "skipping station #{curr_buyer_station} as does not demand anything"
+				    	next
+				    end
+		        	if stations[curr_buyer_station]['demands_commodities'].has_key?(curr_seller_commodity)
+		        		puts "Station #{curr_buyer_station} does buy #{curr_seller_commodity}"
+		    #             # calculate potential profit
+		    #             profit = stations[curr_buyer_station]['demands_commodities'][curr_seller_commodity][price] - stations[curr_seller_station]['supplies_commodities'][curr_seller_commodity][price]
+		    #             if profit > MIN_PROFIT_PER_LEG
+		    #                 # store potential trade leg
+		    #                 # station_from, buy_price, station_to, sell_price, commodity, profit
+		    #                 trade_legs[station_from][commodity][station_to] = { 'profit' => profit }
+		    #             end
+		            end
+		        end
+		    end
+		end
 
 		# --
 
@@ -394,9 +520,9 @@ class Station < ActiveRecord::Base
 
 
 
+		display_array = []
 
-
-		display_array = self.calculate_all_trade_routes
+		# display_array = self.calculate_all_trade_routes
 
 		return display_array
 	end

@@ -22,28 +22,54 @@ class System < ActiveRecord::Base
 
 		uri = URI.parse('http://edstarcoordinator.com/api.asmx/GetSystems')
 		# uri = URI('http://edstarcoordinator.com/api.asmx/GetSystems')
+		# uri = URI('http://www.example.com/todo.cgi')
+
+		# uri = URI.parse('http://www.edstarcoordinator.com/api.asmx/GetSystems')
+
+		# http = Net::HTTP.new(uri.host,uri.port)
+		# https.use_ssl = true
 
 		data = {
-			'ver' => 2,
-			'test' => true,
-			'outputmode' => 1,
-			'filter' => {
-				'knownstatus' => 1,
-				'systemname' => name,
-				'cr' => 5,
-				'coordcube' => [[-0,0],[-0,0],[-0,0]]
+			'data' => {
+				'ver' => 2,
+				'test' => true,
+				'outputmode' => 1,
+				'filter' => {
+					'knownstatus' => 1,
+					'systemname' => name,
+					'cr' => 5,
+					'coordcube' => [[-0,0],[-0,0],[-0,0]]
+				}
 			}
 		}
 
 		puts data
 
-		req = Net::HTTP::Post.new(uri.path)
-		req.set_form_data(data)
-		req.content_type = 'application/json; charset=utf-8'
+		# uri = URI.parse("http://www.edstarcoordinator.com/api.asmx/GetSystems?#{data.to_json}&content=application/json; charset=utf-8")
 
-		response = Net::HTTP.start(uri.hostname, uri.port) do |http|
-		  http.request(req)
+		http = Net::HTTP.new(uri.host,uri.port)
+
+		# url_string = "?data=#{data.to_json}&content=application/json; charset=utf-8"
+		# puts "url string:"
+		# puts url_string
+
+		puts "uri path:"
+		puts uri.path
+		pp uri
+
+		request = Net::HTTP::Post.new(uri.path)
+		# request.type = 'json'
+		request.set_form_data(data)
+		# request.content_type = 'application/json; charset=utf-8'
+
+		response = Net::HTTP.start(uri.host, uri.port) do |http|
+		  http.request(request)
 		end
+
+		# pp request
+
+		# response = http.request(request)
+		# pp response
 
 		case response
 			when Net::HTTPSuccess, Net::HTTPRedirection
@@ -53,14 +79,17 @@ class System < ActiveRecord::Base
 		end
 
 
-# uri = URI('http://www.example.com/todo.cgi')
-# req = Net::HTTP::Post.new(uri.path)
-# req.set_form_data('from' => '2005-01-01', 'to' => '2005-03-31')
-# req.content_type =
-# res = Net::HTTP.start(uri.hostname, uri.port) do |http|
-#   http.request(req)
-# end
 
+
+
+
+# url = URI.parse('http://www.edstarcoordinator.com/api.asmx/GetSystems')
+# req = Net::HTTP::Post.new(url.to_s)
+
+# res = Net::HTTP.start(url.host, url.port) {|http|
+#   http.request(req)
+# }
+# puts res.body
 
 
 # function getSystemData(){
