@@ -63,7 +63,8 @@ class StationsController < ApplicationController
 	end
 
 	def trade_routes
-		@possible_trade_routes = Station.calculate_all_possible_trade_routes
+		avail_cargo_space = params[:cargo_space]
+		@possible_trade_routes = Station.calculate_all_possible_trade_routes(avail_cargo_space)
 
 		render 'trade_routes'
 	end

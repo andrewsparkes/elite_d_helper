@@ -41,8 +41,8 @@ class Station < ActiveRecord::Base
 
   	# trade route constants
   	MIN_COMM_VAL        = 200
-	MIN_PROFIT_PER_LEG  = 300
-	MIN_PROFIT_PER_LOOP = 1000
+	MIN_PROFIT_PER_LEG  = 400
+	MIN_PROFIT_PER_LOOP = 1600
 
 	SQL_SOURCE_SELLS = <<-ENDSQL
 		SELECT commodities.name AS commodity_name,
@@ -288,188 +288,224 @@ class Station < ActiveRecord::Base
 		return display_array
 	end
 
-	def self.calculate_all_possible_trade_routes
+	def self.calculate_all_possible_trade_routes(avail_cargo_space)
 		# Inputs:
 		# Min value commodity (default 100) MIN_COMM_VAL
 		# Profit threshold per leg MIN_PROFIT_PER_LEG
 		# Profit threshold per loop MIN_PROFIT_PER_LOOP
 		# (station LS from jump-in)
 
+		puts "avail_cargo_space = #{avail_cargo_space}"
+
 		min_comm_val = MIN_COMM_VAL
 		puts "min_comm_val = #{min_comm_val}"
 
+		min_profit_per_leg = MIN_PROFIT_PER_LEG
+		puts "min_profit_per_leg = #{min_profit_per_leg}"
 
-		# --
-
-		# stations sell commodities at price x
-
-		# SQL : select stations, commodities, commodity_type and sell price where demand_or_sell 'S' and sell_price > MIN_COMM_VAL
+		min_profit_per_loop = MIN_PROFIT_PER_LOOP
+		puts "min_profit_per_loop = #{min_profit_per_loop}"
 
 		stations = {}
 
-		sql_stations_supply = ActiveRecord::Base.send(:sanitize_sql_array, [SQL_STATIONS_SUPPLY, MIN_COMM_VAL])
-		stations_supply_results = ActiveRecord::Base.connection.execute(sql_stations_supply)
+		# add supplier stations and commodities
+		stations = find_supplier_station_commodities(stations, min_comm_val)
 
-		stations_supply_results.each do |supply_row|
-
-			curr_station_name   = supply_row['station_name']
-			curr_commodity_name = supply_row['commodity_name']
-			cur_price           = supply_row['buy_or_sell_price']
-
-			unless stations.has_key?(curr_station_name)
-				stations[curr_station_name] = {
-					'supplies_commodities' => {}
-				}
-			end
-
-			stations[curr_station_name]['supplies_commodities'][curr_commodity_name] = {
-				'price' => cur_price
-			}
-
-		end
-
-
-
-		# data structure:
-
-		# stations { station_name { supplies_commodities { commodity_name { price }}}}
-
-		# --
-
-		# stations buy commodities at price y
-
-		# SQL : select stations, commodities, commodity_type and buy price where demand_or_sell 'D' and buy_price > MIN_COMM_VAL
-
-		sql_stations_demand = ActiveRecord::Base.send(:sanitize_sql_array, [SQL_STATIONS_DEMAND, MIN_COMM_VAL])
-		stations_demand_results = ActiveRecord::Base.connection.execute(sql_stations_demand)
-
-		stations_demand_results.each do |demand_row|
-
-			curr_station_name   = demand_row['station_name']
-			curr_commodity_name = demand_row['commodity_name']
-			cur_price           = demand_row['buy_or_sell_price']
-
-			unless stations.has_key?(curr_station_name)
-				stations[curr_station_name] = {}
-			end
-
-			unless stations[curr_station_name].has_key?('demands_commodities')
-				stations[curr_station_name]['demands_commodities'] = {}
-			end
-
-			stations[curr_station_name]['demands_commodities'][curr_commodity_name] = {
-				'price' => cur_price
-			}
-
-		end
-
-		# data structure:
-
-		# stations { station_name { 'demands_commodities' { commodity_name { 'price' => price }}}}
-
-		# --
+		# add buyer stations and commodities
+		stations = find_buyer_station_commodities(stations, min_comm_val)
 
 		require 'pp'
-		pp stations
+		# pp stations
 
-		# so now have:
-		# stations { station_name { 'supplies_commodities' { commodity_name { 'price' => price }}, 'demands_commodities' { commodity_name { 'price' => price }}}}
+		seller_trade_legs = calculate_trade_legs(stations, min_profit_per_leg, avail_cargo_space)
 
-		# --
+		# puts "Seller trade legs:"
+		# pp seller_trade_legs
 
-		trade_legs = {}
+		# # so now have hash of trade legs as below, and need to match them up
 
-		# get array sorted keys in stations
-		stations_keys = stations.keys.sort
-
-		puts "station keys:"
-		puts stations_keys
-
-		stations_keys.each do |curr_seller_station|
-
-		    unless stations[curr_seller_station].has_key?('supplies_commodities')
-		    	puts "skipping station #{curr_seller_station} as does not supply anything"
-		    	next
-		    end
-
-		    curr_sell_commodities_keys = stations[curr_seller_station]['supplies_commodities'].keys.sort
-
-		    puts "curr_sell_commodities_keys:"
-			puts curr_sell_commodities_keys
-
-		    # get array_sell_commodities by sorted keys in stations[curr_seller_station]['supplies_commodities']
-
-		    curr_sell_commodities_keys.each do |curr_seller_commodity|
-
-		    	puts "Station #{curr_seller_station} supplies commodity : #{curr_seller_commodity}"
-		    #     # find any buyers
-		    	stations_keys.each do |curr_buyer_station|
-
-		    		puts "Checking if station #{curr_buyer_station} demands #{curr_seller_commodity}"
-
-		    #         ignore if no stations[curr_buyer_station]['demands_commodities']
-		    		unless stations[curr_buyer_station].has_key?('demands_commodities')
-				    	puts "skipping station #{curr_buyer_station} as does not demand anything"
-				    	next
-				    end
-		        	if stations[curr_buyer_station]['demands_commodities'].has_key?(curr_seller_commodity)
-		        		puts "Station #{curr_buyer_station} does buy #{curr_seller_commodity}"
-		    #             # calculate potential profit
-		    #             profit = stations[curr_buyer_station]['demands_commodities'][curr_seller_commodity][price] - stations[curr_seller_station]['supplies_commodities'][curr_seller_commodity][price]
-		    #             if profit > MIN_PROFIT_PER_LEG
-		    #                 # store potential trade leg
-		    #                 # station_from, buy_price, station_to, sell_price, commodity, profit
-		    #                 trade_legs[station_from][commodity][station_to] = { 'profit' => profit }
-		    #             end
-		            end
-		        end
-		    end
-		end
-
-		# --
-
-		# # so now have hash of trade legs, and need to match them up
-
-		# trade_legs {
+		# seller_trade_legs {
 		#     Leesti {
 		#         Progenitor Cells {
-		#             HIP 65636 {
-		#                 profit = 973
+		# 			  seller_price = 567,
+		#             buyer_stations = {
+		#                 HIP 65636 {
+		#				      buyer_price = 1536,
+		#                     profit = 973
+		#                 }
 		#             }
 		#         }
 		#     },
 		#     HIP 65636 {
 		#         Palladium {
-		#             Leesti {
-		#                 profit = 1512
+		# 			  seller_price = 12356,
+ 		#             buyer_stations = {
+		#                 Leesti {
+		#				      buyer_price = 14036,
+		#                     profit = 1512
+		#                 }
 		#             }
 		#         }
 		#     }
 		# }
 
-		# --
+		# now we have individual trade legs we can look for simple 2-station loops
+		two_station_trade_routes = {}
+		puts "in two station trade routes calc"
 
-		# trade_routes = {}
+		out_station_keys = seller_trade_legs.keys.sort
+		out_station_keys.each do |curr_out_station|
+			puts "out station = #{curr_out_station}"
 
-		# array_starting_stations = sorted keys trade_legs
-		# array_starting_stations.each do |curr_starting_station|
+		    out_station_commodities_keys = seller_trade_legs[curr_out_station].keys.sort
+		    out_station_commodities_keys.each do |curr_out_commodity|
+		    	puts "out commodity = #{curr_out_commodity}"
 
-		#     array_starting_station_commodities = sorted keys trade_legs[curr_starting_station]
-		#     array_starting_station_commodities.each do |curr_commodity|
+		    	back_station_keys = seller_trade_legs[curr_out_station][curr_out_commodity]['buyer_stations'].keys.sort
+		    	back_station_keys.each do |curr_back_station|
+		    		puts "checking back station = #{curr_back_station}"
 
-		#         array_ending_stations = sorted_keys trade_legs[curr_starting_station]|curr_commodity|
-		#         array_ending_stations.each do |curr_ending_station|
+		    		next unless seller_trade_legs.has_key?(curr_back_station)
 
-		#             # no search for trade leg from this ending station with any commodity to station matching the curr_starting_station
-		#             # if we find one we have a trade loop
-		#             # calculate loop profit
-		#             # if loop profit > MIN_PROFIT_PER_LOOP
-		#                   # add the trade loop to a hash (unless reverse loop is already present!)
+		    		puts "found trade legs for back station = #{curr_back_station}"
 
-		#         end
-		#     end
-		# end
+		    		back_station_commodities_keys = seller_trade_legs[curr_back_station].keys.sort
+		    		back_station_commodities_keys.each do |curr_back_commodity|
+		    			puts "checking back commodity = #{curr_back_commodity}"
 
+		    			unless seller_trade_legs[curr_back_station][curr_back_commodity].has_key?('buyer_stations')
+		    				puts "no buyer stations"
+		    				next
+		    			end
+
+		    			# check if station sells anything back to original out station
+		    			unless seller_trade_legs[curr_back_station][curr_back_commodity]['buyer_stations'].has_key?(curr_out_station)
+		    				puts "no return trip to original station found"
+		    				next
+		    			end
+
+		    			puts "back station = #{curr_back_station} sells commodity = #{curr_back_commodity} back to out station = #{curr_out_station}"
+
+		    			out_leg_profit    = seller_trade_legs[curr_out_station][curr_out_commodity]['buyer_stations'][curr_back_station]['profit']
+		    			back_leg_profit   = seller_trade_legs[curr_back_station][curr_back_commodity]['buyer_stations'][curr_out_station]['profit']
+
+		    			puts "out_leg_profit  = #{out_leg_profit}"
+		    			puts "back_leg_profit = #{back_leg_profit}"
+
+		    			loop_total_profit = out_leg_profit + back_leg_profit
+
+		    			puts "loop_total_profit = #{loop_total_profit}"
+
+		    			if loop_total_profit > min_profit_per_loop
+		    				puts "found trade loop between out station #{curr_out_station} commodity #{curr_out_commodity} and back station #{curr_back_station} commodity #{curr_back_commodity} for total profit #{loop_total_profit}"
+
+		    				# now we need a hash structure that removes duplication of routes
+		    				# maybe order alphabetically?
+
+		    				temp_hash = {
+		    					'stations' => {
+			    					curr_out_station => {
+			    						'commodity' => curr_out_commodity,
+		    							'leg_profit' => out_leg_profit
+			    					},
+			    					curr_back_station => {
+			    						'commodity' => curr_back_commodity,
+		    							'leg_profit' => back_leg_profit
+			    					}
+			    				}
+		    				}
+
+		    				temp_hash_station_keys  = temp_hash['stations'].keys.sort
+		    				from_station            = temp_hash_station_keys[0]
+		    				to_station              = temp_hash_station_keys[1]
+
+		    				from_station_hash       = temp_hash['stations'][from_station]
+		    				to_station_hash         = temp_hash['stations'][to_station]
+
+		    				# need to check if this combination already exists
+		    				unless two_station_trade_routes.has_key?(from_station)
+		    					two_station_trade_routes[from_station] = {
+		    						# nav_ls => ?,
+		    					}
+		    				end
+
+		    				unless two_station_trade_routes[from_station].has_key?(to_station)
+		    					two_station_trade_routes[from_station][to_station] = {
+		    						# nav_ls => ?,
+		    					}
+		    				end
+
+		    				from_commodity = from_station_hash['commodity']
+
+		    				unless two_station_trade_routes[from_station][to_station].has_key?(from_commodity)
+		    					two_station_trade_routes[from_station][to_station][from_commodity] = {
+		    						# 'leg_profit' => from_station_hash['leg_profit'],
+		    					}
+		    				end
+
+		    				to_commodity = to_station_hash['commodity']
+
+		    				unless two_station_trade_routes[from_station][to_station][from_commodity].has_key?(to_commodity)
+		    					two_station_trade_routes[from_station][to_station][from_commodity][to_commodity] = {
+		    						# 'leg_profit' => from_station_hash['leg_profit'],
+		    						# 'distance_ly' => Station.calculate_distance_between_stations(from_station, to_station),
+		    						'loop_total_profit' => loop_total_profit
+		    					}
+		    				end
+
+# trade_loops {
+		#     Leesti {
+		#         HIP 65636 {
+		#             Progenitor Cells {
+		#                 Palladium {
+		#                     profit = 2512
+		#                 },
+		#                 Gold {
+		#                     profit = 2314
+		#                 }
+		#             },
+		#             Consumer Tech {
+		#                 Palladium {
+		#                     profit = 2437
+		#                 },
+		#                 Gold {
+		#                     profit = 2261
+		#                 }
+		#             }
+		#         }
+		#     }
+		# }
+		    			end
+
+					end
+
+		        end
+		    end
+		end
+
+		puts "===================================="
+		puts "trade routes:"
+		pp two_station_trade_routes
+		puts "===================================="
+
+		# trade_loops {
+		#   	route_key {
+		# 		stations {
+		# 			out_station {
+		# 				out_commodity,
+		# 				nav_ls,
+		# 				leg_profit
+		# 			},
+		# 			back_station {
+		# 				back_commodity,
+		# 				nav_ls,
+		# 				leg_profit
+		# 			}
+		# 		}
+		# 		loop_profit = 123,
+		# 		distance_ly = 13.20
+		#   	},
+		# }
 
 
 		# trade_loops {
@@ -477,7 +513,7 @@ class Station < ActiveRecord::Base
 		#         to_station {
 		#             from_commodity {
 		#                 to_commodity {
-		#                     profit
+		#                     loop_profit
 		#                 }
 		#             }
 		#         }
@@ -522,8 +558,138 @@ class Station < ActiveRecord::Base
 
 		display_array = []
 
-		# display_array = self.calculate_all_trade_routes
+		route_keys = two_station_trade_routes.keys.sort
+		route_keys.each do |route|
+			display_array.push(route)
+		end
+
+		puts "===================================="
+		puts "array routes:"
+		pp display_array
+		puts "===================================="
 
 		return display_array
 	end
+
+	private
+		def self.find_supplier_station_commodities(stations, min_comm_val)
+			# add supplier stations and commodities
+			sql_stations_supply = ActiveRecord::Base.send(:sanitize_sql_array, [SQL_STATIONS_SUPPLY, min_comm_val])
+			stations_supply_results = ActiveRecord::Base.connection.execute(sql_stations_supply)
+
+			stations_supply_results.each do |supply_row|
+
+				curr_station_name   = supply_row['station_name']
+				curr_commodity_name = supply_row['commodity_name']
+				cur_price           = supply_row['buy_or_sell_price']
+
+				unless stations.has_key?(curr_station_name)
+					stations[curr_station_name] = {
+						'supplies_commodities' => {}
+					}
+				end
+
+				stations[curr_station_name]['supplies_commodities'][curr_commodity_name] = {
+					'price' => cur_price
+				}
+
+			end
+
+			return stations
+		end
+
+		def self.find_buyer_station_commodities(stations, min_comm_val)
+
+			sql_stations_demand = ActiveRecord::Base.send(:sanitize_sql_array, [SQL_STATIONS_DEMAND, min_comm_val])
+			stations_demand_results = ActiveRecord::Base.connection.execute(sql_stations_demand)
+
+			stations_demand_results.each do |demand_row|
+
+				curr_station_name   = demand_row['station_name']
+				curr_commodity_name = demand_row['commodity_name']
+				cur_price           = demand_row['buy_or_sell_price']
+
+				unless stations.has_key?(curr_station_name)
+					stations[curr_station_name] = {}
+				end
+
+				unless stations[curr_station_name].has_key?('demands_commodities')
+					stations[curr_station_name]['demands_commodities'] = {}
+				end
+
+				stations[curr_station_name]['demands_commodities'][curr_commodity_name] = {
+					'price' => cur_price
+				}
+
+			end
+
+			return stations
+		end
+
+		def self.calculate_trade_legs(stations, min_profit_per_leg, avail_cargo_space)
+			seller_trade_legs = {}
+
+			# get array sorted keys in stations
+			stations_keys = stations.keys.sort
+
+			puts "station keys:"
+			puts stations_keys
+
+			stations_keys.each do |curr_seller_station|
+
+			    unless stations[curr_seller_station].has_key?('supplies_commodities')
+			    	puts "skipping station #{curr_seller_station} as does not supply anything"
+			    	next
+			    end
+
+				# cycle commodities looking for stations with demand
+			    curr_sell_commodities_keys = stations[curr_seller_station]['supplies_commodities'].keys.sort
+			    curr_sell_commodities_keys.each do |curr_seller_commodity|
+			    	seller_commodity_price = stations[curr_seller_station]['supplies_commodities'][curr_seller_commodity]['price']
+
+			    	puts "Station #{curr_seller_station} supplies commodity : #{curr_seller_commodity} at price #{seller_commodity_price}"
+			        # find any buyer stations
+			    	stations_keys.each do |curr_buyer_station|
+
+			    		puts "Checking if station #{curr_buyer_station} demands #{curr_seller_commodity}"
+
+			            # ignore if no stations[curr_buyer_station]['demands_commodities']
+			    		unless stations[curr_buyer_station].has_key?('demands_commodities')
+					    	puts "skipping station #{curr_buyer_station} as does not demand anything"
+					    	next
+					    end
+			        	if stations[curr_buyer_station]['demands_commodities'].has_key?(curr_seller_commodity)
+			        		puts "Station #{curr_buyer_station} does buy #{curr_seller_commodity}, checking profit"
+			                # calculate potential profit
+			                buyer_commodity_price = stations[curr_buyer_station]['demands_commodities'][curr_seller_commodity]['price']
+			                profit = buyer_commodity_price - seller_commodity_price
+			                puts "profit = #{profit} cr"
+			                if profit > min_profit_per_leg
+			                	puts "storing trade leg"
+			                    # store potential trade leg
+			                    unless seller_trade_legs.has_key?(curr_seller_station)
+									seller_trade_legs[curr_seller_station] = {}
+								end
+
+								unless seller_trade_legs[curr_seller_station].has_key?(curr_seller_commodity)
+									seller_trade_legs[curr_seller_station][curr_seller_commodity] = {
+										'seller_price' => seller_commodity_price,
+										'buyer_stations' => {}
+									}
+								end
+
+								seller_trade_legs[curr_seller_station][curr_seller_commodity]['buyer_stations'][curr_buyer_station] = {
+									'buyer_price' => buyer_commodity_price,
+									'profit' => profit
+								}
+			                end
+			            end
+			        end
+			    end
+			end
+
+			return seller_trade_legs
+		end
+
+
 end
