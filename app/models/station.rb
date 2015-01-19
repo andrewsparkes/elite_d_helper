@@ -483,10 +483,10 @@ class Station < ActiveRecord::Base
 		    end
 		end
 
-		puts "===================================="
-		puts "trade routes:"
-		pp two_station_trade_routes
-		puts "===================================="
+		# puts "===================================="
+		# puts "trade routes:"
+		# pp two_station_trade_routes
+		# puts "===================================="
 
 		# trade_loops {
 		#   	route_key {
@@ -508,42 +508,6 @@ class Station < ActiveRecord::Base
 		# }
 
 
-		# trade_loops {
-		#     from_station {
-		#         to_station {
-		#             from_commodity {
-		#                 to_commodity {
-		#                     loop_profit
-		#                 }
-		#             }
-		#         }
-		#     }
-		# }
-
-		# e.g
-		# trade_loops {
-		#     Leesti {
-		#         HIP 65636 {
-		#             Progenitor Cells {
-		#                 Palladium {
-		#                     profit = 2512
-		#                 },
-		#                 Gold {
-		#                     profit = 2314
-		#                 }
-		#             },
-		#             Consumer Tech {
-		#                 Palladium {
-		#                     profit = 2437
-		#                 },
-		#                 Gold {
-		#                     profit = 2261
-		#                 }
-		#             }
-		#         }
-		#     }
-		# }
-
 		# # need to order output by profit then out commodity then back commodity
 		# # could store in table with composite key of from_station, to_station, from_commodity, to_commodity with profit as 5th column
 
@@ -559,14 +523,43 @@ class Station < ActiveRecord::Base
 		display_array = []
 
 		route_keys = two_station_trade_routes.keys.sort
-		route_keys.each do |route|
-			display_array.push(route)
+		route_keys.each do |from_station_name|
+			from_station_hash = two_station_trade_routes[from_station_name]
+			from_station_display_hash = {
+				from_station_name => from_station_hash
+			}
+			# need to display in order of profit by to station
+			display_array.push(from_station_display_hash)
 		end
 
 		puts "===================================="
 		puts "array routes:"
 		pp display_array
 		puts "===================================="
+
+		# array routes:
+		# [{"George Lucas"=>
+		#    {"Hartsfield Plant"=>
+		#      {"Advanced Catalysers"=>{"Superconductors"=>{"loop_total_profit"=>1612}}},
+		#     "Khayyam Orbital"=>
+		#      {"Advanced Catalysers"=>
+		#        {"Beryllium"=>{"loop_total_profit"=>2273},
+		#         "Gallium"=>{"loop_total_profit"=>1961},
+		#         "Gold"=>{"loop_total_profit"=>2330},
+		#         "Indium"=>{"loop_total_profit"=>2021},
+		#         "Silver"=>{"loop_total_profit"=>1791},
+		#         "Superconductors"=>{"loop_total_profit"=>1939},
+		#         "Tantalum"=>{"loop_total_profit"=>1695},
+		#         "Uranium"=>{"loop_total_profit"=>1616}},
+		#       "Consumer Technology"=>
+		#        {"Beryllium"=>{"loop_total_profit"=>2301},
+		#         "Gallium"=>{"loop_total_profit"=>1989},
+		#         "Gold"=>{"loop_total_profit"=>2358},
+		#         "Indium"=>{"loop_total_profit"=>2049},
+		#         "Silver"=>{"loop_total_profit"=>1819},
+		#         "Superconductors"=>{"loop_total_profit"=>1967},
+		#         "Tantalum"=>{"loop_total_profit"=>1723},
+		#         "Uranium"=>{"loop_total_profit"=>1644}},
 
 		return display_array
 	end

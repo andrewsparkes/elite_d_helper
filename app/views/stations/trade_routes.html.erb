@@ -5,35 +5,76 @@
 	Cargo space available : <%= cargo_space_avail %>
 </p>
 
+<!-- {"George Lucas"=>
+  {"Hartsfield Plant"=>
+    {"Advanced Catalysers"=>{"Superconductors"=>{"loop_total_profit"=>1612}}},
+   "Khayyam Orbital"=>
+    {"Advanced Catalysers"=>
+      {"Beryllium"=>{"loop_total_profit"=>2273},
+       "Gallium"=>{"loop_total_profit"=>1961},
+       "Gold"=>{"loop_total_profit"=>2330},
+       "Indium"=>{"loop_total_profit"=>2021},
+       "Silver"=>{"loop_total_profit"=>1791},
+       "Superconductors"=>{"loop_total_profit"=>1939},
+       "Tantalum"=>{"loop_total_profit"=>1695},
+       "Uranium"=>{"loop_total_profit"=>1616}},
+     "Consumer Technology"=>
+      {"Beryllium"=>{"loop_total_profit"=>2301},
+       "Gallium"=>{"loop_total_profit"=>1989},
+       "Gold"=>{"loop_total_profit"=>2358},
+       "Indium"=>{"loop_total_profit"=>2049},
+       "Silver"=>{"loop_total_profit"=>1819},
+       "Superconductors"=>{"loop_total_profit"=>1967},
+       "Tantalum"=>{"loop_total_profit"=>1723},
+       "Uranium"=>{"loop_total_profit"=>1644}}, -->
+<!--
+       # Leesti (264 LS) -> HIP 65636 (47 LS)
+		# Out: Progenitor Cells   Back: Palladium     Profit: 2512
+		# Out: Consumer Tech      Back: Palladium     Profit: 2437
+		# Out: Progenitor Cells   Back: Gold          Profit: 2314
+		# Out: Consumer Tech      Back: Gold          Profit: 2261 -->
+
+
 <% if @possible_trade_routes.size > 0 then %>
-	<table border="1" width="800">
+	<table>
 		<body>
-			<tr>
-				<th>Sell System</th>
-				<th>Sell Station</th>
-				<th>Commodity</th>
-				<th>Sell Lvl</th>
-				<th>Sell Price</th>
-				<th>Buy System</th>
-				<th>Buy Station</th>
-				<th>Buy Lvl</th>
-				<th>Buy Price</th>
-				<th>Profit</th>
-			</tr>
-			<% @possible_trade_routes.each do |row| %>
-			<% puts row %>
+			<% @possible_trade_routes.each do |from_station_hash| %>
+				<% from_station_name = from_station_hash.keys[0] %>
+				<% buyer_station_names = from_station_hash[from_station_name].keys.sort %>
 				<tr>
-					<td><%= row["t_sellers.seller_system_name"] %></td>
-					<td><%= row["t_sellers.seller_station_name"] %></td>
-					<td><%= row["t_sellers.seller_commodity_name"] %></td>
-					<td><%= row["t_sellers.seller_sell_level"] %></td>
-					<td><%= row["t_sellers.seller_price"] %></td>
-					<td><%= row["t_buyers.buyer_system_name"] %></td>
-					<td><%= row["t_buyers.buyer_station_name"] %></td>
-					<td><%= row["t_buyers.buyer_demand_level"] %></td>
-					<td><%= row["t_buyers.buyer_price"] %></td>
-					<td><%= row["profit"] %></td>
+					<th colspan="3"><h2><%= from_station_name %></h2></th>
 				</tr>
+				<% buyer_station_names.each do |to_station_name| %>
+					<tr>
+						<td colspan="3"><h3><strong><%= from_station_name %></strong>&nbsp;->&nbsp;<strong><%= to_station_name %></strong></h3></td>
+					</tr>
+					<% seller_commodity_keys = from_station_hash[from_station_name][to_station_name].keys.sort %>
+					<% seller_commodity_keys.each do |seller_commodity_name| %>
+
+						<tr>
+							<td colspan="3">
+								<table class="table table-striped">
+									<tr>
+										<td colspan="2"><h4>Out:&nbsp;<%= seller_commodity_name %></h4></td>
+									</tr>
+
+									<% buyer_commodity_keys = from_station_hash[from_station_name][to_station_name][seller_commodity_name].keys.sort %>
+									<% buyer_commodity_keys.each do |buyer_commodity_name| %>
+
+										<% buyer_commodity_hash = from_station_hash[from_station_name][to_station_name][seller_commodity_name][buyer_commodity_name] %>
+
+										<% loop_total_profit = buyer_commodity_hash['loop_total_profit'] %>
+										<tr>
+											<td>Back: <strong><%= buyer_commodity_name %></strong></td>
+											<td>Profit: <strong><%= loop_total_profit %></strong>&nbsp;cr</td>
+										</tr>
+
+									<% end %>
+								</table>
+							</td>
+						</tr>
+					<% end %>
+				<% end %>
 			<% end %>
 		</body>
 	</table>
