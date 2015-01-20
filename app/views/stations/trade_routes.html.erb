@@ -55,8 +55,13 @@
 							<td colspan="3">
 								<table class="table table-striped">
 									<tr>
-										<td colspan="2"><h4>Out:&nbsp;<%= seller_commodity_name %></h4></td>
+										<td colspan="3"><h4>Out:&nbsp;<%= seller_commodity_name %></h4></td>
 									</tr>
+                                    <tr>
+                                        <th>Back</th>
+                                        <th>Profit per t</th>
+                                        <th>Total Profit</th>
+                                    </tr>
 
 									<% buyer_commodity_keys = from_station_hash[from_station_name][to_station_name][seller_commodity_name].keys.sort %>
 									<% buyer_commodity_keys.each do |buyer_commodity_name| %>
@@ -65,8 +70,9 @@
 
 										<% loop_total_profit = buyer_commodity_hash['loop_total_profit'] %>
 										<tr>
-											<td>Back: <strong><%= buyer_commodity_name %></strong></td>
-											<td>Profit: <strong><%= loop_total_profit %></strong>&nbsp;cr</td>
+											<td><strong><%= buyer_commodity_name %></strong></td>
+											<td><strong><%= number_with_delimiter(loop_total_profit) %></strong>&nbsp;cr</td>
+                                            <td><strong><%= number_with_delimiter(loop_total_profit * cargo_space_avail) %></strong>&nbsp;cr</td>
 										</tr>
 
 									<% end %>
