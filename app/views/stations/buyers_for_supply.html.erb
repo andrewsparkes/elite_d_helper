@@ -11,12 +11,12 @@
 		<body>
 			<% @possible_trades[:commodity_types].each do |commod_type_key, commod_type_hash| %>
 				<tr>
-					<td colspan="4" bgcolor="Cyan"><font face="arial" size="5"><%= commod_type_key %></font></td>
+					<td colspan="5"><h3><%= commod_type_key %></h3></td>
 				<tr>
 				<% if commod_type_hash[:seller_commodities].size > 0 then %>
 					<% commod_type_hash[:seller_commodities].each do |commod_key, commod_hash| %>
 
-						<tr bgcolor="DeepSkyBlue">
+						<tr>
 							<td><b><%= commod_key %></b></td>
 							<td>Buy per unit: <b><%= commod_hash[:sell_price] %></b> cr</td>
 							<td>Supply: <b><%= commod_hash[:supply_level] %></b></td>
@@ -47,25 +47,25 @@
 													<td><%= buyer_station_key %></td>
 
 													<% if buyer_station_hash[:demand_or_supply_level] == 'L' then %>
-														<td bgcolor="OrangeRed">L</td>
+														<td>L</td>
 													<% elsif buyer_station_hash[:demand_or_supply_level] == 'M' then %>
-														<td bgcolor="Yellow">M</td>
+														<td>M</td>
 													<% elsif buyer_station_hash[:demand_or_supply_level] == 'H' then %>
-														<td bgcolor="GreenYellow">H</td>
+														<td>H</td>
 													<% end %>
 													<td><%= buyer_station_hash[:buy_or_sell_price] %></td>
 													<% profit_amnt = buyer_station_hash[:buy_or_sell_price] - commod_hash[:sell_price] %>
 													<% if profit_amnt > 0 then %>
-														<td bgcolor="GreenYellow"><%= profit_amnt %></td>
+														<td><%= profit_amnt %></td>
 													<% else %>
-														<td bgcolor="OrangeRed"><%= profit_amnt %></td>
+														<td><%= profit_amnt %></td>
 													<% end %>
 
 													<% total_profit_amnt = profit_amnt * cargo_space_avail %>
 													<% if total_profit_amnt > 0 then %>
-														<td bgcolor="GreenYellow"><%= total_profit_amnt %></td>
+														<td><%= total_profit_amnt %></td>
 													<% else %>
-														<td bgcolor="OrangeRed"><%= total_profit_amnt %></td>
+														<td><%= total_profit_amnt %></td>
 													<% end %>
 												</tr>
 											<% end %>
@@ -76,7 +76,7 @@
 						</tr>
 						<% else %>
 							<tr>
-								<td colspan="4" bgcolor="OrangeRed">
+								<td colspan="4">
 									No buyers known
 								</td>
 							</td>
@@ -84,7 +84,7 @@
 					<% end %>
 				<% else %>
 					<tr>
-						<td colspan="4" bgcolor="OrangeRed">
+						<td colspan="4">
 							No commodities found
 						</td>
 					</td>
