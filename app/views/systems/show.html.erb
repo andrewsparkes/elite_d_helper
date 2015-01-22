@@ -6,19 +6,13 @@
 <strong>Coordinates:</strong>&nbsp;&nbsp;<%= @system.x %>&nbsp;:&nbsp;<%= @system.y %>&nbsp;:&nbsp;<%= @system.z %><br />
 
 <!-- form to update coordinates from EDS -->
-sysname
-<%= form_tag(:controller => :systems, :action => :fetch_eds_coordinates, method: "get") do %>
-  <%= label_tag(:fetch_eds_coordinates_text, "Fetch the EDS coordinates for this system") %>
-  <%= hidden_field_tag 'id', @system.id %>
-  <%= submit_tag("Fetch coordinates") %>
-<% end %>
-
-<form name="formEDScoords" onSubmit="return getSystemData(<% @system.name %>)">
-<form >
-    <div class="form-group" id="TradeRouteGroup">
+<form name="formEDScoords" action="javascript:getSystemName('<%= @system.name %>')">
+    <div class="form-group" id="GetEDSCoordsGroup">
         <table>
           <body>
-            <tr><td>&nbsp;&nbsp;&nbsp;</td>
+            <tr>
+              <td>Fetch the EDS coordinates for this system</td>
+              <td>&nbsp;&nbsp;&nbsp;</td>
               <td>
                 <input type="submit" value="Fetch EDS coordinates" class="btn btn-default">
               </td>
@@ -27,6 +21,7 @@ sysname
         </table>
     </div>
 </form>
+<pre><div id="edsout">This text should go away</div></pre>
 <br />
 </p>
 <h2>Stations</h2>

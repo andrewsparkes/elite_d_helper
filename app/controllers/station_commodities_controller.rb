@@ -7,6 +7,7 @@ class StationCommoditiesController < ApplicationController
 		@station_commodity = StationCommodity.new(station_commodity_params)
 
 	  	if @station_commodity.save
+	  		# TODO : could auto-go to next commodity OR if all done back to station
 	  		# redirect_to @station_commodity
 	  		redirect_to @station_commodity.station
 	  	else
