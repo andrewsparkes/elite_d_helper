@@ -27,28 +27,28 @@
   <% else %>
 
     <p>
-      <%= f.label :stations %>&nbsp;:&nbsp;<%= f.collection_select :station_id, Station.all.order(:name), :id, :name, :prompt => "Select a station" %>
+      <%= f.label :stations, class: "control-label" %>&nbsp;:&nbsp;<%= f.collection_select :station_id, Station.all.order(:name), :id, :name, :prompt => "Select a station" %>
     </p>
 
     <p>
-      <%= f.label :commodities %>&nbsp;:&nbsp;<%= f.collection_select :commodity_id, Commodity.all.order(:name), :id, :name, :prompt => "Select a commodity" %>
+      <%= f.label :commodities, class: "control-label" %>&nbsp;:&nbsp;<%= f.collection_select :commodity_id, Commodity.all.order(:name), :id, :name, :prompt => "Select a commodity" %>
     </p>
 
   <% end %>
 
   <p>
-    <%= f.label :demanded_or_supplied %>&nbsp;:&nbsp;<%= f.select(:demanded_or_supplied, [['D', 'D'], ['S', 'S']]) %>
+    <%= f.label :demanded_or_supplied, class: "control-label" %>&nbsp;:&nbsp;<%= f.select(:demanded_or_supplied, [['D', 'D'], ['S', 'S']]) %>
   </p>
 
   <p>
-    <%= f.label :demand_or_supply_level %>&nbsp;:&nbsp;<%= f.select(:demand_or_supply_level, [['L', 'L'], ['M', 'M'], ['H', 'H']]) %>
+    <%= f.label :demand_or_supply_level, class: "control-label" %>&nbsp;:&nbsp;<%= f.select(:demand_or_supply_level, [['L', 'L'], ['M', 'M'], ['H', 'H']]) %>
   </p>
 
   <p>
-    <%= f.label :buy_or_sell_price %>&nbsp;:&nbsp;<%= f.text_field :buy_or_sell_price, :autofocus => true %> cr
+    <%= f.label :buy_or_sell_price, class: "control-label" %>&nbsp;:&nbsp;<%= f.number_field :buy_or_sell_price, :autofocus => true, class: "form-control typeahead edsUpdate tt-input", placeholder: "1", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;", value: "" %> cr
   </p>
 
   <p>
-    <%= f.submit %>
+    <%= f.submit "Save", class: "btn btn-default" %>
   </p>
 <% end %>

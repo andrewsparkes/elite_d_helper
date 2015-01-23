@@ -11,7 +11,7 @@
   <% end %>
 
   <p>
-    <%= f.label :name %>&nbsp;<%= f.text_field :name %>
+    <%= f.label :name, class: "control-label" %>&nbsp;<%= f.text_field :name %>
   </p>
 
   <p>
@@ -33,6 +33,6 @@
   </p>
 
   <p>
-    <%= f.submit %>
+    <%= f.submit "Save", class: "btn btn-default" %>
   </p>
 <% end %>

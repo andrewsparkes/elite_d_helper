@@ -6,7 +6,7 @@
           <body>
             <tr>
               <td>
-                <label class="control-label" for="CargoSpaceAvail" id="CargoSpaceAvailLabel">Find all possible trades routes, cargo space is :</label>
+                <%= label_tag(:cargo_space, "Search for possible trade routes starting at this station : ", class: "control-label") %>
               </td>
               <td>&nbsp;&nbsp;&nbsp;</td>
               <td>
@@ -21,39 +21,31 @@
         </table>
     </div>
 <% end %>
-<br />
-<%= form_tag(:controller => :stations, :action => :who_sells_commodity, method: "get") do %>
-  <%= label_tag(:commodity, "Who sells this commodity?") %>&nbsp;:&nbsp;<%= collection_select(:commodity, :commodity_id, Commodity.all.order(:name), :id, :name, :prompt => "Select a commodity") %>
-  <%= submit_tag("Locate sellers for this commodity") %>
-<% end %>
+
 <br />
 <table border="1">
   <body>
-    <tr>
-      <th>Name</th>
-      <th>Distance</th>
-      <th>Allegiance</th>
-      <th>Government</th>
-      <th>Population</th>
-      <th>Economies</th>
-      <th>Commodities?</th>
-      <th>Refueling?</th>
-      <th>Repairing?</th>
-      <th>Re-Arming?</th>
-      <th>Outfitting?</th>
-      <th>Shipyard?</th>
-      <th>Blackmarket?</th>
-      <th>Show</th>
-      <th>Edit</th>
-      <th>Destroy</th>
-    </tr>
-
     <% System.all.order(:name).each do |system| %>
       <% counter = 1 %>
       <% system.stations.order(:name).each do |station| %>
         <% if counter == 1 then %>
           <tr>
-            <td colspan="15"><h3><%= system.name %></h3></td>
+            <th><h3><%= system.name %></h3></th>
+            <th>Nav LS</th>
+            <th>Allegiance</th>
+            <th>Government</th>
+            <th>Pop Lvl</th>
+            <th>Economies</th>
+            <th>Commodities?</th>
+            <th>Refuel?</th>
+            <th>Repair?</th>
+            <th>Re-Arm?</th>
+            <th>Outfit?</th>
+            <th>Shipyard?</th>
+            <th>Blackmarket?</th>
+            <th>Show</th>
+            <th>Edit</th>
+            <th>Destroy</th>
           </tr>
           <% counter = 0 %>
         <% end %>

@@ -13,31 +13,31 @@
   <table>
     <body>
       <tr>
-        <td><%= f.label :systems %></td>
+        <td><%= f.label :systems, class: "control-label" %></td>
         <td><%= f.collection_select :system_id, System.all.order(:name), :id, :name, :prompt => "Select a system" %></td>
       </tr>
       <tr>
-        <td><%= f.label :station_types %></td>
+        <td><%= f.label :station_types, class: "control-label" %></td>
         <td><%= f.collection_select :station_type_id, StationType.all.order(:name), :id, :name, :prompt => "Select a station type" %></td>
       </tr>
       <tr>
-        <td><%= f.label :name %></td>
-        <td><%= f.text_field :name %></td>
+        <td><%= f.label :name, class: "control-label" %></td>
+        <td><%= f.text_field :name, class: "form-control typeahead edsUpdate tt-input", placeholder: "enter text here", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;", value: "" %></td>
       </tr>
       <tr>
-        <td><%= f.label :nav_ls %></td>
-        <td><%= f.text_field :nav_ls %>ls</td>
+        <td><%= f.label :nav_ls, class: "control-label" %></td>
+        <td><%= f.number_field :nav_ls, class: "form-control typeahead edsUpdate tt-input", placeholder: "1", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;", value: "" %>ls</td>
       </tr>
       <tr>
-        <td><%= f.label :allegiances %></td>
+        <td><%= f.label :allegiances, class: "control-label" %></td>
         <td><%= f.collection_select :allegiance_id, Allegiance.all.order(:name), :id, :name, :prompt => "Select a allegiance" %></td>
       </tr>
       <tr>
-        <td><%= f.label :governments %></td>
+        <td><%= f.label :governments, class: "control-label" %></td>
         <td><%= f.collection_select :government_id, Government.all.order(:name), :id, :name, :prompt => "Select a government" %></td>
       </tr>
       <tr>
-        <td><%= f.label :population_levels %></td>
+        <td><%= f.label :population_levels, class: "control-label" %></td>
         <td><%= f.collection_select :population_level_id, PopulationLevel.all.order(:name), :id, :name, :prompt => "Select a population level" %></td>
       </tr>
       <tr>
@@ -129,6 +129,6 @@
   </table>
 
   <p>
-    <%= f.submit %>
+    <%= f.submit "Save", class: "btn btn-default" %>
   </p>
 <% end %>

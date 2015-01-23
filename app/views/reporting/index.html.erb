@@ -1,5 +1,10 @@
 <h1>Elite : Dangerous - Reporting</h1>
 
+<br />
+<%= form_tag(:controller => :stations, :action => :who_sells_commodity, method: "get") do %>
+  <%= label_tag(:commodity, "Who sells this commodity?", class: "control-label") %>&nbsp;:&nbsp;<%= collection_select(:commodity, :commodity_id, Commodity.all.order(:name), :id, :name, :prompt => "Select a commodity") %>
+  <%= submit_tag("Locate sellers for this commodity", class: "btn btn-default") %>
+<% end %>
 
 <br>
 <%= link_to 'Back to main menu', root_url %>
