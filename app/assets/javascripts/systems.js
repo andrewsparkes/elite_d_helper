@@ -18,7 +18,7 @@ function getSystemName(mySystemName) {
 
 function callEDSapi(query) {
   var data = { data: query };
-  alert("data: " + JSON.stringify(data));
+  // alert("data: " + JSON.stringify(data));
   $.ajax({
     type: 'POST',
     contentType: 'application/json; charset=utf-8',
@@ -38,9 +38,10 @@ function submitsuccess(data) {
       JSON.stringify(data.d, undefined, 2)
   )));
   // console.log(data);
-  alert("ret name = " + data.d.systems[0].name + " and x,y,z = " + data.d.systems[0].coord[0] + "," + data.d.systems[0].coord[1] + "," + data.d.systems[0].coord[2])
-  // TODO write the eds id and coords into a form to update the system db row
-  // or auto-submit them to system update controller method?
+  document.getElementById("system_eds_id").value = data.d.systems[0].id;
+  document.getElementById("system_x").value = data.d.systems[0].coord[0];
+  document.getElementById("system_y").value = data.d.systems[0].coord[1];
+  document.getElementById("system_z").value = data.d.systems[0].coord[2];
 }
 
 function submiterror(d, a) {
