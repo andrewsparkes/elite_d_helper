@@ -3,7 +3,7 @@
 function getSystemName(mySystemName) {
   var query = {
       ver:2,
-      test:true,
+      test:false,
       outputmode:2,
       filter:{
           knownstatus:1,

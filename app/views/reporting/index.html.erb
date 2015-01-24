@@ -6,5 +6,28 @@
   <%= submit_tag("Locate sellers for this commodity", class: "btn btn-default") %>
 <% end %>
 
+<br />
+<%= form_tag(:controller => :stations, :action => :trade_routes, method: "get", :class => "form-horizontal", :id => "TradeRoutesForm") do %>
+    <div class="form-group" id="TradeRouteGroup">
+        <table>
+          <body>
+            <tr>
+              <td>
+                <%= label_tag(:cargo_space, "Search for all possible trade routes, cargo space : ", class: "control-label") %>
+              </td>
+              <td>&nbsp;&nbsp;&nbsp;</td>
+              <td>
+                <input class="form-control typeahead systemList tt-input" id="CargoSpace" name="cargo_space" placeholder="100" required="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+              </td>
+              <td>&nbsp;&nbsp;&nbsp;</td>
+              <td>
+                <input type="submit" value="Search for Trade Routes" class="btn btn-default">
+              </td>
+            </tr>
+          </body>
+        </table>
+    </div>
+<% end %>
+
 <br>
 <%= link_to 'Back to main menu', root_url %>

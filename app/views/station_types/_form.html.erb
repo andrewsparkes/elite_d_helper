@@ -10,29 +10,34 @@
   </div>
   <% end %>
 
-  <p>
-    <%= f.label :name, class: "control-label" %>&nbsp;<%= f.text_field :name %>
-  </p>
-
-  <p>
-    Has a Small dock?&nbsp;
-    <%= f.radio_button :has_small_dock, true %><label for="station_type_has_small_dock_true">yes</label>
-    <%= f.radio_button :has_small_dock, false %><label for="station_type_has_small_dock_false">no</label>
-  </p>
-
-  <p>
-    Has a Medium dock?&nbsp;
-    <%= f.radio_button :has_medium_dock, true %><label for="station_type_has_medium_dock_true">yes</label>
-    <%= f.radio_button :has_medium_dock, false %><label for="station_type_has_medium_dock_false">no</label>
-  </p>
-
-  <p>
-    Has a Large dock?&nbsp;
-    <%= f.radio_button :has_large_dock, true %><label for="station_type_has_large_dock_true">yes</label>
-    <%= f.radio_button :has_large_dock, false %><label for="station_type_has_large_dock_false">no</label>
-  </p>
-
-  <p>
-    <%= f.submit "Save", class: "btn btn-default" %>
-  </p>
+  <table>
+    <body>
+      <tr>
+        <td><%= f.label :name, class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="2"><%= f.text_field :name, class: "form-control typeahead edsUpdate tt-input", placeholder: "enter name here", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;", value: "" %></td>
+      </tr>
+      <tr>
+        <td>Has a Small dock?&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.radio_button :has_small_dock, true %><label for="station_type_has_small_dock_true">yes</label></td>
+        <td><%= f.radio_button :has_small_dock, false %><label for="station_type_has_small_dock_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Has a Medium dock?&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.radio_button :has_medium_dock, true %><label for="station_type_has_medium_dock_true">yes</label></td>
+        <td><%= f.radio_button :has_medium_dock, false %><label for="station_type_has_medium_dock_false">no</label></td>
+      </tr>
+      <tr>
+        <td>Has a Large dock?&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.radio_button :has_large_dock, true %><label for="station_type_has_large_dock_true">yes</label></td>
+        <td><%= f.radio_button :has_large_dock, false %><label for="station_type_has_large_dock_false">no</label></td>
+      </tr>
+      <tr>
+        <td><%= f.submit "Save", class: "btn btn-default" %></td>
+      </tr>
+    </body>
+  </table>
 <% end %>

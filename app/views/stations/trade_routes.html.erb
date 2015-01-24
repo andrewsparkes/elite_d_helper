@@ -42,11 +42,12 @@
 				<% from_station_name = from_station_hash.keys[0] %>
 				<% buyer_station_names = from_station_hash[from_station_name].keys.sort %>
 				<tr>
-					<th colspan="3"><h2><%= from_station_name %></h2></th>
+					<th colspan="3"><h2><%= from_station_name %>&nbsp;(<%= Station.find_by_name(from_station_name).system.name %>)</h2></th>
 				</tr>
 				<% buyer_station_names.each do |to_station_name| %>
 					<tr>
-						<td colspan="3"><h3><strong><%= from_station_name %></strong>&nbsp;->&nbsp;<strong><%= to_station_name %></strong></h3></td>
+						<td colspan="2"><h3><strong><%= from_station_name %></strong>&nbsp;(<%= Station.find_by_name(from_station_name).system.name %>)&nbsp;->&nbsp;<strong><%= to_station_name %></strong>&nbsp;(<%= Station.find_by_name(to_station_name).system.name %>)</h3></td>
+						<td>Distance:&nbsp;<%= Station.calculate_distance_between_station_names(from_station_name, to_station_name) %>LY</td>
 					</tr>
 					<% seller_commodity_keys = from_station_hash[from_station_name][to_station_name].keys.sort %>
 					<% seller_commodity_keys.each do |seller_commodity_name| %>

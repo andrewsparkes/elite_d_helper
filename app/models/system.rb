@@ -7,55 +7,20 @@ class System < ActiveRecord::Base
 	validates :allegiance, presence: true
 	validates :government, presence: true
 	validates :name, presence: true, uniqueness: true
-	# eds_id
-	# x,y,z
 
-	def update_eds_coordinates
+	# Distance calculation between 2 sets of XYZ coordinates:
+	def self.distance_between_systems(systemA, systemB)
 
-# An example response is:-
-#   {
-#     ver: 2.0,
-#     date: "2014-11-08 19:57:37",
-#     status: {
-#       input: [
-#         {
-#           status: {
-#             statusnum: 0,
-#             msg: "Success"
-#           }
-#         }
-#       ]
-#     },
-#     systems: [
-#       {
-#         id: 222,
-#         name: "10 Canum Venaticorum",
-#         coord: [
-#           -9.375,
-#           55.4375,
-#           -7
-#         ],
-#         cr: 5,
-#         commandercreate: "",
-#         createdate: "2014-11-07 13:38:07",
-#         commanderupdate: "",
-#         updatedate: "2014-11-07 13:38:07"
-#       },
-#       {
-#         id: 254,
-#         name: "10 Ursae Majoris",
-#         coord: [
-#           0.03125,
-#           34.90625,
-#           -39.09375
-#         ],
-#         cr: 5,
-#         commandercreate: "",
-#         createdate: "2014-11-07 13:38:07",
-#         commanderupdate: "",
-#         updatedate: "2014-11-07 13:38:07"
-#       },
-#     ...
-# }
+		unless systemA.x && systemA.y && systemA.z
+			return nil
+		end
+
+		unless systemB.x && systemB.y && systemB.z
+			return nil
+		end
+
+		distance = Math.sqrt( ( (systemB.x-systemA.x)**2 ) + ( (systemB.y-systemA.y)**2 ) + ( (systemB.z-systemA.z)**2 ) )
+		distance = (distance * 100).floor / 100.0
+		return distance
 	end
 end

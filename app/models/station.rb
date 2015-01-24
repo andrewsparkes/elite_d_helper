@@ -261,6 +261,27 @@ class Station < ActiveRecord::Base
 		return trades_hash
 	end
 
+	def self.calculate_distance_between_station_names(nameA, nameB)
+		unless nameA && nameB
+			return nil
+		end
+
+		stationA = Station.find_by_name(nameA)
+		stationB = Station.find_by_name(nameB)
+
+		distance = self.distance_between_stations(stationA, stationB)
+		return distance
+	end
+
+	def self.distance_between_stations(stationA, stationB)
+		unless stationA && stationB
+			return nil
+		end
+
+		distance = System.distance_between_systems(stationA.system, stationB.system)
+		return distance
+	end
+
 	def self.who_sells_commodity(commodity_id)
 
 		display_array = []
@@ -275,18 +296,6 @@ class Station < ActiveRecord::Base
 		return display_array
 
 	end
-
-	# def self.calculate_all_trade_routes
-
-	# 	display_array = []
-
-	# 	results = ActiveRecord::Base.connection.execute(SQL_ALL_TRADES)
-	# 	results.each do |row|
-	# 		display_array.push(row)
-	# 	end
-
-	# 	return display_array
-	# end
 
 	def self.calculate_all_possible_trade_routes(avail_cargo_space)
 		# Inputs:
@@ -579,7 +588,7 @@ class Station < ActiveRecord::Base
 			    				unless two_station_trade_routes[from_station][to_station][from_commodity].has_key?(to_commodity)
 			    					two_station_trade_routes[from_station][to_station][from_commodity][to_commodity] = {
 			    						# 'leg_profit' => from_station_hash['leg_profit'],
-			    						# 'distance_ly' => Station.calculate_distance_between_stations(from_station, to_station),
+			    						'distance_ly' => self.calculate_distance_between_station_names(from_station, to_station),
 			    						'loop_total_profit' => loop_total_profit
 			    					}
 			    				end

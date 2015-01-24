@@ -10,11 +10,15 @@
   </div>
   <% end %>
 
-  <p>
-    <%= f.label :name, class: "control-label" %>&nbsp;<%= f.text_field :name, class: "form-control typeahead edsUpdate tt-input", placeholder: "enter text here", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;", value: "" %>
-  </p>
-
-  <p>
-    <%= f.submit "Save", class: "btn btn-default" %>
-  </p>
+  <table>
+    <body>
+      <tr>
+        <td><%= f.label :name, class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.text_field :name, class: "form-control typeahead edsUpdate tt-input", placeholder: "enter name here", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;", value: "" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.submit "Save", class: "btn btn-default" %></td>
+      </tr>
+    </body>
+  </table>
 <% end %>

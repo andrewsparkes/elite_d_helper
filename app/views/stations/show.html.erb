@@ -37,10 +37,21 @@
 <% if @station.has_commodities == true then %>
 	<h3>Commodities:</h3>
 	<%= form_tag(:controller => :stations, :action => :buyers_for_supply, method: "get") do %>
-	  <%= label_tag(:cargo_space, "View all BUYERS for products SOLD by this station with cargo space (tonnes):") %>
-
-	  <%= number_field_tag(:cargo_space, in: 1..1000, step: 1) %>
-	  <%= submit_tag("View possible trades") %>
+	<table>
+		<body>
+			<tr>
+				<td>
+	  				<%= label_tag(:cargo_space, "View all BUYERS for products SOLD by this station with cargo space (tonnes):", class: "control-label") %>
+	  			</td>
+	  			<td>
+				    <input class="form-control typeahead tt-input" id="CargoSpace" name="cargo_space" placeholder="100" required="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+				</td>
+				<td>
+	  				<%= submit_tag("View possible trades", class: "btn btn-default") %>
+	  			</td>
+	  		</tr>
+	  	</body>
+	</table>
 	<% end %>
 
 	<br />
