@@ -16,7 +16,7 @@
 					<td><%= row["seller_system_name"] %></td>
 					<td><%= row["seller_station_name"] %></td>
 					<td><%= row["seller_sell_level"] %></td>
-					<td><%= row["seller_price"] %></td>
+					<td><%= number_with_delimiter(row["seller_price"]) %></td>
 				</tr>
 			<% end %>
 		</body>

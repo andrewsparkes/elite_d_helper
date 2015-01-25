@@ -1,6 +1,6 @@
 <h1><%= @commodity.commodity_type.name %>&nbsp;:&nbsp;<%= @commodity.name %></h1>
 <p>
-  <strong>Galactic Average Price :</strong>&nbsp;&nbsp;<%= @commodity.galactic_average_price %>
+  <strong>Galactic Average Price :</strong>&nbsp;&nbsp;<%= number_with_delimiter(@commodity.galactic_average_price) %>
 </p>
 <br>
 <%= link_to 'Edit this Commodity', edit_commodity_path(@commodity) %>

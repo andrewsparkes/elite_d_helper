@@ -45,7 +45,7 @@
 											<% buyer_system_hash[:buyer_stations].each do |buyer_station_key,buyer_station_hash| %>
 												<tr>
 													<td><%= buyer_system_key %></td>
-													<td><%= buyer_station_key %></td>
+													<td><%= link_to buyer_station_key, station_path(Station.find_by_name(buyer_station_key)) %></td>
 													<% buyer_system = System.find_by_name(buyer_system_key) %>
 													<% distance = System.distance_between_systems(@station.system, buyer_system) %>
 													<td><%= distance %>&nbsp;LY</td>
@@ -57,19 +57,19 @@
 													<% elsif buyer_station_hash[:demand_or_supply_level] == 'H' then %>
 														<td>H</td>
 													<% end %>
-													<td><%= buyer_station_hash[:buy_or_sell_price] %></td>
+													<td><%= number_with_delimiter(buyer_station_hash[:buy_or_sell_price]) %></td>
 													<% profit_amnt = buyer_station_hash[:buy_or_sell_price] - commod_hash[:sell_price] %>
 													<% if profit_amnt > 0 then %>
-														<td><%= profit_amnt %></td>
+														<td><%= number_with_delimiter(profit_amnt) %></td>
 													<% else %>
-														<td><%= profit_amnt %></td>
+														<td><%= number_with_delimiter(profit_amnt) %></td>
 													<% end %>
 
 													<% total_profit_amnt = profit_amnt * cargo_space_avail %>
 													<% if total_profit_amnt > 0 then %>
-														<td><%= total_profit_amnt %></td>
+														<td><%= number_with_delimiter(total_profit_amnt) %></td>
 													<% else %>
-														<td><%= total_profit_amnt %></td>
+														<td><%= number_with_delimiter(total_profit_amnt) %></td>
 													<% end %>
 												</tr>
 											<% end %>

@@ -92,28 +92,28 @@
 		        <td><b><%= @station_commodity.commodity.name %></b></td>
 		        <% if @station_commodity.demanded_or_supplied == 'D' then %>
 		          <td><%= @station_commodity.demand_or_supply_level %></td>
-		          <td><b><%= @station_commodity.buy_or_sell_price %></b></td>
+		          <td><b><%= number_with_delimiter(@station_commodity.buy_or_sell_price) %></b></td>
 		          <td>-</td>
 		          <td>-</td>
-		          <td><%= @station_commodity.commodity.galactic_average_price %> cr</td>
+		          <td><%= number_with_delimiter(@station_commodity.commodity.galactic_average_price) %> cr</td>
 		          <% price_diff = @station_commodity.buy_or_sell_price - @station_commodity.commodity.galactic_average_price %>
 		          <% if price_diff > 0 then %>
-		          	<td><%= price_diff %></td>
+		          	<td><%= number_with_delimiter(price_diff) %></td>
 		          <% else %>
-		          	<td><%= price_diff %></td>
+		          	<td><%= number_with_delimiter(price_diff) %></td>
 		          <% end %>
 
 		        <% else %>
 		          <td>-</td>
 		          <td>-</td>
 		          <td><%= @station_commodity.demand_or_supply_level %></td>
-		          <td><b><%= @station_commodity.buy_or_sell_price %></b></td>
-		          <td><%= @station_commodity.commodity.galactic_average_price %> cr</td>
+		          <td><b><%= number_with_delimiter(@station_commodity.buy_or_sell_price) %></b></td>
+		          <td><%= number_with_delimiter(@station_commodity.commodity.galactic_average_price) %> cr</td>
 		          <% price_diff =  @station_commodity.commodity.galactic_average_price - @station_commodity.buy_or_sell_price %>
 		          <% if price_diff > 0 then %>
-		          	<td><%= price_diff %></td>
+		          	<td><%= number_with_delimiter(price_diff) %></td>
 		          <% else %>
-		          	<td><%= price_diff %></td>
+		          	<td><%= number_with_delimiter(price_diff) %></td>
 		          <% end %>
 		        <% end %>
 

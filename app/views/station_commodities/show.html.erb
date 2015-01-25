@@ -1,13 +1,5 @@
-<h1><%= @station_commodity.station.name %>&nbsp;:&nbsp;<%= @station_commodity.commodity.name %></h1>
-<p>
-  <strong>Demanded/Supplied?:</strong>&nbsp;&nbsp;<%= @station_commodity.demanded_or_supplied %><br />
-  <strong>Demand/Supply Level:</strong>&nbsp;&nbsp;<%= @station_commodity.demand_or_supply_level %><br />
-  <strong>Buy/Sell Price:</strong>&nbsp;&nbsp;<%= @station_commodity.buy_or_sell_price %>&nbsp;cr<br />
-</p>
+<h1>Show a Station Commodity</h1>
 
-<br>
-<%= link_to 'Edit this Station Commodity', edit_station_commodity_path(@station_commodity) %>
-<br>
-<%= link_to 'View all Station Commodities', station_commodities_path %>
+<%= render 'form' %>
 <br>
 <%= link_to 'Back to data entry menu', :controller => 'data_entry', :action => 'index' %>

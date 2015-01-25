@@ -8,8 +8,8 @@ class StationCommoditiesController < ApplicationController
 
 	  	if @station_commodity.save
 	  		# TODO : could auto-go to next commodity OR if all done back to station
-	  		# redirect_to @station_commodity
-	  		redirect_to @station_commodity.station
+	  		redirect_to @station_commodity
+	  		# redirect_to @station_commodity.station
 	  	else
 	  		render 'new'
 	  	end
@@ -27,8 +27,8 @@ class StationCommoditiesController < ApplicationController
 	  @station_commodity = StationCommodity.find(params[:id])
 
 	  if @station_commodity.update(station_commodity_params)
-	    # redirect_to @station_commodity
-	    redirect_to @station_commodity.station
+	    redirect_to @station_commodity
+	    # redirect_to @station_commodity.station
 	  else
 	    render 'edit'
 	  end
