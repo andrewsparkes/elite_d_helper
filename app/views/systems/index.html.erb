@@ -1,24 +1,22 @@
 <h1>Listing of All Systems</h1>
 
-<table border="1">
+<table class="table table-striped">
   <body>
     <tr>
       <th>System Name</th>
       <th>Allegiance</th>
       <th>Government</th>
       <th>x:y:z</th>
-      <th>Show</th>
       <th>Edit</th>
       <th>Destroy</th>
     </tr>
 
     <% @systems.order(:name).each do |system| %>
       <tr>
-        <td><b><%= system.name %></b></td>
+        <td><h4><%= link_to system.name, system_path(system) %></h4></td>
         <td><%= system.allegiance.name %></td>
         <td><%= system.government.name %></td>
         <td><%= system.x %>&nbsp;:&nbsp;<%= system.y %>&nbsp;:&nbsp;<%= system.z %></td>
-        <td><%= link_to 'Show', system_path(system) %></td>
         <td><%= link_to 'Edit', edit_system_path(system) %></td>
         <td><%= link_to 'Destroy', system_path(system),
                     method: :delete, data: { confirm: 'Are you sure?' } %></td>

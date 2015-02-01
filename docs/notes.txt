@@ -24,13 +24,25 @@ Station commodities:
 
 * change table to have separate fields for buy price, sell price, demand vol, demand level, supply vol, supply level? compatible with OCR
 * remember last settings for D/S and L/M/H
-* consider OCR file upload for station
+* on station show it would be better if 'add details' rows were all split into a second table underneath the main table
 
 # =====
 
 Add 'last updated' date for commodities in station and all trade route screens
 
 # =====
+
+* trades view needs visible options:
+	- max loop distance
+	- maz station nav ls
+	- min leg profit
+	- min loop profit
+
+* trades view needs more info:
+	- buy and sell prices for the commodities
+	- amounts available/wanted
+	- order by shortest distance, then by shortest nav ls
+
 # =====
 # =====
 # =====

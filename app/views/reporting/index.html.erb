@@ -2,8 +2,17 @@
 
 <br />
 <%= form_tag(:controller => :stations, :action => :who_sells_commodity, method: "get") do %>
-  <%= label_tag(:commodity, "Who sells this commodity?", class: "control-label") %>&nbsp;:&nbsp;<%= collection_select(:commodity, :commodity_id, Commodity.all.order(:name), :id, :name, :prompt => "Select a commodity") %>
-  <%= submit_tag("Locate sellers for this commodity", class: "btn btn-default") %>
+<table>
+  <body>
+    <tr>
+      <td><%= label_tag(:commodity, "Who sells this commodity?", class: "control-label") %></td>
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td><%= collection_select(:commodity, :commodity_id, Commodity.all.order(:name), :id, :name, {:prompt => "Select a commodity"},{:class=>"form-control", :style=>"display: inline-block; background-color: transparent;"}) %></td>
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td><%= submit_tag("Locate sellers for this commodity", class: "btn btn-default") %></td>
+    </tr>
+  <body>
+</table>
 <% end %>
 
 <br />

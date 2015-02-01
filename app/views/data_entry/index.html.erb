@@ -22,6 +22,15 @@
               <%= link_to 'Add a new Station Commodity', new_station_commodity_path %><br />
               <%= link_to 'View all Station Commodities', controller: 'station_commodities' %><br />
             </p>
+            <div>
+              <h4>Import a Station Commodities OCR csv file</h4>
+              <table><body><tr>
+              <%= form_tag import_ocr_uploads_path, multipart: true do %>
+                <td><%= file_field_tag :file %></td>
+                <td><%= submit_tag("Import file", class: "btn btn-default") %></td>
+              <% end %>
+            </tr></body></table>
+            </div>
             <br /><br />
             <h2>Constant Data<br /><span style="font-size:smaller">  </span></h2>
 

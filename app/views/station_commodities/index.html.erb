@@ -2,7 +2,7 @@
 
 <% System.all.each do |system| %>
   <% system.stations.order(:name).each do |station| %>
-    <table border="1">
+    <table class="table table-striped">
       <caption><h3><%= system.name %>&nbsp;:&nbsp;<%= station.name %></h3></caption>
       <thead>
         <tr>
@@ -25,22 +25,22 @@
           <% station.station_commodities.joins(:commodity).where(commodities: { commodity_type_id: commodity_type.id }).order("commodities.name asc").each do |station_commodity| %>
             <% if counter == 1 then %>
               <tr>
-                <td colspan="9" bgcolor="cyan"><b><%= commodity_type.name %></b></td>
+                <td colspan="9"><h3><%= commodity_type.name %></h3></td>
               </tr>
               <% counter = 0 %>
             <% end %>
             <tr>
               <td><%= station_commodity.commodity.name %></td>
               <% if station_commodity.demanded_or_supplied == 'D' then %>
-                <td bgcolor="yellow"><%= station_commodity.demand_or_supply_level %></td>
-                <td bgcolor="yellow"><%= station_commodity.buy_or_sell_price %></td>
+                <td><%= station_commodity.demand_or_supply_level %></td>
+                <td><%= station_commodity.buy_or_sell_price %></td>
                 <td>-</td>
                 <td>-</td>
               <% else %>
                 <td>-</td>
                 <td>-</td>
-                <td bgcolor="orange"><%= station_commodity.demand_or_supply_level %></td>
-                <td bgcolor="orange"><%= station_commodity.buy_or_sell_price %></td>
+                <td><%= station_commodity.demand_or_supply_level %></td>
+                <td><%= station_commodity.buy_or_sell_price %></td>
               <% end %>
               <td><%= station_commodity.commodity.galactic_average_price %> cr</td>
               <td><%= link_to 'Show', station_commodity_path(station_commodity) %></td>

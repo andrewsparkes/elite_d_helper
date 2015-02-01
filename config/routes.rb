@@ -60,10 +60,17 @@ Rails.application.routes.draw do
     resource :station_commodities
   end
 
+  resources :ocr_uploads do
+    collection { post :import }
+  end
+  # root to: "ocr_datafiles#index"
+
   match 'stations/:id/buyers_for_supply' => 'stations#buyers_for_supply', via: [:get, :post]
   match 'stations/who_sells_commodity'   => 'stations#who_sells_commodity', via: [:get, :post]
   match 'stations/trade_routes'          => 'stations#trade_routes', via: [:get, :post]
   match 'systems/fetch_eds_coordinates'  => 'systems#fetch_eds_coordinates', via: [:get, :post]
+  # match 'ocr_uploads/import'             => 'ocr_uploads#import', via: [:get, :post]
+  # match 'ocr_upload/upload_file'         => 'ocr_upload#upload_file', via: [:get, :post]
 
   # Example resource route with options:
   #   resources :products do

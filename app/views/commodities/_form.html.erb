@@ -13,15 +13,15 @@
     <body>
       <tr>
         <td><%= f.label :commodity_types, class: "control-label" %></td>
-        <td colspan="2"><%= f.collection_select :commodity_type_id, CommodityType.all.order(:order_num), :id, :name, :prompt => "Select a commodity type" %></td>
+        <td colspan="2"><%= f.collection_select(:commodity_type_id, CommodityType.all.order(:order_num), :id, :name, {:prompt => "Select a commodity type"},{:class=>"form-control", :style=>"display: inline-block; background-color: transparent;"}) %></td>
       </tr>
       <tr>
         <td><%= f.label :name, class: "control-label" %></td>
-        <td colspan="2"><%= f.text_field :name, class: "form-control typeahead edsUpdate tt-input", placeholder: "enter name here", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;", value: "" %></td>
+        <td colspan="2"><%= f.text_field :name, class: "form-control typeahead tt-input", placeholder: "enter name here", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %></td>
       </tr>
       <tr>
         <td><%= f.label :galactic_average_price, class: "control-label" %></td>
-        <td><%= f.number_field :galactic_average_price, class: "form-control typeahead edsUpdate tt-input", placeholder: "1", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;", value: "" %></td>
+        <td><%= f.number_field :galactic_average_price, class: "form-control typeahead tt-input", placeholder: "1", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %></td>
         <td>&nbsp;cr</td>
       </tr>
       <tr>

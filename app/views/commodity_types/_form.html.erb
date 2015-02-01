@@ -14,12 +14,12 @@
       <tr>
         <td><%= f.label :name, class: "control-label" %></td>
         <td>&nbsp;&nbsp;&nbsp;</td>
-        <td><%= f.text_field :name, class: "form-control typeahead edsUpdate tt-input", placeholder: "enter name here", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;", value: "" %></td>
+        <td><%= f.text_field :name, class: "form-control typeahead tt-input", placeholder: "enter name here", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %></td>
       </tr>
       <tr>
         <td><%= f.label :order_num, class: "control-label" %></td>
         <td>&nbsp;&nbsp;&nbsp;</td>
-        <td><%= f.number_field :order_num, class: "form-control typeahead edsUpdate tt-input", placeholder: "1", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;", value: "" %></td>
+        <td><%= f.number_field :order_num, class: "form-control typeahead tt-input", placeholder: "1", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %></td>
       </tr>
       <tr>
         <td colspan="3"><%= f.submit "Save", class: "btn btn-default" %></td>

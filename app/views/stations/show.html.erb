@@ -71,6 +71,7 @@
 			    <td>Sell (cr)</th>
 			    <td>Avg (cr)</th>
 			    <td>Diff (cr)</th>
+			    <th>Updated on</th>
 			    <td>Edit</th>
 			    <td>Destroy</th>
 	          </tr>
@@ -84,7 +85,7 @@
 			  <tr>
 			  	<td><i><%= commodity.name %></i></td>
 	            <td colspan="6"><i>This station does not have this commodity set up</i></td>
-	            <td colspan="2"><%= link_to 'add details', :controller => "station_commodities", :action => "new", :station_id => @station.id, :commodity_id => commodity.id %></td>
+	            <td colspan="3"><%= link_to 'add details', :controller => "station_commodities", :action => "new", :station_id => @station.id, :commodity_id => commodity.id %></td>
 	          </tr>
 	        <% else %>
 	          <!-- if it's a station commodity draw editable row -->
@@ -116,7 +117,7 @@
 		          	<td><%= number_with_delimiter(price_diff) %></td>
 		          <% end %>
 		        <% end %>
-
+		        <td><%= @station_commodity.updated_at.strftime("%d/%m/%Y") %></td>
 		        <td><%= link_to 'Edit', edit_station_commodity_path(@station_commodity) %></td>
 		        <td><%= link_to 'Destroy', station_commodity_path(@station_commodity),
 		                  method: :delete, data: { confirm: 'Are you sure?' } %></td>

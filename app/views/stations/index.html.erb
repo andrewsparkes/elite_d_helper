@@ -1,92 +1,62 @@
 <h1>Listing of All Stations</h1>
-<table border="1">
+<table class="table table-striped">
   <body>
     <% System.all.order(:name).each do |system| %>
       <% counter = 1 %>
       <% system.stations.order(:name).each do |station| %>
         <% if counter == 1 then %>
           <tr>
-            <th><h3><%= system.name %></h3></th>
-            <th>Nav LS</th>
-            <th>Allegiance</th>
-            <th>Government</th>
-            <th>Pop Lvl</th>
-            <th>Economies</th>
-            <th>Commodities?</th>
-            <th>Refuel?</th>
-            <th>Repair?</th>
-            <th>Re-Arm?</th>
-            <th>Outfit?</th>
-            <th>Shipyard?</th>
-            <th>Blackmarket?</th>
-            <th>Show</th>
-            <th>Edit</th>
-            <th>Destroy</th>
+            <td><h3><%= system.name %></h3></td>
+            <td><br /><strong>Dist</strong></td>
+            <td><br /><strong>Allegiance</strong></td>
+            <td><br /><strong>Government</strong></td>
+            <td><br /><strong>Pop Lvl</strong></td>
+            <td><br /><strong>Economies</strong></td>
+            <td><br /><strong>Services</strong></td>
+            <td><br /><strong>Show</strong></td>
+            <td><br /><strong>Edit</strong></td>
+            <td><br /><strong>Destroy</strong></td>
           </tr>
           <% counter = 0 %>
         <% end %>
         <tr>
-          <td><b><%= station.name %></b></td>
-          <td><b><%= station.nav_ls %></b>&nbsp;ls</td>
+          <td><b><%= link_to station.name, station_path(station) %></b></td>
+          <% if station.nav_ls %>
+            <td><b><%= station.nav_ls %></b>&nbsp;ls</td>
+          <% else %>
+            <td></td>
+          <% end %>
           <td><b><%= station.allegiance.name %></b></td>
           <td><b><%= station.government.name %></b></td>
           <td><b><%= station.population_level.name %></b></td>
-          <td>
-            <% econ_array = [] %>
-            <% econ_array.push("Agricultural") if station.is_economy_agricultural %>
-            <% econ_array.push("Exraction") if station.is_economy_extraction %>
-            <% econ_array.push("Hi tech") if station.is_economy_hi_tech %>
-            <% econ_array.push("Industrial") if station.is_economy_industrial %>
-            <% econ_array.push("Military") if station.is_economy_military %>
-            <% econ_array.push("None") if station.is_economy_none %>
-            <% econ_array.push("Refinery") if station.is_economy_refinery %>
-            <% econ_array.push("Service") if station.is_economy_service %>
-            <% econ_array.push("Tourism") if station.is_economy_tourism %>
-            <b><%= econ_array.join(', ') %></b>
-          </td>
-
-          <% if station.has_commodities then %>
-            <td><b>YES</b></td>
+          <% econ_array = [] %>
+          <% econ_array.push("Agricultural") if station.is_economy_agricultural %>
+          <% econ_array.push("Exraction") if station.is_economy_extraction %>
+          <% econ_array.push("Hi tech") if station.is_economy_hi_tech %>
+          <% econ_array.push("Industrial") if station.is_economy_industrial %>
+          <% econ_array.push("Military") if station.is_economy_military %>
+          <% econ_array.push("None") if station.is_economy_none %>
+          <% econ_array.push("Refinery") if station.is_economy_refinery %>
+          <% econ_array.push("Service") if station.is_economy_service %>
+          <% econ_array.push("Tourism") if station.is_economy_tourism %>
+          <% if econ_array.length > 0 %>
+            <td><b><%= econ_array.join(', ') %></b></td>
           <% else %>
-            <td>NO</td>
+            <td><b>Unknown</b></td>
           <% end %>
-
-          <% if station.has_refuel then %>
-            <td><b>YES</b></td>
+          <% serv_array = [] %>
+          <% serv_array.push("Commodities") if station.has_commodities %>
+          <% serv_array.push("Refueling") if station.has_refuel %>
+          <% serv_array.push("Repairing") if station.has_repair %>
+          <% serv_array.push("Re-Arming") if station.has_re_arm %>
+          <% serv_array.push("Outfitting") if station.has_outfitting %>
+          <% serv_array.push("Shipyard") if station.has_shipyard %>
+          <% serv_array.push("Black Market") if station.has_blackmarket %>
+          <% if serv_array.length > 0 %>
+            <td><b><%= serv_array.join(', ') %></b></td>
           <% else %>
-            <td>NO</td>
+            <td><b>Unknown</b></td>
           <% end %>
-
-          <% if station.has_repair then %>
-            <td><b>YES</b></td>
-          <% else %>
-            <td>NO</td>
-          <% end %>
-
-          <% if station.has_re_arm then %>
-            <td><b>YES</b></td>
-          <% else %>
-            <td>NO</td>
-          <% end %>
-
-          <% if station.has_outfitting then %>
-            <td><b>YES</b></td>
-          <% else %>
-            <td>NO</td>
-          <% end %>
-
-          <% if station.has_shipyard then %>
-            <td><b>YES</b></td>
-          <% else %>
-            <td>NO</td>
-          <% end %>
-
-          <% if station.has_blackmarket then %>
-            <td><b>YES</b></td>
-          <% else %>
-            <td>NO</td>
-          <% end %>
-
           <td><%= link_to 'Show', station_path(station) %></td>
           <td><%= link_to 'Edit', edit_station_path(station) %></td>
           <td><%= link_to 'Destroy', station_path(station),

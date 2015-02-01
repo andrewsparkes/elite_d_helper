@@ -10,18 +10,25 @@
   </div>
   <% end %>
 
-  <p>
-    <%= f.label :allegiances, class: "control-label" %>&nbsp;<%= f.collection_select :allegiance_id, Allegiance.all.order(:name), :id, :name, :prompt => "Select an allegiance" %>
-  </p>
-
-  <p>
-    <%= f.label :governments, class: "control-label" %>&nbsp;<%= f.collection_select :government_id, Government.all.order(:name), :id, :name, :prompt => "Select a government" %>
-  </p>
-
-  <p>
-    <%= f.label :name, class: "control-label" %>&nbsp;<%= f.text_field :name, class: "form-control typeahead edsUpdate tt-input", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %>
-  </p>
-
+  <table>
+    <body>
+      <tr>
+        <td><%= f.label :name, class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.text_field :name, class: "form-control typeahead tt-input", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :allegiances, class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.collection_select(:allegiance_id, Allegiance.all.order(:name), :id, :name, {:prompt => "Select an allegiance"},{:class=>"form-control", :style=>"display: inline-block; background-color: transparent;"}) %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :governments, class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.collection_select(:government_id, Government.all.order(:name), :id, :name, {:prompt => "Select a government"},{:class=>"form-control", :style=>"display: inline-block; background-color: transparent;"}) %></td>
+      </tr>
+    </body>
+  </table>
   <p>
     <%= f.submit "Save", class: "btn btn-default" %>
   </p>

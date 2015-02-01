@@ -1,0 +1,2 @@
+module OcrUploadHelper
+end

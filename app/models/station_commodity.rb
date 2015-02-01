@@ -13,4 +13,5 @@ class StationCommodity < ActiveRecord::Base
 
 	validates :buy_or_sell_price, presence: true, numericality: { only_integer: true }
 	validates_uniqueness_of :commodity_id, :scope => [:station_id]
+
 end
