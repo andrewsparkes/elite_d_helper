@@ -35,7 +35,7 @@ class StationsController < ApplicationController
 	  @station = Station.find(params[:id])
 	  @station.destroy
 
-	  redirect_to station_path
+	  redirect_to stations_path
 	end
 
 	def index
