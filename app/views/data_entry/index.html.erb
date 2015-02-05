@@ -1,77 +1,71 @@
-<div id="ContentContainer">
-    <div id="DataLists" class>
-        <div id="DataListing" class>
-            <h1>Elite : Dangerous - Data Entry<br /><span style="font-size:smaller">  </span></h1>
+<h1>Elite : Dangerous - Data Entry<br /><span style="font-size:smaller">  </span></h1>
 
-            <h2>Variable Data<br /><span style="font-size:smaller">  </span></h2>
+<h2>Variable Data<br /><span style="font-size:smaller">  </span></h2>
 
-            <h3>Systems<br /><span style="font-size:smaller">  </span></h3>
-            <p style="padding-left:20px">
-              <%= link_to 'Add a new System', new_system_path %><br />
-              <%= link_to 'View all Systems', controller: 'systems' %><br />
-            </p>
+<h3>Systems<br /><span style="font-size:smaller">  </span></h3>
+<p style="padding-left:20px">
+  <%= link_to 'Add a new System', new_system_path %><br />
+  <%= link_to 'View all Systems', controller: 'systems' %><br />
+</p>
 
-            <h3>Stations<br /><span style="font-size:smaller">  </span></h3>
-            <p style="padding-left:20px">
-              <%= link_to 'Add a new Station', new_station_path %><br />
-              <%= link_to 'View all Stations', controller: 'stations' %><br />
-            </p>
+<h3>Stations<br /><span style="font-size:smaller">  </span></h3>
+<p style="padding-left:20px">
+  <%= link_to 'Add a new Station', new_station_path %><br />
+  <%= link_to 'View all Stations', controller: 'stations' %><br />
+</p>
 
-            <h3>Station Commodities<br /><span style="font-size:smaller">  </span></h3>
-            <p style="padding-left:20px">
-              <%= link_to 'Add a new Station Commodity', new_station_commodity_path %><br />
-              <%= link_to 'View all Station Commodities', controller: 'station_commodities' %><br />
-            </p>
-            <div>
-              <h4>Import a Station Commodities OCR csv file</h4>
-              <table><body><tr>
-              <%= form_tag import_ocr_uploads_path, multipart: true do %>
-                <td><%= file_field_tag :file %></td>
-                <td><%= submit_tag("Import file", class: "btn btn-default") %></td>
-              <% end %>
-            </tr></body></table>
-            </div>
-            <br /><br />
-            <h2>Constant Data<br /><span style="font-size:smaller">  </span></h2>
-
-            <h3>Commodities<br /><span style="font-size:smaller">  </span></h3>
-            <p style="padding-left:20px">
-              <%= link_to 'Add a new Commodity', new_commodity_path %><br />
-              <%= link_to 'View all Commodities', controller: 'commodities' %><br />
-            </p>
-
-            <h3>Allegiances<br /><span style="font-size:smaller">  </span></h3>
-            <p style="padding-left:20px">
-              <%= link_to 'Add a new Allegiance', new_allegiance_path %><br />
-              <%= link_to 'View all Allegiances', controller: 'allegiances' %><br />
-            </p>
-
-            <h3>Commodity Types<br /><span style="font-size:smaller">  </span></h3>
-            <p style="padding-left:20px">
-              <%= link_to 'Add a new Commodity Type', new_commodity_type_path %><br />
-              <%= link_to 'View all Commodity Types', controller: 'commodity_types' %><br />
-            </p>
-
-            <h3>Governments<br /><span style="font-size:smaller">  </span></h3>
-            <p style="padding-left:20px">
-              <%= link_to 'Add a new Government', new_government_path %><br />
-              <%= link_to 'View all Governments', controller: 'governments' %><br />
-            </p>
-
-            <h3>Population Levels<br /><span style="font-size:smaller">  </span></h3>
-            <p style="padding-left:20px">
-              <%= link_to 'Add a new Population Level', new_population_level_path %><br />
-              <%= link_to 'View all Population Levels', controller: 'population_levels' %><br />
-            </p>
-
-            <h3>Station Types<br /><span style="font-size:smaller">  </span></h3>
-            <p style="padding-left:20px">
-              <%= link_to 'Add a new Station Type', new_station_type_path %><br />
-              <%= link_to 'View all Station Types', controller: 'station_types' %><br />
-            </p>
-
-            <br>
-            <%= link_to 'Back to main menu', root_url %>
-        </div>
-    </div>
+<h3>Station Commodities<br /><span style="font-size:smaller">  </span></h3>
+<p style="padding-left:20px">
+  <%= link_to 'Add a new Station Commodity', new_station_commodity_path %><br />
+  <%= link_to 'View all Station Commodities', controller: 'station_commodities' %><br />
+</p>
+<div>
+  <h4>Import a Station Commodities OCR csv file</h4>
+  <table><body><tr>
+  <%= form_tag import_ocr_uploads_path, multipart: true do %>
+    <td><%= file_field_tag :file %></td>
+    <td><%= submit_tag("Import file", class: "btn btn-default") %></td>
+  <% end %>
+</tr></body></table>
 </div>
+<br /><br />
+<h2>Constant Data<br /><span style="font-size:smaller">  </span></h2>
+
+<h3>Commodities<br /><span style="font-size:smaller">  </span></h3>
+<p style="padding-left:20px">
+  <%= link_to 'Add a new Commodity', new_commodity_path %><br />
+  <%= link_to 'View all Commodities', controller: 'commodities' %><br />
+</p>
+
+<h3>Allegiances<br /><span style="font-size:smaller">  </span></h3>
+<p style="padding-left:20px">
+  <%= link_to 'Add a new Allegiance', new_allegiance_path %><br />
+  <%= link_to 'View all Allegiances', controller: 'allegiances' %><br />
+</p>
+
+<h3>Commodity Types<br /><span style="font-size:smaller">  </span></h3>
+<p style="padding-left:20px">
+  <%= link_to 'Add a new Commodity Type', new_commodity_type_path %><br />
+  <%= link_to 'View all Commodity Types', controller: 'commodity_types' %><br />
+</p>
+
+<h3>Governments<br /><span style="font-size:smaller">  </span></h3>
+<p style="padding-left:20px">
+  <%= link_to 'Add a new Government', new_government_path %><br />
+  <%= link_to 'View all Governments', controller: 'governments' %><br />
+</p>
+
+<h3>Population Levels<br /><span style="font-size:smaller">  </span></h3>
+<p style="padding-left:20px">
+  <%= link_to 'Add a new Population Level', new_population_level_path %><br />
+  <%= link_to 'View all Population Levels', controller: 'population_levels' %><br />
+</p>
+
+<h3>Station Types<br /><span style="font-size:smaller">  </span></h3>
+<p style="padding-left:20px">
+  <%= link_to 'Add a new Station Type', new_station_type_path %><br />
+  <%= link_to 'View all Station Types', controller: 'station_types' %><br />
+</p>
+
+<br>
+<%= link_to 'Back to main menu', root_url %>

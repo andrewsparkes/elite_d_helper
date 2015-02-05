@@ -1,6 +1,6 @@
 <h1>Elite : Dangerous - Reporting</h1>
 
-<br />
+<h4>Who sells commodity X?</h4>
 <%= form_tag(:controller => :stations, :action => :who_sells_commodity, method: "get") do %>
 <table>
   <body>
@@ -16,6 +16,7 @@
 <% end %>
 
 <br />
+<h4>All possible 2-station trade routes</h4>
 <%= form_tag(:controller => :stations, :action => :trade_routes, method: "get", :class => "form-horizontal", :id => "TradeRoutesForm") do %>
     <div class="form-group" id="TradeRouteGroup">
         <table>
@@ -38,5 +39,17 @@
     </div>
 <% end %>
 
-<br>
-<%= link_to 'Back to main menu', root_url %>
+<br />
+<div>
+  <h4>Import a Station Commodities OCR csv file</h4>
+  <table>
+    <body>
+      <tr>
+        <%= form_tag import_ocr_uploads_path, multipart: true do %>
+          <td><%= file_field_tag :file %></td>
+          <td><%= submit_tag("Import file", class: "btn btn-default") %></td>
+        <% end %>
+      </tr>
+    </body>
+  </table>
+</div>

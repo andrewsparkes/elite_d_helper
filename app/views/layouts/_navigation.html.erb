@@ -1,0 +1,53 @@
+<!-- Static navbar -->
+<nav class="navbar navbar-default navbar-inverse navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="<%= root_url %>">ED - Helper</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><%= link_to 'Reports', controller: 'reporting' %></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">View<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li class="dropdown-header">Variable data</li>
+            <li><%= link_to 'View all Systems', controller: 'systems' %></li>
+            <li><%= link_to 'View all Stations', controller: 'stations' %></li>
+            <li><%= link_to 'View all Station Commodities', controller: 'station_commodities' %></li>
+            <li class="divider"></li>
+            <li class="dropdown-header">Constant data</li>
+            <li><%= link_to 'View all Commodities', controller: 'commodities' %></li>
+            <li><%= link_to 'View all Allegiances', controller: 'allegiances' %></li>
+            <li><%= link_to 'View all Commodity Types', controller: 'commodity_types' %></li>
+            <li><%= link_to 'View all Governments', controller: 'governments' %></li>
+            <li><%= link_to 'View all Population Levels', controller: 'population_levels' %></li>
+            <li><%= link_to 'View all Station Types', controller: 'station_types' %></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Add<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li class="dropdown-header">Variable data</li>
+            <li><%= link_to 'Add a new System', new_system_path %></li>
+            <li><%= link_to 'Add a new Station', new_station_path %></li>
+            <li><%= link_to 'Add a new Station Commodity', new_station_commodity_path %></li>
+            <li class="divider"></li>
+            <li class="dropdown-header">Constants</li>
+            <li><%= link_to 'Add a new Commodity', new_commodity_path %></li>
+            <li><%= link_to 'Add a new Allegiance', new_allegiance_path %></li>
+            <li><%= link_to 'Add a new Commodity Type', new_commodity_type_path %></li>
+            <li><%= link_to 'Add a new Government', new_government_path %></li>
+            <li><%= link_to 'Add a new Population Level', new_population_level_path %></li>
+            <li><%= link_to 'Add a new Station Type', new_station_type_path %></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
