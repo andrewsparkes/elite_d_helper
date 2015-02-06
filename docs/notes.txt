@@ -28,7 +28,7 @@ Station commodities:
 
 # =====
 
-Add 'last updated' date for commodities in station and all trade route screens
+Add 'last updated' date for commodities in all trade route screens
 
 # =====
 
@@ -44,5 +44,23 @@ Add 'last updated' date for commodities in station and all trade route screens
 	- order by shortest distance, then by shortest nav ls
 
 # =====
+
+Add pilots journal to track system, station, money spent and gained with reason (trade, outfitting module, ship, bounty, death, explorer fee, bond, etc.), comments.
+Allow entry of balance as milestone point to calculate from.
+View in scrolling window. Display current balance. Display total assets owned in ships (-10% cost) and modules?
+
 # =====
+
+Organise 'reports' screen
+    - move/copy 'view all buyers' form in station view to reports screen
+
+Create 'import data' screen
+    - move import EDS star data here
+    - move import OCR file here
+
+# =====
+
+Image for main screen
+Image for behind navigation menu
+
 # =====

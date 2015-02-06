@@ -72,8 +72,8 @@
 			    <td>Avg (cr)</th>
 			    <td>Diff (cr)</th>
 			    <th>Updated on</th>
-			    <td>Edit</th>
-			    <td>Destroy</th>
+			    <td>&nbsp;</th>
+			    <td>&nbsp;</th>
 	          </tr>
 	          <% counter = 0 %>
 	        <% end %>
@@ -85,7 +85,7 @@
 			  <tr>
 			  	<td><i><%= commodity.name %></i></td>
 	            <td colspan="6"><i>This station does not have this commodity set up</i></td>
-	            <td colspan="3"><%= link_to 'add details', :controller => "station_commodities", :action => "new", :station_id => @station.id, :commodity_id => commodity.id %></td>
+	            <td colspan="3"><i><%= link_to 'add details', :controller => "station_commodities", :action => "new", :station_id => @station.id, :commodity_id => commodity.id %></i></td>
 	          </tr>
 	        <% else %>
 	          <!-- if it's a station commodity draw editable row -->

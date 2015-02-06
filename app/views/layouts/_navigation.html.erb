@@ -19,7 +19,7 @@
             <li class="dropdown-header">Variable data</li>
             <li><%= link_to 'View all Systems', controller: 'systems' %></li>
             <li><%= link_to 'View all Stations', controller: 'stations' %></li>
-            <li><%= link_to 'View all Station Commodities', controller: 'station_commodities' %></li>
+            <li><%= link_to 'View all Station Commodities (slow)', controller: 'station_commodities' %></li>
             <li class="divider"></li>
             <li class="dropdown-header">Constant data</li>
             <li><%= link_to 'View all Commodities', controller: 'commodities' %></li>
@@ -36,7 +36,6 @@
             <li class="dropdown-header">Variable data</li>
             <li><%= link_to 'Add a new System', new_system_path %></li>
             <li><%= link_to 'Add a new Station', new_station_path %></li>
-            <li><%= link_to 'Add a new Station Commodity', new_station_commodity_path %></li>
             <li class="divider"></li>
             <li class="dropdown-header">Constants</li>
             <li><%= link_to 'Add a new Commodity', new_commodity_path %></li>
