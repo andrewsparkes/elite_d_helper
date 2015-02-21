@@ -1,0 +1,88 @@
+<h1>Trade Legs</h1>
+
+<% cargo_space_avail   = params[:cargo_space].to_i %>
+<% max_distance        = params[:max_distance].to_f %>
+<% min_commodity_value = params[:min_commodity_value].to_i %>
+<% min_leg_profit      = params[:min_leg_profit].to_i %>
+<p>
+	Cargo space             : <b><%= cargo_space_avail %></b> t<br />
+	Maximum distance        : <b><%= max_distance %></b> LY<br />
+	Minimum Commodity Value : <b><%= min_commodity_value %></b> cr<br />
+	Minimum Profit per Leg  : <b><%= min_leg_profit %></b> cr<br />
+</p>
+<hr>
+
+<% if @possible_trade_legs.size > 0 then %>
+	<table width="100%">
+		<body>
+			<% from_system_name_keys = @possible_trade_legs.keys.sort %>
+			<% from_system_name_keys.each do |from_system_name| %>
+				<% puts "from_system_name = #{from_system_name}" %>
+				<% from_system = System.find_by_name(from_system_name) %>
+
+				<tr>
+					<th colspan="3"><h2><%= from_system_name %></h2></th>
+				</tr>
+
+				<% station_name_keys = @possible_trade_legs[from_system_name]['stations'].keys.sort %>
+				<% station_name_keys.each do |from_station_name| %>
+
+					<% from_station        = Station.find_by_name(from_station_name) %>
+					<% from_system_name    = from_station.system.name %>
+					<% from_station_nav_ls = from_station.nav_ls %>
+					<% from_station_nav_ls_string = "" %>
+					<% unless from_station_nav_ls.nil? %>
+						<% from_station_nav_ls_string = "(" + from_station_nav_ls.to_s + " ls)" %>
+					<% end %>
+					<tr>
+						<th colspan="3"><h3><%= from_station_name %><%= from_station_nav_ls_string %></h3></th>
+					</tr>
+
+					<% from_station_commodity_names = @possible_trade_legs[from_system_name]['stations'][from_station_name].keys.sort %>
+					<% from_station_commodity_names.each do |commodity_name| %>
+						<% seller_price = @possible_trade_legs[from_system_name]['stations'][from_station_name][commodity_name]['seller_price'] %>
+						<tr>
+							<td colspan="3">
+								<table class="table table-striped">
+									<body>
+										<tr>
+											<td width="30%"><strong><%= commodity_name %></strong></td>
+											<td width="*">&nbsp;</td>
+											<td width="*">Buy at: <%= seller_price %> cr</td>
+											<td width="*">&nbsp;</td>
+											<td width="*">&nbsp;</td>
+										</tr>
+										<tr>
+											<th>Buyer Station</th>
+											<th>Distance (LY)</th>
+											<th>Sell at (cr)</th>
+											<th>Profit (cr)</th>
+											<th>Total Profit (cr)</th>
+										</tr>
+										<% buyer_station_names = @possible_trade_legs[from_system_name]['stations'][from_station_name][commodity_name]['buyer_stations'].keys.sort %>
+										<% buyer_station_names.each do |buyer_station_name| %>
+											<% distance = Station.calculate_distance_between_station_names(from_station_name,buyer_station_name) %>
+											<% buyer_price = @possible_trade_legs[from_system_name]['stations'][from_station_name][commodity_name]['buyer_stations'][buyer_station_name]['buyer_price'] %>
+											<% profit = @possible_trade_legs[from_system_name]['stations'][from_station_name][commodity_name]['buyer_stations'][buyer_station_name]['profit'] %>
+											<% total_profit = cargo_space_avail * profit %>
+											<% system_name = Station.find_by_name(buyer_station_name).system.name %>
+											<tr>
+												<td><%= buyer_station_name %> (<%= system_name %>)</td>
+												<td><%= distance %></td>
+												<td><%= number_with_delimiter(buyer_price) %></td>
+												<td><strong><%= number_with_delimiter(profit)%></strong></td>
+												<td><strong><%= number_with_delimiter(total_profit)%></strong></td>
+											</tr>
+										<% end %>
+									</body>
+								</table>
+							</td>
+						</tr>
+					<% end %>
+				<% end %>
+			<% end %>
+		</body>
+	</table>
+<% else %>
+	<p>Error: No trades found</p>
+<% end %>

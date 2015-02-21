@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150118084600) do
+ActiveRecord::Schema.define(version: 20150219204000) do
 
   create_table "allegiances", force: true do |t|
     t.string   "name"
@@ -49,11 +49,14 @@ ActiveRecord::Schema.define(version: 20150118084600) do
   create_table "station_commodities", force: true do |t|
     t.integer  "station_id"
     t.integer  "commodity_id"
-    t.string   "demanded_or_supplied"
-    t.string   "demand_or_supply_level"
-    t.integer  "buy_or_sell_price"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sell"
+    t.integer  "buy"
+    t.integer  "demand"
+    t.string   "demand_level"
+    t.integer  "supply"
+    t.string   "supply_level"
   end
 
   create_table "station_types", force: true do |t|

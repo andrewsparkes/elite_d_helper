@@ -3,13 +3,19 @@
 one:
   station_id: 1
   commodity_id: 1
-  demanded_or_supplied: 
-  demand_or_supply_level: 
-  buy_or_sell_price: 1
+  buy: 1
+  sell: 1
+  demand: 1
+  demand_level:
+  supply: 1
+  supply_level:
 
 two:
   station_id: 1
   commodity_id: 1
-  demanded_or_supplied: 
-  demand_or_supply_level: 
-  buy_or_sell_price: 1
+  buy: 1
+  sell: 1
+  demand: 1
+  demand_level:
+  supply: 1
+  supply_level:

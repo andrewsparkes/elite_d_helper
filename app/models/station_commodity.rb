@@ -5,13 +5,15 @@ class StationCommodity < ActiveRecord::Base
 	validates :station, presence: true
 	validates :commodity, presence: true
 
-	VALID_DEMANDED_OR_SUPPLIED = %w(D S)
-	validates_inclusion_of :demanded_or_supplied, :in => VALID_DEMANDED_OR_SUPPLIED
+	VALID_DEMAND_OR_SUPPLY_LEVEL = %w(Low Med High)
+	validates_inclusion_of :demand_level, :in => VALID_DEMAND_OR_SUPPLY_LEVEL
+	validates_inclusion_of :supply_level, :in => VALID_DEMAND_OR_SUPPLY_LEVEL
 
-	VALID_DEMAND_OR_SUPPLY_LEVEL = %w(L M H)
-	validates_inclusion_of :demand_or_supply_level, :in => VALID_DEMAND_OR_SUPPLY_LEVEL
+	validates :buy, numericality: { only_integer: true }
+	validates :sell, numericality: { only_integer: true }
+	validates :demand, numericality: { only_integer: true }
+	validates :supply, numericality: { only_integer: true }
 
-	validates :buy_or_sell_price, presence: true, numericality: { only_integer: true }
 	validates_uniqueness_of :commodity_id, :scope => [:station_id]
 
 end

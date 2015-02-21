@@ -48,6 +48,6 @@ class StationCommoditiesController < ApplicationController
 
 	private
 		def station_commodity_params
-			params.require(:station_commodity).permit(:station_id,:commodity_id,:demanded_or_supplied,:demand_or_supply_level,:buy_or_sell_price)
+			params.require(:station_commodity).permit(:station_id,:commodity_id,:sell,:buy,:demand,:demand_level,:supply,:supply_level)
 		end
 end

@@ -8,9 +8,12 @@
         <tr>
           <th>Commodity Name</th>
           <th>Demand Level</th>
-          <th>Buy Price (cr)</th>
+          <th>Buy at (cr)</th>
+          <th>Sell at (cr)</th>
+          <th>Demand</th>
+          <th>Demand Level</th>
+          <th>Supply</th>
           <th>Supply Level</th>
-          <th>Sell Price (cr)</th>
           <th>Avg Price (cr)</th>
           <th>Show</th>
           <th>Edit</th>
@@ -25,24 +28,19 @@
           <% station.station_commodities.joins(:commodity).where(commodities: { commodity_type_id: commodity_type.id }).order("commodities.name asc").each do |station_commodity| %>
             <% if counter == 1 then %>
               <tr>
-                <td colspan="9"><h3><%= commodity_type.name %></h3></td>
+                <td colspan="12"><h3><%= commodity_type.name %></h3></td>
               </tr>
               <% counter = 0 %>
             <% end %>
             <tr>
               <td><%= station_commodity.commodity.name %></td>
-              <% if station_commodity.demanded_or_supplied == 'D' then %>
-                <td><%= station_commodity.demand_or_supply_level %></td>
-                <td><%= station_commodity.buy_or_sell_price %></td>
-                <td>-</td>
-                <td>-</td>
-              <% else %>
-                <td>-</td>
-                <td>-</td>
-                <td><%= station_commodity.demand_or_supply_level %></td>
-                <td><%= station_commodity.buy_or_sell_price %></td>
-              <% end %>
-              <td><%= station_commodity.commodity.galactic_average_price %> cr</td>
+              <td><%= number_with_delimiter(station_commodity.buy) %></td>
+              <td><%= number_with_delimiter(station_commodity.sell) %></td>
+              <td><%= number_with_delimiter(station_commodity.demand) %></td>
+              <td><%= station_commodity.demand_level %></td>
+              <td><%= number_with_delimiter(station_commodity.supply) %></td>
+              <td><%= station_commodity.supply_level %></td>
+              <td><%= number_with_delimiter(station_commodity.commodity.galactic_average_price) %></td>
               <td><%= link_to 'Show', station_commodity_path(station_commodity) %></td>
               <td><%= link_to 'Edit', edit_station_commodity_path(station_commodity) %></td>
               <td><%= link_to 'Destroy', station_commodity_path(station_commodity),

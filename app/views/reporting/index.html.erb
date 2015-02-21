@@ -14,32 +14,122 @@
   <body>
 </table>
 <% end %>
-
-<br />
-<h4>All possible 2-station trade routes</h4>
-<%= form_tag(:controller => :stations, :action => :trade_routes, method: "get", :class => "form-horizontal", :id => "TradeRoutesForm") do %>
-    <div class="form-group" id="TradeRouteGroup">
-        <table>
-          <body>
-            <tr>
-              <td>
-                <%= label_tag(:cargo_space, "Search for all possible trade routes, cargo space : ", class: "control-label") %>
-              </td>
-              <td>&nbsp;&nbsp;&nbsp;</td>
-              <td>
-                <input class="form-control typeahead systemList tt-input" id="CargoSpace" name="cargo_space" placeholder="100" required="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
-              </td>
-              <td>&nbsp;&nbsp;&nbsp;</td>
-              <td>
-                <input type="submit" value="Search for Trade Routes" class="btn btn-default">
-              </td>
-            </tr>
-          </body>
-        </table>
-    </div>
+<hr>
+<h4>All possible single-trip trade legs</h4>
+<%= form_tag(:controller => :stations, :action => :trade_legs, method: "get", :class => "form-horizontal", :id => "TradeLegsForm") do %>
+  <div class="form-group" id="TradeLegGroup">
+    <table>
+      <body>
+        <tr>
+          <td>
+            <%= label_tag(:cargo_space, "Search for all possible trade legs, cargo space : ", class: "control-label") %>
+          </td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input class="form-control typeahead systemList tt-input" id="CargoSpace" name="cargo_space" required="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="100" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= label_tag(:max_distance, "Maximum distance (LY) : ", class: "control-label") %>
+          </td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input class="form-control typeahead systemList tt-input" id="MaxDistance" name="max_distance" equired="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="20" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= label_tag(:min_commodity_value, "Minimum commodity value (Cr) : ", class: "control-label") %>
+          </td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input class="form-control typeahead systemList tt-input" id="MinCommodityValue" name="min_commodity_value" required="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="200" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= label_tag(:min_leg_profit, "Minimum profit per leg (Cr) : ", class: "control-label") %>
+          </td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input class="form-control typeahead systemList tt-input" id="MinLegProfit" name="min_leg_profit"  required="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="700" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input type="submit" value="Search for Trade Legs" class="btn btn-default">
+          </td>
+        </tr>
+      </body>
+    </table>
+  </div>
 <% end %>
-
-<br />
+<hr>
+<h4>All possible 2-station trade route loops</h4>
+<%= form_tag(:controller => :stations, :action => :trade_routes, method: "get", :class => "form-horizontal", :id => "TradeRoutesForm") do %>
+  <div class="form-group" id="TradeRouteGroup">
+    <table>
+      <body>
+        <tr>
+          <td>
+            <%= label_tag(:cargo_space, "Search for all possible trade routes, cargo space : ", class: "control-label") %>
+          </td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input class="form-control typeahead systemList tt-input" id="CargoSpace" name="cargo_space" required="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="100" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= label_tag(:max_distance, "Maximum distance (LY) : ", class: "control-label") %>
+          </td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input class="form-control typeahead systemList tt-input" id="MaxDistance" name="max_distance" equired="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="20" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= label_tag(:min_commodity_value, "Minimum commodity value (Cr) : ", class: "control-label") %>
+          </td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input class="form-control typeahead systemList tt-input" id="MinCommodityValue" name="min_commodity_value" required="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="200" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= label_tag(:min_leg_profit, "Minimum profit per leg (Cr) : ", class: "control-label") %>
+          </td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input class="form-control typeahead systemList tt-input" id="MinLegProfit" name="min_leg_profit"  required="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="450" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= label_tag(:min_loop_profit, "Minimum profit per loop (Cr) : ", class: "control-label") %>
+          </td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input class="form-control typeahead systemList tt-input" id="MinLoopProfit" name="min_loop_profit"  required="required" style="display: inline-block; position: relative; vertical-align: top; background-color: transparent;" type="numeric" value="1500" aria-required="true" autocomplete="off" spellcheck="false" dir="auto" aria-invalid="false">
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>
+            <input type="submit" value="Search for Trade Routes" class="btn btn-default">
+          </td>
+        </tr>
+      </body>
+    </table>
+  </div>
+<% end %>
+<hr>
 <div>
   <h4>Import a Station Commodities OCR csv file</h4>
   <table>

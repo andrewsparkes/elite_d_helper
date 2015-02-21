@@ -4,7 +4,7 @@ class RemoveStationEconomies < ActiveRecord::Migration
   	drop_table :station_economies
 
   	# drop economies table
-	drop_table :economies
+	  drop_table :economies
 
   	# add economies boolean flags to station table
   	add_column :stations, :is_economy_agricultural, :boolean, :null => false, :default => false

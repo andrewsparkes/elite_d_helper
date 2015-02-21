@@ -1,81 +1,71 @@
 <h1>Trade Routes</h1>
 
-<% cargo_space_avail = params[:cargo_space].to_i %>
+<% cargo_space_avail   = params[:cargo_space].to_i %>
+<% max_distance        = params[:max_distance].to_f %>
+<% min_commodity_value = params[:min_commodity_value].to_i %>
+<% min_leg_profit      = params[:min_leg_profit].to_i %>
+<% min_loop_profit     = params[:min_loop_profit].to_i %>
 <p>
-	Cargo space available : <%= cargo_space_avail %>
+	Cargo space             : <b><%= cargo_space_avail %></b> t<br />
+	Maximum distance        : <b><%= max_distance %></b> LY<br />
+	Minimum Commodity Value : <b><%= min_commodity_value %></b> cr<br />
+	Minimum Profit per Leg  : <b><%= min_leg_profit %></b> cr<br />
+	Minimum Profit per Loop : <b><%= min_loop_profit %></b> cr
 </p>
-
-<!-- {"George Lucas"=>
-  {"Hartsfield Plant"=>
-    {"Advanced Catalysers"=>{"Superconductors"=>{"loop_total_profit"=>1612}}},
-   "Khayyam Orbital"=>
-    {"Advanced Catalysers"=>
-      {"Beryllium"=>{"loop_total_profit"=>2273},
-       "Gallium"=>{"loop_total_profit"=>1961},
-       "Gold"=>{"loop_total_profit"=>2330},
-       "Indium"=>{"loop_total_profit"=>2021},
-       "Silver"=>{"loop_total_profit"=>1791},
-       "Superconductors"=>{"loop_total_profit"=>1939},
-       "Tantalum"=>{"loop_total_profit"=>1695},
-       "Uranium"=>{"loop_total_profit"=>1616}},
-     "Consumer Technology"=>
-      {"Beryllium"=>{"loop_total_profit"=>2301},
-       "Gallium"=>{"loop_total_profit"=>1989},
-       "Gold"=>{"loop_total_profit"=>2358},
-       "Indium"=>{"loop_total_profit"=>2049},
-       "Silver"=>{"loop_total_profit"=>1819},
-       "Superconductors"=>{"loop_total_profit"=>1967},
-       "Tantalum"=>{"loop_total_profit"=>1723},
-       "Uranium"=>{"loop_total_profit"=>1644}}, -->
-<!--
-       # Leesti (264 LS) -> HIP 65636 (47 LS)
-		# Out: Progenitor Cells   Back: Palladium     Profit: 2512
-		# Out: Consumer Tech      Back: Palladium     Profit: 2437
-		# Out: Progenitor Cells   Back: Gold          Profit: 2314
-		# Out: Consumer Tech      Back: Gold          Profit: 2261 -->
-
-
+<hr>
 <% if @possible_trade_routes.size > 0 then %>
-	<table>
+	<table width="100%">
 		<body>
 			<% @possible_trade_routes.each do |from_station_hash| %>
-				<% from_station_name = from_station_hash.keys[0] %>
+				<% from_station_name   = from_station_hash.keys[0] %>
+				<% from_station        = Station.find_by_name(from_station_name) %>
+				<% from_system_name    = from_station.system.name %>
+				<% from_station_nav_ls = from_station.nav_ls %>
+				<% from_station_nav_ls_string = "" %>
+				<% unless from_station_nav_ls.nil? %>
+					<% from_station_nav_ls_string = "(" + from_station_nav_ls.to_s + " ls)" %>
+				<% end %>
+
+
 				<% buyer_station_names = from_station_hash[from_station_name].keys.sort %>
 				<tr>
-					<th colspan="3"><h2><%= from_station_name %>&nbsp;(<%= Station.find_by_name(from_station_name).system.name %>)</h2></th>
+					<th colspan="3"><h2><%= from_station_name %>&nbsp;(<%= from_system_name %>)</h2></th>
 				</tr>
 				<% buyer_station_names.each do |to_station_name| %>
+					<% to_station        = Station.find_by_name(to_station_name) %>
+					<% to_station_nav_ls = to_station.nav_ls %>
+					<% to_station_nav_ls_string = "" %>
+					<% unless to_station_nav_ls.nil? %>
+						<% to_station_nav_ls_string = "(" + to_station_nav_ls.to_s + " ls)" %>
+					<% end %>
+					<% to_system_name = to_station.system.name %>
 					<tr>
-						<td colspan="2"><h3><strong><%= from_station_name %></strong>&nbsp;(<%= Station.find_by_name(from_station_name).system.name %>)&nbsp;->&nbsp;<strong><%= to_station_name %></strong>&nbsp;(<%= Station.find_by_name(to_station_name).system.name %>)</h3></td>
-						<td>Distance:&nbsp;<%= Station.calculate_distance_between_station_names(from_station_name, to_station_name) %>LY</td>
+						<td colspan="2"><h3><strong><%= from_station_name %><%= from_station_nav_ls_string %></strong>&nbsp;(<%= from_system_name %>)&nbsp;->&nbsp;<strong><%= to_station_name %><%= to_station_nav_ls_string %></strong>&nbsp;(<%= to_system_name %>)</h3></td>
+						<td width="30%">Distance:&nbsp;<%= Station.distance_between_stations(from_station, to_station) %>LY</td>
 					</tr>
 					<% seller_commodity_keys = from_station_hash[from_station_name][to_station_name].keys.sort %>
 					<% seller_commodity_keys.each do |seller_commodity_name| %>
-
 						<tr>
 							<td colspan="3">
-								<table class="table table-striped">
+								<table width="100%" class="table table-striped">
 									<tr>
 										<td colspan="3"><h4>Out:&nbsp;<%= seller_commodity_name %></h4></td>
 									</tr>
-                                    <tr>
-                                        <th>Back</th>
-                                        <th>Profit per t</th>
-                                        <th>Total Profit</th>
-                                    </tr>
+	                <tr>
+	                    <th width="40%">Back:</th>
+	                    <th width="30%">Profit per t (cr)</th>
+	                    <th width="30%">Total Profit (cr)</th>
+	                </tr>
 
 									<% buyer_commodity_keys = from_station_hash[from_station_name][to_station_name][seller_commodity_name].keys.sort %>
 									<% buyer_commodity_keys.each do |buyer_commodity_name| %>
-
 										<% buyer_commodity_hash = from_station_hash[from_station_name][to_station_name][seller_commodity_name][buyer_commodity_name] %>
-
 										<% loop_total_profit = buyer_commodity_hash['loop_total_profit'] %>
 										<tr>
 											<td><strong><%= buyer_commodity_name %></strong></td>
-											<td><strong><%= number_with_delimiter(loop_total_profit) %></strong>&nbsp;cr</td>
-                                            <td><strong><%= number_with_delimiter(loop_total_profit * cargo_space_avail) %></strong>&nbsp;cr</td>
+											<td><strong><%= number_with_delimiter(loop_total_profit) %></strong></td>
+	                    <td><strong><%= number_with_delimiter(loop_total_profit * cargo_space_avail) %></strong></td>
 										</tr>
-
 									<% end %>
 								</table>
 							</td>

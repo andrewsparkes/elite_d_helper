@@ -2,7 +2,7 @@ class System < ActiveRecord::Base
 	belongs_to :allegiance, inverse_of: :systems
 	belongs_to :government, inverse_of: :systems
 
-	has_many :stations, inverse_of: :system
+	has_many :stations, inverse_of: :system, :dependent => :destroy
 
 	validates :allegiance, presence: true
 	validates :government, presence: true

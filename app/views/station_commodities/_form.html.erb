@@ -25,40 +25,69 @@
   <table>
     <body>
       <tr>
-        <td><%= label :demanded_or_supplied_options, 'Demanded or Supplied? : ', class: "control-label" %></td>
+        <td><%= f.label :buy, "Player buys at : ", class: "control-label" %></td>
         <td>&nbsp;&nbsp;&nbsp;</td>
-        <td><%= f.radio_button :demanded_or_supplied, 'D' %></td>
-        <td>&nbsp;&nbsp;</td>
-        <td><%= label :demanded_or_supplied_d, 'Demanded', class: "control-label" %></td>
-        <td>&nbsp;&nbsp;&nbsp;</td>
-        <td><%= f.radio_button :demanded_or_supplied, 'S' %></td>
-        <td>&nbsp;&nbsp;</td>
-        <td><%= label :demanded_or_supplied_s, 'Supplied', class: "control-label" %></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><%= label :demand_or_supply_level_options, 'Level? : ', class: "control-label" %></td>
-        <td>&nbsp;&nbsp;&nbsp;</td>
-        <td><%= f.radio_button :demand_or_supply_level, 'L' %></td>
-        <td>&nbsp;&nbsp;</td>
-        <td><%= label :demand_or_supply_level_low, 'Low', class: "control-label" %></td>
-        <td>&nbsp;&nbsp;&nbsp;</td>
-        <td><%= f.radio_button :demand_or_supply_level, 'M' %></td>
-        <td>&nbsp;&nbsp;</td>
-        <td><%= label :demand_or_supply_level_medium, 'Medium', class: "control-label" %></td>
-        <td>&nbsp;&nbsp;&nbsp;</td>
-        <td><%= f.radio_button :demand_or_supply_level, 'H' %></td>
-        <td>&nbsp;&nbsp;</td>
-        <td><%= label :demand_or_supply_level_high, 'High', class: "control-label" %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :buy_or_sell_price, "Price : ", class: "control-label" %></td>
-        <td>&nbsp;&nbsp;&nbsp;</td>
-        <td colspan="5"><%= f.number_field :buy_or_sell_price, :autofocus => true, class: "form-control typeahead edsUpdate tt-input", placeholder: "1", required: "required", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %></td>
+        <td colspan="5"><%= f.number_field :buy, :autofocus => true, class: "form-control typeahead edsUpdate tt-input", placeholder: "1", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %></td>
         <td>cr</td>
         <td colspan="5"></td>
       </tr>
+
+      <tr>
+        <td><%= f.label :sell, "Player sells at : ", class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="5"><%= f.number_field :sell, class: "form-control typeahead edsUpdate tt-input", placeholder: "1", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %></td>
+        <td>cr</td>
+        <td colspan="5"></td>
+      </tr>
+
+      <tr>
+        <td><%= f.label :demand, "Demand : ", class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="5"><%= f.number_field :demand, class: "form-control typeahead edsUpdate tt-input", placeholder: "1", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %></td>
+        <td>cr</td>
+        <td colspan="5"></td>
+      </tr>
+
+      <tr>
+        <td><%= label :demand_level_options, 'Demand level? : ', class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.radio_button :demand_level, 'Low' %></td>
+        <td>&nbsp;&nbsp;</td>
+        <td><%= label :demand_level_low, 'Low', class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.radio_button :demand_level, 'Med' %></td>
+        <td>&nbsp;&nbsp;</td>
+        <td><%= label :demand_level_medium, 'Medium', class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.radio_button :demand_level, 'High' %></td>
+        <td>&nbsp;&nbsp;</td>
+        <td><%= label :demand_level_high, 'High', class: "control-label" %></td>
+      </tr>
+
+      <tr>
+        <td><%= f.label :supply, "Supply : ", class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="5"><%= f.number_field :supply, class: "form-control typeahead edsUpdate tt-input", placeholder: "1", style: "display: inline-block; position: relative; vertical-align: top; background-color: transparent;" %></td>
+        <td>cr</td>
+        <td colspan="5"></td>
+      </tr>
+
+      <tr>
+        <td><%= label :supply_level_options, 'Supply level? : ', class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.radio_button :supply_level, 'Low' %></td>
+        <td>&nbsp;&nbsp;</td>
+        <td><%= label :supply_level_low, 'Low', class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.radio_button :supply_level, 'Med' %></td>
+        <td>&nbsp;&nbsp;</td>
+        <td><%= label :supply_level_medium, 'Medium', class: "control-label" %></td>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td><%= f.radio_button :supply_level, 'High' %></td>
+        <td>&nbsp;&nbsp;</td>
+        <td><%= label :supply_level_high, 'High', class: "control-label" %></td>
+      </tr>
+
     </body>
   </table>
   <p>

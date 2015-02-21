@@ -62,9 +62,14 @@ class StationsController < ApplicationController
 		render 'who_sells_commodity'
 	end
 
+	def trade_legs
+		@possible_trade_legs = Station.calculate_all_possible_trade_legs(params)
+
+		render 'trade_legs'
+	end
+
 	def trade_routes
-		avail_cargo_space = params[:cargo_space]
-		@possible_trade_routes = Station.calculate_all_possible_trade_routes(avail_cargo_space)
+		@possible_trade_routes = Station.calculate_all_possible_trade_routes(params)
 
 		render 'trade_routes'
 	end

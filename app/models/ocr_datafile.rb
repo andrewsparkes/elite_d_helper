@@ -27,35 +27,16 @@ class OcrDatafile < ActiveRecord::Base
 				supply_level   = row[8]
 				date_recorded  = row['Date']
 
-				# TODO remove these conversions when redo station_commodities fields
-				case demand_level
-				when 'Low'
-					demand_level = 'L'
-				when 'Med'
-					demand_level = 'M'
-				when 'High'
-					demand_level = 'H'
-				end
-
-				case supply_level
-				when 'Low'
-					supply_level = 'L'
-				when 'Med'
-					supply_level = 'M'
-				when 'High'
-					supply_level = 'H'
-				end
-
-				puts "System       : #{system_name}"
-				puts "Station      : #{station_name}"
-				puts "Commodity    : #{commodity_name}"
-				puts "Sell         : #{sell_price}"
-				puts "Buy          : #{buy_price}"
-				puts "Demand Amnt  : #{demand_amnt}"
-				puts "Demand_Level : #{demand_level}"
-				puts "Supply Amnt  : #{supply_amnt}"
-				puts "Supply Level : #{supply_level}"
-				puts "Date         : #{date_recorded}"
+				# puts "System       : #{system_name}"
+				# puts "Station      : #{station_name}"
+				# puts "Commodity    : #{commodity_name}"
+				# puts "Sell         : #{sell_price}"
+				# puts "Buy          : #{buy_price}"
+				# puts "Demand Amnt  : #{demand_amnt}"
+				# puts "Demand_Level : #{demand_level}"
+				# puts "Supply Amnt  : #{supply_amnt}"
+				# puts "Supply Level : #{supply_level}"
+				# puts "Date         : #{date_recorded}"
 
 				# TODO this should probably check name variations, be case insensitive etc
 				system = System.find_by_name(system_name)
@@ -68,7 +49,7 @@ class OcrDatafile < ActiveRecord::Base
 					}
 					system = System.new(system_params)
 					system.save!
-					# @ocr_messages.push("No system found for #{system_name}")
+					@ocr_messages.push("Created system: #{system_name}")
 					# next
 				end
 
@@ -103,7 +84,7 @@ class OcrDatafile < ActiveRecord::Base
 					}
 					station = Station.new(station_params)
 					station.save!
-					# @ocr_messages.push("No station found for #{station_name}")
+					@ocr_messages.push("Created station: #{station_name}")
 					# next
 				end
 
@@ -113,46 +94,29 @@ class OcrDatafile < ActiveRecord::Base
 					next
 				end
 
-				# TODO modify the station_commodities fields when migrate new fields to table
 				station_commodity = StationCommodity.where("station_id = ? AND commodity_id = ?", station.id, commodity.id).first
+				# update existing station_commodity
 				if station_commodity
-					# update the existing station commodity
-					if demand_amnt > 0
-						station_commodity.demanded_or_supplied   = 'D'
-						station_commodity.demand_or_supply_level = demand_level
-						station_commodity.buy_or_sell_price      = sell_price
-					else
-						if supply_amnt > 0
-							station_commodity.demanded_or_supplied   = 'S'
-							station_commodity.demand_or_supply_level = supply_level
-							station_commodity.buy_or_sell_price      = buy_price
-						else
-							@ocr_messages.push("ERROR: Updated Station commodity niether demanded or supplied, skipped!")
-							next
-						end
-					end
+					station_commodity.buy          = buy_price
+					station_commodity.sell         = sell_price
+					station_commodity.demand       = demand_amnt
+					station_commodity.demand_level = demand_level
+					station_commodity.supply       = supply_amnt
+					station_commodity.supply_level = supply_level
 					station_commodity.save!
 					@ocr_messages.push("Station commodity UPDATED for station #{station_name} and commodity #{commodity_name}")
 				else
 					# create a new station commodity
 					station_commodity_params = {
-						'station_id' => station.id,
-						'commodity_id' => commodity.id
+						'station_id'   => station.id,
+						'commodity_id' => commodity.id,
+						'buy'          => buy_price,
+						'sell'         => sell_price,
+						'demand'       => demand_amnt,
+						'demand_level' => demand_level,
+						'supply'       => supply_amnt,
+						'supply_level' => supply_level
 					}
-					if demand_amnt > 0
-						station_commodity_params['demanded_or_supplied']   = 'D'
-						station_commodity_params['demand_or_supply_level'] = demand_level
-						station_commodity_params['buy_or_sell_price']      = sell_price
-					else
-						if supply_amnt > 0
-							station_commodity_params['demanded_or_supplied']   = 'S'
-							station_commodity_params['demand_or_supply_level'] = supply_level
-							station_commodity_params['buy_or_sell_price']      = buy_price
-						else
-							@ocr_messages.push("ERROR: New Station commodity niether demanded or supplied, skipped!")
-							next
-						end
-					end
 					station_commodity = StationCommodity.new(station_commodity_params)
 					station_commodity.save!
 					@ocr_messages.push("Station commodity CREATED for station #{station_name} and commodity #{commodity_name}")

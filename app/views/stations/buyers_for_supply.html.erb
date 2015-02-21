@@ -49,16 +49,9 @@
 													<% buyer_system = System.find_by_name(buyer_system_key) %>
 													<% distance = System.distance_between_systems(@station.system, buyer_system) %>
 													<td><%= distance %>&nbsp;LY</td>
-
-													<% if buyer_station_hash[:demand_or_supply_level] == 'L' then %>
-														<td>L</td>
-													<% elsif buyer_station_hash[:demand_or_supply_level] == 'M' then %>
-														<td>M</td>
-													<% elsif buyer_station_hash[:demand_or_supply_level] == 'H' then %>
-														<td>H</td>
-													<% end %>
-													<td><%= number_with_delimiter(buyer_station_hash[:buy_or_sell_price]) %></td>
-													<% profit_amnt = buyer_station_hash[:buy_or_sell_price] - commod_hash[:sell_price] %>
+													<td><%= buyer_station_hash[:supply_level] %></td>
+													<td><%= number_with_delimiter(buyer_station_hash[:buy_price]) %></td>
+													<% profit_amnt = buyer_station_hash[:buy_price] - commod_hash[:sell_price] %>
 													<% if profit_amnt > 0 then %>
 														<td><%= number_with_delimiter(profit_amnt) %></td>
 													<% else %>
