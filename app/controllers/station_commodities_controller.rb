@@ -7,9 +7,7 @@ class StationCommoditiesController < ApplicationController
 		@station_commodity = StationCommodity.new(station_commodity_params)
 
 	  	if @station_commodity.save
-	  		# TODO : could auto-go to next commodity OR if all done back to station
 	  		redirect_to @station_commodity
-	  		# redirect_to @station_commodity.station
 	  	else
 	  		render 'new'
 	  	end
@@ -28,7 +26,6 @@ class StationCommoditiesController < ApplicationController
 
 	  if @station_commodity.update(station_commodity_params)
 	    redirect_to @station_commodity
-	    # redirect_to @station_commodity.station
 	  else
 	    render 'edit'
 	  end
@@ -48,6 +45,9 @@ class StationCommoditiesController < ApplicationController
 
 	private
 		def station_commodity_params
+			puts "checking sc params"
+			require 'pp'
+			pp params
 			params.require(:station_commodity).permit(:station_id,:commodity_id,:sell,:buy,:demand,:demand_level,:supply,:supply_level)
 		end
 end

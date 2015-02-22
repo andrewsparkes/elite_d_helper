@@ -60,3 +60,10 @@ Image for main screen
 Image for behind navigation menu
 
 # =====
+
+set puts to display only when global mode 'DEBUG' = true
+
+# =====
+# =====
+# =====
+# =====

@@ -65,8 +65,7 @@
 	      	<% if counter == 1 then %>
 	          <tr>
 	            <td><h4><%= commodity_type.name %></h4></td>
-	            <td>Demand</td>
-					    <td>Buy at (cr)</td>
+	            <td>Buy at (cr)</td>
 		          <td>Sell at (cr)</td>
 		          <td>Demand</td>
 		          <td>Demand Level</td>
@@ -88,32 +87,42 @@
 	          <% @station_commodity = StationCommodity.new %>
 			  <tr>
 			  	<td><i><%= commodity.name %></i></td>
-	            <td colspan="6"><i>This station does not have this commodity set up</i></td>
-	            <td colspan="3"><i><%= link_to 'add details', :controller => "station_commodities", :action => "new", :station_id => @station.id, :commodity_id => commodity.id %></i></td>
+	            <td colspan="8"><i>This station does not have this commodity set up</i></td>
+	            <td colspan="5"><i><%= link_to 'add details', :controller => "station_commodities", :action => "new", :station_id => @station.id, :commodity_id => commodity.id %></i></td>
 	          </tr>
 	        <% else %>
 	          <!-- if it's a station commodity draw editable row -->
 			  <tr>
 		        <td><%= @station_commodity.commodity.name %></td>
-		        <td><%= number_with_delimiter(station_commodity.buy) %></td>
-            <td><%= number_with_delimiter(station_commodity.sell) %></td>
-            <td><%= number_with_delimiter(station_commodity.demand) %></td>
-            <td><%= station_commodity.demand_level %></td>
-            <td><%= number_with_delimiter(station_commodity.supply) %></td>
-            <td><%= station_commodity.supply_level %></td>
+		        <td><%= number_with_delimiter(@station_commodity.buy) %></td>
+            <td><%= number_with_delimiter(@station_commodity.sell) %></td>
+            <td><%= number_with_delimiter(@station_commodity.demand) %></td>
+            <td><%= @station_commodity.demand_level %></td>
+            <td><%= number_with_delimiter(@station_commodity.supply) %></td>
+            <td><%= @station_commodity.supply_level %></td>
             <td><%= number_with_delimiter(@station_commodity.commodity.galactic_average_price) %></td>
-            <% if_buy_price_diff = @station_commodity.buy - @station_commodity.commodity.galactic_average_price %>
-	          <% if if_buy_price_diff > 0 then %>
-	          	<td><%= number_with_delimiter(if_buy_price_diff) %></td>
-	          <% else %>
-	          	<td><%= number_with_delimiter(if_buy_price_diff) %></td>
-	          <% end %>
-	          <% if_sell_price_diff = @station_commodity.commodity.galactic_average_price - @station_commodity.sell %>
-	          <% if if_sell_price_diff > 0 then %>
-	          	<td><%= number_with_delimiter(if_sell_price_diff) %></td>
-	          <% else %>
-	          	<td><%= number_with_delimiter(if_sell_price_diff) %></td>
-	          <% end %>
+            <% if @station_commodity.buy && @station_commodity.buy > 0 %>
+	            <% buy_price_diff = @station_commodity.commodity.galactic_average_price - @station_commodity.buy %>
+		          <% if buy_price_diff > 0 then %>
+		          	<td><strong><%= number_with_delimiter(buy_price_diff) %></strong></td>
+		          <% else %>
+		          	<td><%= number_with_delimiter(buy_price_diff) %></td>
+		          <% end %>
+		        <% else %>
+		        	<td>&nbsp;</td>
+		        <% end %>
+
+		        <% if @station_commodity.sell && @station_commodity.sell > 0 %>
+		          <% sell_price_diff = @station_commodity.sell - @station_commodity.commodity.galactic_average_price %>
+		          <% if sell_price_diff > 0 then %>
+		          	<td><strong><%= number_with_delimiter(sell_price_diff) %></strong></td>
+		          <% else %>
+		          	<td><%= number_with_delimiter(sell_price_diff) %></td>
+		          <% end %>
+		        <% else %>
+		        	<td>&nbsp;</td>
+		        <% end %>
+
 		        <td><%= @station_commodity.updated_at.strftime("%d/%m/%Y") %></td>
 		        <td><%= link_to 'Edit', edit_station_commodity_path(@station_commodity) %></td>
 		        <td><%= link_to 'Destroy', station_commodity_path(@station_commodity),

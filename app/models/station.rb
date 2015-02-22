@@ -511,7 +511,7 @@ class Station < ActiveRecord::Base
 
               	# ignore if out of range
 		    				distance_ly = self.calculate_distance_between_station_names(curr_seller_station, curr_buyer_station)
-		  					if ( distance_ly <= max_distance )
+		  					if ( distance_ly.nil? || distance_ly <= max_distance )
 
 	              	puts "storing trade leg"
 	                # store potential trade leg

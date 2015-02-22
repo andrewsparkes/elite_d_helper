@@ -7,6 +7,7 @@ class OcrDatafile < ActiveRecord::Base
 	def self.import(file)
 
 		@ocr_messages = []
+		@station = nil
 
 		CSV.foreach(file.path, headers: true, col_sep: ';', converters: :numeric) do |row|
 
@@ -53,8 +54,8 @@ class OcrDatafile < ActiveRecord::Base
 					# next
 				end
 
-				station = Station.find_by_name(station_name)
-				unless station
+				@station = Station.find_by_name(station_name)
+				unless @station
 					# create the station
 					station_params = {
 						'name'                => station_name,
@@ -82,9 +83,9 @@ class OcrDatafile < ActiveRecord::Base
 						'is_economy_terraforming' => false,
 						'is_economy_tourism'      => false
 					}
-					station = Station.new(station_params)
-					station.save!
-					@ocr_messages.push("Created station: #{station_name}")
+					@station = Station.new(station_params)
+					@station.save!
+					@ocr_messages.push("Created station: #{@station.name}")
 					# next
 				end
 
@@ -94,7 +95,7 @@ class OcrDatafile < ActiveRecord::Base
 					next
 				end
 
-				station_commodity = StationCommodity.where("station_id = ? AND commodity_id = ?", station.id, commodity.id).first
+				station_commodity = StationCommodity.where("station_id = ? AND commodity_id = ?", @station.id, commodity.id).first
 				# update existing station_commodity
 				if station_commodity
 					station_commodity.buy          = buy_price
@@ -108,7 +109,7 @@ class OcrDatafile < ActiveRecord::Base
 				else
 					# create a new station commodity
 					station_commodity_params = {
-						'station_id'   => station.id,
+						'station_id'   => @station.id,
 						'commodity_id' => commodity.id,
 						'buy'          => buy_price,
 						'sell'         => sell_price,
@@ -125,6 +126,6 @@ class OcrDatafile < ActiveRecord::Base
 				puts "ERROR with csv row, no date so row incomplete"
 			end
 		end # end CSV.foreach
-		return @ocr_messages
+		return @ocr_messages, @station
 	end # end self.import(file)
 end

@@ -1,5 +1,11 @@
 <h1>OCR file upload results</h1>
 
+<% if @station then %>
+View station: <%= link_to @station.name, station_path(@station) %>
+<% end %>
+
+<h3>Messages:</h3>
 <% @ocr_messages.each do |msg| %>
 <p><%= msg %></p>
 <% end %>
+
