@@ -247,6 +247,9 @@ class Station < ActiveRecord::Base
 				curr_demand_level           = buyer_row['demand_level']
 				curr_sell_price             = buyer_row['sell']
 
+				next unless curr_sell_price.to_i > curr_buy_price.to_i
+				next unless ( curr_sell_price.to_i - curr_buy_price.to_i ) > 200
+
 				unless trades_hash[:commodity_types][curr_commodity_type_name][:seller_commodities][curr_commodity_name][:buyer_systems].has_key?(curr_system_name)
 					trades_hash[:commodity_types][curr_commodity_type_name][:seller_commodities][curr_commodity_name][:buyer_systems][curr_system_name] = {
 						:system_id          => curr_system_id,
@@ -266,6 +269,9 @@ class Station < ActiveRecord::Base
 		end
 
 		seller_st.close
+
+		require 'pp'
+		pp trades_hash
 
 		return trades_hash
 	end

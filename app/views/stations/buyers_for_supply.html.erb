@@ -18,11 +18,11 @@
 
 						<tr>
 							<td><h4><%= commod_key %></h4></td>
-							<td>Buy per unit: <b><%= commod_hash[:sell_price] %></b> cr</td>
+							<td>Buy per unit: <b><%= commod_hash[:buy_price] %></b> cr</td>
 							<td>Supply: <b><%= commod_hash[:supply_level] %></b></td>
 							<td>Gal avg: <%= commod_hash[:galactic_average_price] %> cr</td>
-							<% sell_price = commod_hash[:sell_price].to_i %>
-							<% cost_full_cargo = (cargo_space_avail * sell_price).to_i %>
+							<% buy_price = commod_hash[:buy_price].to_i %>
+							<% cost_full_cargo = (cargo_space_avail * buy_price).to_i %>
 							<td>Cost full cargo (<%= cargo_space_avail %>t): <b><%= cost_full_cargo %></b> cr</td>
 						</tr>
 
@@ -34,8 +34,9 @@
 									<thead>
 										<th>System</th>
 										<th>Station</th>
-										<th>distance</th>
+										<th>Distance</th>
 										<th>Demand</th>
+										<th>Demand Lvl</th>
 										<th>Sell per Tonne</th>
 										<th>Profit per Tonne</th>
 										<th>Total Profit (<%= cargo_space_avail %>t)</th>
@@ -49,18 +50,19 @@
 													<% buyer_system = System.find_by_name(buyer_system_key) %>
 													<% distance = System.distance_between_systems(@station.system, buyer_system) %>
 													<td><%= distance %>&nbsp;LY</td>
-													<td><%= buyer_station_hash[:supply_level] %></td>
-													<td><%= number_with_delimiter(buyer_station_hash[:buy_price]) %></td>
-													<% profit_amnt = buyer_station_hash[:buy_price] - commod_hash[:sell_price] %>
+													<td><%= buyer_station_hash[:demand] %></td>
+													<td><%= buyer_station_hash[:demand_level] %></td>
+													<td><%= number_with_delimiter(buyer_station_hash[:sell_price]) %></td>
+													<% profit_amnt = buyer_station_hash[:sell_price] - commod_hash[:buy_price] %>
 													<% if profit_amnt > 0 then %>
-														<td><%= number_with_delimiter(profit_amnt) %></td>
+														<td><strong><%= number_with_delimiter(profit_amnt) %></strong></td>
 													<% else %>
 														<td><%= number_with_delimiter(profit_amnt) %></td>
 													<% end %>
 
 													<% total_profit_amnt = profit_amnt * cargo_space_avail %>
 													<% if total_profit_amnt > 0 then %>
-														<td><%= number_with_delimiter(total_profit_amnt) %></td>
+														<td><strong><%= number_with_delimiter(total_profit_amnt) %></strong></td>
 													<% else %>
 														<td><%= number_with_delimiter(total_profit_amnt) %></td>
 													<% end %>

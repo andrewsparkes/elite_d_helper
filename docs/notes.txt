@@ -28,6 +28,7 @@ Station commodities:
 # =====
 
 Add 'last updated' date for commodities in all trade route screens
+Add demand and supply amounts on trade screens
 
 # =====
 
