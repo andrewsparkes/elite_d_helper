@@ -129,17 +129,3 @@
     </table>
   </div>
 <% end %>
-<hr>
-<div>
-  <h4>Import a Station Commodities OCR csv file</h4>
-  <table>
-    <body>
-      <tr>
-        <%= form_tag import_ocr_uploads_path, multipart: true do %>
-          <td><%= file_field_tag :file %></td>
-          <td><%= submit_tag("Import file", class: "btn btn-default") %></td>
-        <% end %>
-      </tr>
-    </body>
-  </table>
-</div>
